@@ -25,24 +25,54 @@ public class ShopManager : PiecesList, IPointerClickHandler
     public TMP_Text synergyTxt;
     public TMP_Text goldTxt;
 
+    public int[] percentages = new int[4];
+
 
     private void Awake()
     {
+        for (int i = 0; i < DataManager.instance.wholePercentage.Length; i++)
+        {
+            percentages[i] = DataManager.instance.wholePercentage[i];  
+        }
+
         canvasGroup = GetComponent<CanvasGroup>();
         piecesList = FindObjectOfType<PiecesList>();
         piecesShopImage = GetComponent<Image>();
-
     }
 
     private void Start()
     {
-        int num = Random.Range(0, 5);
+        float rangeNum = Random.Range(0, 100);
+        
+        if (rangeNum <= percentages[0])
+        {
+            num = 1;
+        }
+        else if (rangeNum <= percentages[0] + percentages[1])
+        {
+            num = 2;
+        }
+        else if(rangeNum <= percentages[0] + percentages[1] + percentages[2])
+        {
+            num = 3;
+        }
+        else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
+        {
+            num = 4;
+        }
+        else 
+        {
+            num = 5;
+        }
 
         piecesImage = piecesList.piecesImages[num];
         piecesName = piecesList.piecesNames[num];
         piecesSynergy = piecesList.piecesSynergys[num];
         piecesGold = piecesList.piecesGolds[num];
-        piecesShopImage.sprite = piecesList.piecesImages[num];
+        piecesShopImage.sprite = piecesImage;
+        nameTxt.text = piecesName;
+        synergyTxt.text = piecesSynergy;
+        goldTxt.text = "$" + piecesGold;
 
     }
 
@@ -61,28 +91,31 @@ public class ShopManager : PiecesList, IPointerClickHandler
     {
         num = Random.Range(0, 5);
 
-        ShopPieces();
+        ShowShopPieces();
     }
 
-    public void ShopPieces()
+    public void ShowShopPieces()
     {
         piecesImage = piecesList.piecesImages[num];
         piecesName = piecesList.piecesNames[num];
         piecesSynergy = piecesList.piecesSynergys[num];
         piecesGold = piecesList.piecesGolds[num];
         piecesShopImage.sprite = piecesList.piecesImages[num];
-        nameTxt.text = piecesName;
-        goldTxt.text = "$" + piecesGold;
-        synergyTxt.text = piecesSynergy;
+        nameTxt.text = piecesList.piecesNames[num];
+        goldTxt.text = "$" + piecesList.piecesGolds[num];
+        synergyTxt.text = piecesList.piecesSynergys[num];
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        canvasGroup.alpha = 0f;
-        canvasGroup.blocksRaycasts = false;
-        DataManager.instance.myGold--;
-        UIManager.instance.UIRefresh();
+        if(DataManager.instance.myGold >= piecesList.piecesGolds[num])
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.blocksRaycasts = false;
+            DataManager.instance.myGold -= piecesGold;
+            UIManager.instance.UIRefresh();
+        }
     }
 }

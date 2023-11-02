@@ -32,8 +32,7 @@ public class UIManager : MonoBehaviour
     {
         
         originScale = transform.localScale;
-        UIRefresh();
-    }
+    } 
 
     private void Update()
     {
