@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [Tooltip("게임오브젝트 생성 프리펩 컴포넌트")]
-    [SerializeField]
-    GameObject articlePrefabs;
-
-    [SerializeField]
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnMouseOver()
     {
-        
+        if(DragObject.isOnDrag)
+        {
+            HighlightTile(this.gameObject, Color.red);
+            DragObject.GO = this.gameObject;
+        }
+    }
+    private void OnMouseExit()
+    {
+        HighlightTile(this.gameObject, Color.white);
     }
 
-    // Update is called once per frame
-    void Update()
+    void HighlightTile(GameObject tile, Color color)
     {
-        
+        Renderer tileRenderer = tile.GetComponent<Renderer>();
+        if (tileRenderer != null)
+        {
+            Material originalMaterial = tileRenderer.material;
+
+            Material highlightMaterial = new Material(originalMaterial);
+            highlightMaterial.color = color;
+
+            tileRenderer.material = highlightMaterial;
+        }
     }
+
+
+
 }
