@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+
+    public GameObject otherGO;
+
+
+
     private void OnMouseOver()
     {
         if(DragObject.isOnDrag)
         {
+            DragObject.checkPosition = true;
+
             HighlightTile(this.gameObject, Color.red);
             DragObject.GO = this.gameObject;
         }
     }
     private void OnMouseExit()
     {
+        DragObject.checkPosition = false;
+
         HighlightTile(this.gameObject, Color.white);
     }
+
+
 
     void HighlightTile(GameObject tile, Color color)
     {
