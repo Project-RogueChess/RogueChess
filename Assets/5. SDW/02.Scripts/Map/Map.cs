@@ -5,15 +5,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
+using Random = UnityEngine.Random;
 
 public class Map : MonoBehaviour
 {
     [Header("Input Children Panel Count X , Y")]
     [SerializeField] private int mapLengthX = 2;
     [SerializeField] private int mapLengthY = 2;
+    [SerializeField] private int createResearchLengthX = 1;
+    [SerializeField] private int createResearchLengthY = 1;
+    [SerializeField] private int createMaxNord = 1;
+    [SerializeField] private int secondFloorNordNumber = 3;
 
     [Header("Children Panel Prefab")]
     [SerializeField] private GameObject childrenPanelPrefab;
+
+    [Header("CurrentNordInfomation")]
+    [SerializeField] private Vector2Int currentNordXY; // 현재 노드가 뭔지 갱신 하죠
+
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
     private Map_Nord nordScript;
@@ -22,6 +31,11 @@ public class Map : MonoBehaviour
     {
         UI_MapRenderStart();
 
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    Debug.Log(i);
+        //    //결과값 0 1 2 3 4
+        //}
     }
     private void Update()
     {
@@ -58,9 +72,6 @@ public class Map : MonoBehaviour
             for (int X = 0; X < mapLengthX; X++)
             {
                 GameObject childPanel = Instantiate(childrenPanelPrefab, gameObject.transform);
-                //childPanel.AddComponent<Map_Nord>();
-                //childPanel.GetComponent<Map_Nord>().locationX = X;
-                //childPanel.GetComponent<Map_Nord>().locationY = Y;
                 childPanelDictionary.Add(new Vector2Int(X,Y), childPanel);
             }
         }
@@ -73,6 +84,23 @@ public class Map : MonoBehaviour
         if (startNordPanel == null) { Debug.LogWarning("Can Not Found Start Nord Possition"); }
 
         startNordPanel.AddComponent<Map_Nord>();
+
+        if (secondFloorNordNumber > mapLengthX) { Debug.LogWarning("secondFloorNordNumber > mapLengthX"); }
+
+        int secondFloorNordX = (int)(mapLengthX / secondFloorNordNumber);
+
+        int secondFloorFirstNordX = (int)(secondFloorNordX / 2);
+        GameObject secoundFloorFirstNord = FindPanelToSearchDictionary(secondFloorFirstNordX, 1);
+        secoundFloorFirstNord.AddComponent<Map_Nord>();
+        //CreateRandomNord(new Vector2Int(secondFloorFirstNordX, 1)); //ths
+
+        for (int i = 1; i < secondFloorNordNumber; i++)
+        {
+            GameObject secondNordPanel = FindPanelToSearchDictionary(secondFloorFirstNordX + (i * secondFloorNordX), 1);
+            secondNordPanel.AddComponent<Map_Nord>();
+        }
+
+        //CreateRandomNord(new Vector2Int(secondFloorFirstNordX, 1));
     }
 
     private GameObject FindPanelToSearchDictionary(int X,int Y)
@@ -86,6 +114,40 @@ public class Map : MonoBehaviour
         }
 
         return null;
+    }
+    private GameObject FindPanelToSearchDictionary(Vector2Int xy)
+    {
+        GameObject resultGameObject;
+        Vector2Int key = xy;
+
+        if (childPanelDictionary.TryGetValue(key, out resultGameObject))
+        {
+            return resultGameObject;
+        }
+
+        return null;
+    }
+
+    private Vector2Int ChangePossibleIndexVector2Int(Vector2Int key)
+    {
+        key.x = Mathf.Clamp(key.x, 0, mapLengthX);
+        key.y = Mathf.Clamp(key.y, 0, mapLengthY);
+
+        return key;
+    }
+
+    private int ChangePossibleIndexintX(int key)
+    {
+        key = Mathf.Clamp(key, 0, mapLengthX);
+
+        return key;
+    }
+
+    private int ChangePossibleIndexintY(int key)
+    {
+        key = Mathf.Clamp(key, 0, mapLengthY);
+
+        return key;
     }
 
     private void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
@@ -104,4 +166,56 @@ public class Map : MonoBehaviour
             isOnMap = false;
         }
     }
+
+
+    private void CreateRandomNord(Vector2Int startNordKey)
+    {
+        Debug.Log("1"); // Test
+
+        if (startNordKey.y != 1) { Debug.LogWarning("Wrong Access"); return; }
+
+        List<Vector2Int> readyNord = new List<Vector2Int>();
+        Vector2Int currentNordCreate = startNordKey;
+
+        int thisTimeNordNumber = (Random.Range(0, createMaxNord) + 1);
+
+
+        Debug.Log("2"); // Test
+        while (currentNordCreate.y <= (mapLengthY--))
+        {
+            Debug.Log("Enter While");
+            for (int i = 0; i < thisTimeNordNumber; i++)
+            {
+                int randomListValue = 0;
+
+
+                for (int nordY = (currentNordCreate.y + 1); nordY <= Mathf.Clamp((currentNordCreate.y + createResearchLengthY), 1, mapLengthY--); nordY++)
+                {
+                    for (int nordX = Mathf.Clamp((currentNordCreate.x + createResearchLengthX), 0, mapLengthX); nordX >= Mathf.Clamp((currentNordCreate.x - createResearchLengthX), 0, mapLengthX); nordX--)
+                    {
+                        readyNord.Add(new Vector2Int(nordX, nordY));
+                    }
+                }
+                Debug.Log("3"); // Test
+                randomListValue = Random.Range(0, readyNord.Count);
+                Debug.Log("CompleteRandomRange"); // Test
+                GameObject createTargetPanel = FindPanelToSearchDictionary(readyNord[randomListValue]);
+                Debug.Log("CompleteFindDictionary"); // Test
+                if (createTargetPanel.GetComponent<Map_Nord>() == null)
+                {
+                    createTargetPanel.AddComponent<Map_Nord>();
+                }
+                createTargetPanel.GetComponent<Map_Nord>().AddPrevNordKey(currentNordCreate);
+                Debug.Log("4"); // Test
+                currentNordCreate = readyNord[randomListValue];
+                Debug.Log(readyNord[randomListValue]); // Test
+                readyNord.Clear();
+                //Debug.Log(readyNord[randomListValue]);
+            }
+            Debug.Log("5"); // Test
+        }
+        Debug.Log("6"); // Test
+    }
+
+  
 }

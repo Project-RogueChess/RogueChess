@@ -1,34 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class Map_Nord : MonoBehaviour
 {
-    [SerializeField] private int _locationX;
-    [SerializeField] private int _locationY;
-    public int locationX
+    private List<Vector2Int> prevNordKeys = new List<Vector2Int>();
+    public void AddPrevNordKey(Vector2Int key)
     {
-        get
-        {
-            return _locationX;
-        }
-        set
-        {
-            _locationX = value;
-        }
+        prevNordKeys.Add(key);
     }
 
-    public int locationY
+    public void SettingNord(int settValue)
     {
-        get
-        {
-            return _locationY;
-        }
 
-        set
-        {
-            _locationY = value;
-        }
     }
+
+    private void Start()
+    {
+        gameObject.GetComponent<Image>().color = new Color(160, 0, 0, 100f);
+    }
+
 }
