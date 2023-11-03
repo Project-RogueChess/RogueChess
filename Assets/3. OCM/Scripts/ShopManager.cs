@@ -45,7 +45,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-        Reroll();
+        ReRoll(DataManager.instance.reroolLock);
 
         piecesGold = piecesInfo.gold;
         piecesImage = piecesInfo.piecesImg;
@@ -63,53 +63,54 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && DataManager.instance.myGold>=2)
-        {
-            //DataManager.instance.myGold -= 2;
-            Reroll();
-        } 
-            
+        
     }
 
-
-    public void Reroll()
+    public void ReRoll(bool lockflag)
     {
 
-        for (int i = 0; i < DataManager.instance.wholePercentage.Length; i++)
+        if(lockflag == true)
         {
-            percentages[i] = DataManager.instance.wholePercentage[i];
-
-        }
-
-        rangeNum = Random.Range(0, 100);
-        if (rangeNum <= percentages[0])
-        {
-            num = Random.Range(0, 5);
-            piecesInfo = piecesList.gold1Pieces[num].GetComponent<Pieces>();
-        }
-        else if (rangeNum <= percentages[0] + percentages[1])
-        {
-            num = Random.Range(0, 5);
-            piecesInfo = piecesList.gold2Pieces[num].GetComponent<Pieces>();
-        }
-        else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
-        {
-            num = Random.Range(0, 5);
-            piecesInfo = piecesList.gold3Pieces[num].GetComponent<Pieces>();
-        }
-        else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
-        {
-            num = Random.Range(0, 5);
-            piecesInfo = piecesList.gold4Pieces[num].GetComponent<Pieces>();
+            return;
         }
         else
         {
-            num = Random.Range(0, 5);
-            piecesInfo = piecesList.gold5Pieces[num].GetComponent<Pieces>();
-        }
+            for (int i = 0; i < DataManager.instance.wholePercentage.Length; i++)
+            {
+                percentages[i] = DataManager.instance.wholePercentage[i];
+
+            }
+
+            rangeNum = Random.Range(0, 100);
+            if (rangeNum <= 100)//percentages[0]
+            {
+                num = Random.Range(0, 5);
+                piecesInfo = piecesList.gold1Pieces[num].GetComponent<Pieces>();
+            }
+            //else if (rangeNum <= percentages[0] + percentages[1])
+            //{
+            //    num = Random.Range(0, 5);
+            //    piecesInfo = piecesList.gold2Pieces[num].GetComponent<Pieces>();
+            //}
+            //else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
+            //{
+            //    num = Random.Range(0, 5);
+            //    piecesInfo = piecesList.gold3Pieces[num].GetComponent<Pieces>();
+            //}
+            //else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
+            //{
+            //    num = Random.Range(0, 5);
+            //    piecesInfo = piecesList.gold4Pieces[num].GetComponent<Pieces>();
+            //}
+            //else
+            //{
+            //    num = Random.Range(0, 5);
+            //    piecesInfo = piecesList.gold5Pieces[num].GetComponent<Pieces>();
+            //}
 
 
-        ShowShopPieces();
+            ShowShopPieces();
+        } 
     }
 
     public void ShowShopPieces()
@@ -124,6 +125,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         synergyTxt.text = piecesInfo.synergy;
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+        UIManager.instance.UIRefresh();
     }
 
     public void OnPointerClick(PointerEventData eventData)

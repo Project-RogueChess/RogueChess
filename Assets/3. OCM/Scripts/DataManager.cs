@@ -18,7 +18,7 @@ public class DataManager : MonoBehaviour
     public int maxExp = 0;
     public int myExp = 0;
     public int[] wholePercentage = new int[5];
-    
+    public bool reroolLock = false;
 
     private void Awake()
     {
@@ -31,23 +31,31 @@ public class DataManager : MonoBehaviour
         UIManager.instance.UIRefresh();
     }
 
+    
     //°æÇèÄ¡ È¹µæ ¹öÆ° ´­·¶À» ¶§ ÀÛµ¿ ÇÔ¼ö
     public void GettingExp()
     {
-        if(myLevel == 10)
-        {
-            return;
-        }
-        if(myGold >= 4)
-        {
-            myExp += 4;
-            if (myExp >= maxExp)
+        
+            if (myLevel == 10)
             {
-                LevelUP();
-                DistributePercentage();
+                return;
             }
-        }
-        UIManager.instance.UIRefresh();
+            else
+            {
+                if (myGold >= 4)
+                {
+                    myGold -= 4;
+                    myExp += 4;
+                    if (myExp >= maxExp)
+                    {
+                        LevelUP();
+                        DistributePercentage();
+                    }
+                }
+            }
+            
+            UIManager.instance.UIRefresh();
+        
     }
 
     public void LevelUP()
@@ -70,7 +78,7 @@ public class DataManager : MonoBehaviour
         myExp = 0;
         maxHp = 15;
         myHp = 15;
-        myGold = 30;
+        myGold = 1000;
         maxPieces = 3;
         myPieces = 0;
         wholePercentage = new int[]{ 100, 0, 0, 0,0 };
@@ -132,5 +140,9 @@ public class DataManager : MonoBehaviour
                     break;
                 }
         }
+    }
+    public void SwitchReRoolLock()
+    {
+        reroolLock = !reroolLock;
     }
 }

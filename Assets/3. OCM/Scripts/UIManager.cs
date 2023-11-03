@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,13 +24,17 @@ public class UIManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject rerollButton;
     public GameObject percentagePanel;
+    public ShopManager[] shopmanagers = new ShopManager[5];
 
     public bool shopOnOffBool;
 
+    
 
     private void Awake()
     {
         instance = this;
+        
+        shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
     }
 
     private void Update()
@@ -39,6 +44,14 @@ public class UIManager : MonoBehaviour
             
             ShopUIDraw();
             shopOnOffBool = !shopOnOffBool;
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DataManager.instance.GettingExp();
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ReRoolForBtn();
         }
     }
 
@@ -72,5 +85,18 @@ public class UIManager : MonoBehaviour
             percentagePanel.SetActive(true);
         }
         
+    }
+
+    public void ReRoolForBtn()
+    {
+        if (DataManager.instance.myGold >= 2)
+        {
+            DataManager.instance.myGold -= 2;
+            foreach (ShopManager shopManager in shopmanagers)
+            {
+                shopManager.ReRoll(DataManager.instance.reroolLock);
+            }
+            UIRefresh();
+        }
     }
 }

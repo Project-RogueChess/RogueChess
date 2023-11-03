@@ -19,11 +19,11 @@ public class Pieces : MonoBehaviour
     //public string Synergy { get {  return synergy; } set {  synergy = value; } }
     //public Sprite PiecesImg { get { return piecesImg; } set {  piecesImg = value; } }
 
-    public Pieces(Sprite PiecesImg,string Name,string Synergy, int Gold )
-    {
-        this.name = Name;
-        this.synergy = Synergy;
-        this.gold = Gold;
-        this.piecesImg = PiecesImg;
-    }
+    //public Pieces(Sprite PiecesImg,string Name,string Synergy, int Gold )
+    //{
+    //    this.name = Name;
+    //    this.synergy = Synergy;
+    //    this.gold = Gold;
+    //    this.piecesImg = PiecesImg;
+    //}
 }
