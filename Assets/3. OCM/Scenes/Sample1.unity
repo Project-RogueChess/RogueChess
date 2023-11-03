@@ -680,25 +680,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ecae550140e07741b78277dbce27e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piecesImages:
-  - {fileID: 21300000, guid: f2a0b0bb2ff241e4cacc14f3470e7bbe, type: 3}
-  - {fileID: 21300000, guid: 164c411f31c762947b7d8bd4cb9f8d59, type: 3}
-  - {fileID: 21300000, guid: 926e6a3923bf5a14b86121ec324d1251, type: 3}
-  - {fileID: 21300000, guid: 6736fe7481cfd164595705ead524d1bd, type: 3}
-  - {fileID: 21300000, guid: 5fce9899d5d52a9489c89b2b3413f237, type: 3}
-  piecesNames:
-  - pieces1
-  - pieces2
-  - pieces3
-  - pieces4
-  - pieces5
-  piecesSynergys:
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
-  piecesGolds: 0100000002000000030000000400000005000000
+  gold1Pieces:
+  - {fileID: 4413589749425689960, guid: cb6a0d7f7c11db04fb7f2779ae699c12, type: 3}
+  - {fileID: 542097972090132362, guid: c1f4fd6627d862f42893fa6589fe2da6, type: 3}
+  - {fileID: 2279674498098153119, guid: 68687bd9fa255994f91ca5c65ca7a55b, type: 3}
+  - {fileID: 5484763399133008077, guid: c275ebeacb77d2e46acb973335a8eb93, type: 3}
+  - {fileID: 8800588705842983110, guid: edec81bf0a95f3d498f8810526831f00, type: 3}
+  gold2Pieces:
+  - {fileID: 8800588705842983110, guid: 20f8f2c46b1a374459decdc4c1123f6d, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gold3Pieces:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gold4Pieces:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  gold5Pieces:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &90151035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,6 +1063,11 @@ PrefabInstance:
       propertyPath: synergyTxt
       value: 
       objectReference: {fileID: 1490064320}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: percentages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 551720526991519434, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1196,6 +1212,11 @@ PrefabInstance:
       propertyPath: synergyTxt
       value: 
       objectReference: {fileID: 132869768}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: percentages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 551720526991519434, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1369,7 +1390,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 20 %
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1378,8 +1399,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294901760
+  m_fontColor: {r: 0, g: 0, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1403,7 +1424,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1580,7 +1601,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 20 %
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1589,8 +1610,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4288651167
+  m_fontColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1614,7 +1635,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1817,6 +1838,11 @@ PrefabInstance:
       propertyPath: synergyTxt
       value: 
       objectReference: {fileID: 1225773177}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: percentages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 551720526991519434, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2120,7 +2146,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 20 %
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2129,8 +2155,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278255360
+  m_fontColor: {r: 0, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2154,7 +2180,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2247,12 +2273,16 @@ MonoBehaviour:
   stateTxt: {fileID: 51242017}
   piecesTxt: {fileID: 920119218}
   goldTxt: {fileID: 1648700218}
+  percentages:
+  - {fileID: 305610556}
+  - {fileID: 425395140}
+  - {fileID: 268573318}
+  - {fileID: 558159438}
+  - {fileID: 1183728125}
   shopPanel: {fileID: 89913877}
-  RerollButton: {fileID: 945918404}
+  rerollButton: {fileID: 945918404}
+  percentagePanel: {fileID: 756426098}
   shopOnOffBool: 0
-  translateTime: 2
-  originScale: {x: 1, y: 1, z: 1}
-  zeroScale: {x: 0, y: 0, z: 0}
 --- !u!1 &514478317
 GameObject:
   m_ObjectHideFlags: 0
@@ -2508,7 +2538,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 20 %
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2517,8 +2547,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4292608255
+  m_fontColor: {r: 1, g: 0, b: 0.8608513, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2542,7 +2572,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4131,7 +4161,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 20
+  m_text: 20 %
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4140,8 +4170,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278222079
+  m_fontColor: {r: 1, g: 0.4878509, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4165,7 +4195,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -4296,11 +4326,7 @@ MonoBehaviour:
   myLevel: 0
   maxExp: 0
   myExp: 0
-  wholePercentage: 100
-  pieces1Percentage: 0
-  pieces2Percentage: 0
-  pieces3Percentage: 0
-  pieces4Percentage: 0
+  wholePercentage: 00000000000000000000000000000000
 --- !u!1 &1298907770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4549,6 +4575,11 @@ PrefabInstance:
       propertyPath: synergyTxt
       value: 
       objectReference: {fileID: 1778644371}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: percentages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 551720526991519434, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5371,6 +5402,11 @@ PrefabInstance:
       propertyPath: synergyTxt
       value: 
       objectReference: {fileID: 687375895}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: percentages.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 551720526991519434, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: m_Pivot.x

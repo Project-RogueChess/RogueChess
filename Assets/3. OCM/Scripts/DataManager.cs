@@ -11,27 +11,27 @@ public class DataManager : MonoBehaviour
 
     public int maxHp = 0;
     public int myHp = 0;
-    public int myGold = 0;
+    public int myGold = 1;
     public int maxPieces =0;
     public int myPieces = 0;
     public int myLevel = 0;
     public int maxExp = 0;
     public int myExp = 0;
-
-
-    public int[] wholePercentage= new int[4];
+    public int[] wholePercentage = new int[5];
+    
 
     private void Awake()
     {
         instance = this;
+        DataReset();
     }
 
     private void Start()
     {
-        DataReset();
         UIManager.instance.UIRefresh();
     }
 
+    //°æÇèÄ¡ È¹µæ ¹öÆ° ´­·¶À» ¶§ ÀÛµ¿ ÇÔ¼ö
     public void GettingExp()
     {
         if(myLevel == 10)
@@ -45,7 +45,6 @@ public class DataManager : MonoBehaviour
             {
                 LevelUP();
                 DistributePercentage();
-                
             }
         }
         UIManager.instance.UIRefresh();
@@ -74,61 +73,62 @@ public class DataManager : MonoBehaviour
         myGold = 30;
         maxPieces = 3;
         myPieces = 0;
-        wholePercentage = new int[]{ 100, 0, 0, 0 };
+        wholePercentage = new int[]{ 100, 0, 0, 0,0 };
     }
 
+    //±â¹° È®·ü
     public void DistributePercentage()
     {
         switch (myLevel)
         {
             case 1:
                 {
-                    wholePercentage = new int[] { 100,0,0,0 };
+                    wholePercentage = new int[] { 100,0,0,0,0 };
                     break;
                 }
             case 2:
                 {
-                    wholePercentage = new int[] { 70, 30, 0, 0 };
+                    wholePercentage = new int[] { 70, 30, 0, 0,0 };
                     break;
                 }
             case 3:
                 {
-                    wholePercentage = new int[] { 60, 35, 5, 0 };
+                    wholePercentage = new int[] { 65, 30, 5, 0,0 };
                     break;
                 }
             case 4:
                 {
-                    wholePercentage = new int[] { 50, 35, 15, 0 };
+                    wholePercentage = new int[] { 55, 30, 15, 0 ,0};
                     break;
                 }
                 case 5:
                 {
-                    wholePercentage = new int[] { 40, 35, 23, 2 };
+                    wholePercentage = new int[] { 45, 30, 15, 0 ,0};
                     break;
                 }
                 case 6:
                 {
-                    wholePercentage = new int[] { 33, 30, 30, 7 };
+                    wholePercentage = new int[] { 25, 40, 30, 5 ,0};
                     break;
                 }
                 case 7:
                 {
-                    wholePercentage = new int[] { 30, 30, 30, 10 };
+                    wholePercentage = new int[] { 19, 30,35, 15 ,1};
                     break;
                 }
                 case 8:
                 {
-                    wholePercentage = new int[] { 23, 30, 30, 15 };
+                    wholePercentage = new int[] { 16, 20, 35, 25 ,4};
                     break;
                 }
                 case 9:
                 {
-                    wholePercentage = new int[] { 21, 30, 25, 20 };
+                    wholePercentage = new int[] { 5, 10, 20, 40 ,25};
                     break;
                 }
                 case 10:
                 {
-                    wholePercentage = new int[] { 19, 25, 25,25 };
+                    wholePercentage = new int[] { 1, 2, 12,50 ,35};
                     break;
                 }
         }
