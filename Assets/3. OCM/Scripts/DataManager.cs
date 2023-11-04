@@ -144,5 +144,6 @@ public class DataManager : MonoBehaviour
     public void SwitchReRoolLock()
     {
         reroolLock = !reroolLock;
+        UIManager.instance.ImageOnOff();
     }
 }

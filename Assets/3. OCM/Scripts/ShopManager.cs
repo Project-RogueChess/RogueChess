@@ -61,10 +61,6 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     }
 
-    private void Update()
-    {
-        
-    }
 
     public void ReRoll(bool lockflag)
     {

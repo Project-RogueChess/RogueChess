@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject rerollButton;
     public GameObject percentagePanel;
+    public GameObject rerollLockButton;
+    public GameObject rerollLockImg;
     public ShopManager[] shopmanagers = new ShopManager[5];
 
     public bool shopOnOffBool;
@@ -77,26 +79,47 @@ public class UIManager : MonoBehaviour
             shopPanel.SetActive(false);
             rerollButton.SetActive(false);
             percentagePanel.SetActive(false);
+            rerollLockButton.SetActive(false);
         }
         else
         {
             shopPanel.SetActive(true);
             rerollButton.SetActive(true);
             percentagePanel.SetActive(true);
+            rerollLockButton.SetActive(true);
         }
         
     }
 
     public void ReRoolForBtn()
     {
-        if (DataManager.instance.myGold >= 2)
+        if (DataManager.instance.reroolLock == true)
         {
-            DataManager.instance.myGold -= 2;
-            foreach (ShopManager shopManager in shopmanagers)
+            return;
+        }
+        else
+        {
+            if (DataManager.instance.myGold >= 2)
             {
-                shopManager.ReRoll(DataManager.instance.reroolLock);
+                DataManager.instance.myGold -= 2;
+                foreach (ShopManager shopManager in shopmanagers)
+                {
+                    shopManager.ReRoll(DataManager.instance.reroolLock);
+                }
+                UIRefresh();
             }
-            UIRefresh();
+        }
+    }
+
+    public void ImageOnOff()
+    {
+        if(DataManager.instance.reroolLock == true)
+        {
+            rerollLockImg.SetActive(true);
+        }
+        else
+        {
+            rerollLockImg.SetActive(false);
         }
     }
 }
