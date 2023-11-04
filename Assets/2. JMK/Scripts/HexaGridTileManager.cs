@@ -49,6 +49,15 @@ public class HexaGridTileManager : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        if(tilePrefabs.Length > 2)
+        {
+            Array.Resize(ref tilePrefabs, 2);
+            Debug.LogAssertion("타일 프리팹은 최대 2개까지 가능");
+        }
+    }
+
     public void GenerateTile(int mapX, int mapY, float spaceX, float spaceY, Vector3 pivot)
     {
         _currentMapX = mapX;
