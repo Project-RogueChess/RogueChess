@@ -30,6 +30,8 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     public float rangeNum;
 
+    
+
     private void Awake()
     {
         for (int i = 0; i < DataManager.instance.wholePercentage.Length; i++)
@@ -131,7 +133,14 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
             canvasGroup.alpha = 0f;
             canvasGroup.blocksRaycasts = false;
             DataManager.instance.myGold -= piecesInfo.gold;
+            
+            CreatePiece();
             UIManager.instance.UIRefresh();
         }
+    }
+
+    public void CreatePiece()
+    {
+        Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }
