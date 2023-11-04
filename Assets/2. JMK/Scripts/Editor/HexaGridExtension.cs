@@ -16,7 +16,7 @@ public class HexaGridExtension : Editor
                 Debug.Log("에디터 상태로 타일맵을 생성했어요!, 반드시 플레이 버튼을 누르기 전에 [ 타일맵 제거 ] 버튼 눌러줘용");
             }
             manager.DestroyAllTiles(!Application.isPlaying);
-            manager.GenerateTile(manager.mapX, manager.mapY, manager.spaceX, manager.spaceY, manager.gridCenter.position);
+            manager.GenerateTile(manager.mapX, manager.mapY, manager.spaceX, manager.spaceY, manager.gridPivot.position);
         }
 
         if(GUILayout.Button("타일맵 제거"))

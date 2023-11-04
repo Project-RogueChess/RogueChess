@@ -11,7 +11,7 @@ public class HexaGridTileManager : MonoBehaviour
     public Camera mainCam;
     public GameObject[] tilePrefabs;
     public GameObject[,] hexaGrid;
-    public Transform gridCenter;
+    public Transform gridPivot;
     public Transform tileMapParent;
     public int mapX;
     public int mapY;
@@ -44,12 +44,12 @@ public class HexaGridTileManager : MonoBehaviour
     {
         if(Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition),out RaycastHit hitInfo,Mathf.Infinity,-1,QueryTriggerInteraction.Ignore))
         {
-            var tileIndex = GetTileIndex(hitInfo.transform.gameObject, gridCenter.position, spaceX, spaceY);
+            var tileIndex = GetTileIndex(hitInfo.transform.gameObject, gridPivot.position, spaceX, spaceY);
             Debug.Log(tileIndex);
         }
     }
 
-    public void GenerateTile(int mapX, int mapY, float spaceX, float spaceY, Vector3 center)
+    public void GenerateTile(int mapX, int mapY, float spaceX, float spaceY, Vector3 pivot)
     {
         _currentMapX = mapX;
         _currentMapY = mapY;
@@ -61,7 +61,7 @@ public class HexaGridTileManager : MonoBehaviour
             for (int j = 0; j < mapX; j++)
             {
                 hexaGrid[i, j] = Instantiate(tilePrefabs[tilePrefabs.Length > 1 ? (j + i % 2) % 2 : 0]);
-                hexaGrid[i, j].transform.position = new Vector3(j * spaceX - (i % 2 == 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + center;
+                hexaGrid[i, j].transform.position = new Vector3(j * spaceX + (i % 2 != 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + pivot;
                 hexaGrid[i, j].transform.parent = tileMapParent;
             }
         }
@@ -92,22 +92,22 @@ public class HexaGridTileManager : MonoBehaviour
 
     public Vector2Int GetTileIndex(GameObject obj) 
     {
-        return GetTileIndex(obj.transform.position, gridCenter.position, spaceX, spaceY);
+        return GetTileIndex(obj.transform.position, gridPivot.position, spaceX, spaceY);
     }
 
-    public Vector2Int GetTileIndex(Vector3 pos, Vector3 center, float spaceX, float spaceY)
+    public Vector2Int GetTileIndex(Vector3 pos, Vector3 pivot, float spaceX, float spaceY)
     {
-        var correctPos = pos - center;
+        var correctPos = pos - pivot;
    
         int y = Mathf.RoundToInt(correctPos.z / spaceY);
-        int x = Mathf.RoundToInt((correctPos.x + (y % 2 == 0 ? 0.5f * spaceX : 0) ) / spaceX);
+        int x = Mathf.RoundToInt((correctPos.x - (y % 2 != 0 ? 0.5f * spaceX : 0) ) / spaceX);
 
         return new Vector2Int(x, y);
     }
 
-    public Vector2Int GetTileIndex(GameObject obj, Vector3 center, float spaceX, float spaceY)
+    public Vector2Int GetTileIndex(GameObject obj, Vector3 pivot, float spaceX, float spaceY)
     {
-        return GetTileIndex(obj.transform.position, center, spaceX, spaceY);
+        return GetTileIndex(obj.transform.position, pivot, spaceX, spaceY);
     }
 
     private void OnDrawGizmos()
@@ -115,7 +115,7 @@ public class HexaGridTileManager : MonoBehaviour
         if (!Application.isPlaying || hexaGrid == null)
             return;
         Gizmos.color = Color.magenta;
-        Gizmos.DrawSphere(gridCenter.position, 0.25f);
+        Gizmos.DrawSphere(gridPivot.position, 0.4f);
 
         Gizmos.color = Color.white;
         for (int i = 0; i < mapY; i++)
