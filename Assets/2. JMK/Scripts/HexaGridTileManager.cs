@@ -61,7 +61,7 @@ public class HexaGridTileManager : MonoBehaviour
             for (int j = 0; j < mapX; j++)
             {
                 hexaGrid[i, j] = Instantiate(tilePrefabs[tilePrefabs.Length > 1 ? (j + i % 2) % 2 : 0]);
-                hexaGrid[i, j].transform.position = new Vector3(j * spaceX + (i % 2 == 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + center;
+                hexaGrid[i, j].transform.position = new Vector3(j * spaceX - (i % 2 == 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + center;
                 hexaGrid[i, j].transform.parent = tileMapParent;
             }
         }
@@ -90,12 +90,17 @@ public class HexaGridTileManager : MonoBehaviour
         hexaGrid = null;
     }
 
+    public Vector2Int GetTileIndex(GameObject obj) 
+    {
+        return GetTileIndex(obj.transform.position, gridCenter.position, spaceX, spaceY);
+    }
+
     public Vector2Int GetTileIndex(Vector3 pos, Vector3 center, float spaceX, float spaceY)
     {
         var correctPos = pos - center;
    
         int y = Mathf.RoundToInt(correctPos.z / spaceY);
-        int x = Mathf.RoundToInt((correctPos.x - (y % 2 == 0 ? 0.5f * spaceX : 0) ) / spaceX);
+        int x = Mathf.RoundToInt((correctPos.x + (y % 2 == 0 ? 0.5f * spaceX : 0) ) / spaceX);
 
         return new Vector2Int(x, y);
     }

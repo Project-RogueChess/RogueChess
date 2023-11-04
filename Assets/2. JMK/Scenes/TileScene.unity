@@ -434,7 +434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119108514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.81, y: -5.39, z: 2.64}
+  m_LocalPosition: {x: -11.46, y: -5.39, z: 7.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -460,7 +460,7 @@ MonoBehaviour:
   - {fileID: 1575774652379526, guid: ba54e0f64ad505c4fa5521c008dc356e, type: 3}
   gridCenter: {fileID: 2119108516}
   tileMapParent: {fileID: 1907315899}
-  mapX: 12
-  mapY: 4
-  spaceX: 2
-  spaceY: 1.7
+  mapX: 8
+  mapY: 8
+  spaceX: 1
+  spaceY: 0.85
