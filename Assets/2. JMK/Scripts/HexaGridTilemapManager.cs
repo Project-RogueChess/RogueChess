@@ -61,11 +61,14 @@ public class HexaGridTilemapManager : MonoBehaviour
         {
             var tileIndex = GetTileIndex(hitInfo.transform.gameObject, gridPivot.position, spaceX, spaceY);
 
+            //시작 지점 지정
             if(Input.GetKeyDown(KeyCode.Z) && !selectStart)
             {
                 selectStart = true;
                 selectStartIndex = tileIndex;
             }
+
+            //끝 지점 지정
             if (Input.GetKeyDown(KeyCode.X) && !selectEnd)
             {
                 selectEnd = true;
@@ -75,22 +78,26 @@ public class HexaGridTilemapManager : MonoBehaviour
 
         if(selectStart && selectEnd)
         {
+            //트리거 리셋
+            selectStart = false;
+            selectEnd = false;
+
+            //이전 길 표시는 삭제
             if (loadPath != null)
             {
                 foreach (var obj in loadPath)
                     Destroy(obj);
                 loadPath = null;
             }
-                
 
-            selectStart = false;
-            selectEnd = false;
-
+            //길 찾기
             var pathlist = PathFinding(selectStartIndex, selectEndIndex, range);
 
+            //못 찾았음 리턴
             if (pathlist.Count == 0)
                 return;
 
+            //길 표시 오브젝트 생성
             loadPath = new GameObject[pathlist.Count];
             int addCount = 0;
 
@@ -185,9 +192,9 @@ public class HexaGridTilemapManager : MonoBehaviour
         Gizmos.DrawSphere(gridPivot.position, 0.4f);
 
         Gizmos.color = Color.white;
-        for (int i = 0; i < mapY; i++)
+        for (int i = 0; i < _currentMapY; i++)
         {
-            for (int j = 0; j < mapX; j++)
+            for (int j = 0; j < _currentMapX; j++)
             {
                 if(hexaGrid[i, j] != null)
                     Gizmos.DrawSphere(hexaGrid[i,j].transform.position, 0.25f);
@@ -211,7 +218,7 @@ public class HexaGridTilemapManager : MonoBehaviour
 
         int[] oddDirX = { -1, -1, -1, 0, 1, 0 };       //홀수
         int[] evenDirX = { 0, -1, 0, 1, 1, 1 };     //짝수
-        int[] dirY = { 1, 0, -1, -1, 0,  1};
+        int[] dirY = { 1, 0, -1, -1, 0, 1 };
         int[] cost = { 7, 10, 7, 7, 10, 7 };
 
         bool[,] closed = new bool[_currentMapY, _currentMapX];
@@ -243,7 +250,7 @@ public class HexaGridTilemapManager : MonoBehaviour
                 break;
             }
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < cost.Length; i++)
             {
                 var next = t.index + new Vector2Int(t.index.y % 2 == 0 ? evenDirX[i] : oddDirX[i], dirY[i]);
 
@@ -251,14 +258,8 @@ public class HexaGridTilemapManager : MonoBehaviour
                     continue;
                 if (closed[next.y, next.x])
                     continue;
-                /*if (collisionMap[next.y, next.x])
-                    continue;*/
-
                 int g = t.G + cost[i];
                 int h = CalcCost(next, end);
-                Debug.Log(h);
-
-                //Console.WriteLine($"{g} + {h}");
 
                 if (open[next.y, next.x] < g + h)
                     continue;
@@ -280,7 +281,7 @@ public class HexaGridTilemapManager : MonoBehaviour
 
         while (parent[current.y, current.x].y != current.y || parent[current.y, current.x].x != current.x)
         {
-            //반경 카운트, 카운트를 소모하여 그 이후 부터 뒤로 추적
+            //사정거리 카운트, 카운트를 소모하여 그 이후 부터 뒤로 추적
             if (range == 0)
                 paths.Add(hexaGrid[current.y,current.x].transform.position);
             else
@@ -296,7 +297,6 @@ public class HexaGridTilemapManager : MonoBehaviour
 
 public struct Tile : IComparable<Tile>
 {
-
     public int G;
     public int H;
     public int F => G + H;
