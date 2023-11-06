@@ -4,12 +4,15 @@ using UnityEngine;
 using JMK.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using Unity.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class HexaGridTilemapManager : MonoBehaviour
 {
+    public static HexaGridTilemapManager instance;
 
-    public HexaGridTilemapManager instance;
-
+    public Color tileDefaultColor = Color.white;
+    public Color ActiveColor = Color.white;
     public Camera mainCam;
     public GameObject[] tilePrefabs;
     public GameObject[,] hexaGrid;
@@ -53,7 +56,6 @@ public class HexaGridTilemapManager : MonoBehaviour
 
     [SerializeField] GameObject[] loadPath;
     [SerializeField] GameObject loadTiles;
-    [SerializeField] int range;
 
     private void Update()
     {
@@ -91,7 +93,7 @@ public class HexaGridTilemapManager : MonoBehaviour
             }
 
             //길 찾기
-            var pathlist = PathFinding(selectStartIndex, selectEndIndex, range);
+            var pathlist = PathFinding(selectStartIndex, selectEndIndex);
 
             //못 찾았음 리턴
             if (pathlist.Count == 0)
@@ -137,6 +139,7 @@ public class HexaGridTilemapManager : MonoBehaviour
                 hexaGrid[i, j] = Instantiate(tilePrefabs[tilePrefabs.Length > 1 ? (j + i % 2) % 2 : 0]);
                 hexaGrid[i, j].transform.position = new Vector3(j * spaceX + (i % 2 == 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + pivot;
                 hexaGrid[i, j].transform.parent = tilemapParent;
+                hexaGrid[i, j].GetComponent<MeshRenderer>().material.color = tileDefaultColor;
             }
         }
     }
@@ -204,15 +207,13 @@ public class HexaGridTilemapManager : MonoBehaviour
 
     private int CalcCost(Vector2Int a, Vector2Int b)
     {
-        var ax = a.x * _currentSpaceX + (a.y % 2 == 0 ? 0.5f * _currentSpaceX : 0);
-        var ay = a.y * _currentSpaceY;
-        var bx = b.x * _currentSpaceX + (b.y % 2 == 0 ? 0.5f * _currentSpaceX : 0);
-        var by = b.y * _currentSpaceY;
+        var cubeA = AxialToCube(a);
+        var cubeB = AxialToCube(b);
 
-        return Mathf.RoundToInt(Mathf.Abs(ax - bx) + Mathf.Abs(ay - by));
+        return Mathf.RoundToInt(CubeDistance(cubeA, cubeB));
     }
 
-    public List<Vector3> PathFinding(Vector2Int start, Vector2Int end, int range = 0)
+    public List<Vector3> PathFinding(Vector2Int start, Vector2Int end)
     {
         List<Vector3> paths = new List<Vector3>();
 
@@ -270,22 +271,18 @@ public class HexaGridTilemapManager : MonoBehaviour
             }
         }
 
-        CalcPathFormParent(parent, end, paths, range);
+        CalcPathFormParent(parent, end, paths);
 
         return paths;
     }
 
-    public void CalcPathFormParent(Vector2Int[,] parent, Vector2Int end, List<Vector3> paths, int range = 0)
+    public void CalcPathFormParent(Vector2Int[,] parent, Vector2Int end, List<Vector3> paths)
     {
         Vector2Int current = new Vector2Int(end.x, end.y);
 
         while (parent[current.y, current.x].y != current.y || parent[current.y, current.x].x != current.x)
         {
-            //사정거리 카운트, 카운트를 소모하여 그 이후 부터 뒤로 추적
-            if (range == 0)
-                paths.Add(hexaGrid[current.y,current.x].transform.position);
-            else
-                range--;
+            paths.Add(hexaGrid[current.y, current.x].transform.position);
             var newPos = parent[current.y, current.x];
             current.x = newPos.x;
             current.y = newPos.y;
@@ -293,6 +290,19 @@ public class HexaGridTilemapManager : MonoBehaviour
         paths.Add(hexaGrid[current.y, current.x].transform.position);
         paths.Reverse();
     }
+
+    public Vector3Int AxialToCube(Vector2Int index)
+    {
+        return new Vector3Int(index.x, index.y, -index.x - index.y);
+    }
+
+    public float CubeDistance(Vector3Int a, Vector3Int b)
+    {
+        var vec = a - b;
+        return Math.Max(Math.Abs(vec.x), Math.Max(Math.Abs(vec.y) ,Math.Abs(vec.z)));
+    }
+
+
 }
 
 public struct Tile : IComparable<Tile>
