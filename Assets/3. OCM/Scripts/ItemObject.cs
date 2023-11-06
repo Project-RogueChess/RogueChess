@@ -4,10 +4,13 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
+//using UnityEngine.UIElements;
+
 
 public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public Image image;
     public InventorySlot[] inventorySlots;
     public InventorySlot currentSlot;
     public Transform[] inventorySlotsTrans;
@@ -15,7 +18,21 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public RectTransform rect;
     public CanvasGroup canvasGroup;
     public int num = 0;
+    
+    public Item _item
+    {
+        get
+        {
+            return item;
+        }
+        set
+        {
+            item = value;
+            SwitchImage();
+        }
+    }
 
+    [SerializeField] private Item item;
 
     
 
@@ -36,34 +53,73 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        previousParent = transform.parent;
-        currentSlot = transform.parent.GetComponent<InventorySlot>();
-        if(currentSlot != null)
+        if (item.name != null && item.name != string.Empty)
         {
-            currentSlot.OnItemDraggedOut();
+            previousParent = transform.parent;
+            currentSlot = transform.parent.GetComponent<InventorySlot>();
+            if (currentSlot != null)
+            {
+                currentSlot.OnItemDraggedOut();
+            }
+            previousParent = transform.parent;
+
+            transform.SetParent(transform.parent);
+            transform.SetAsLastSibling();
+
+            canvasGroup.alpha = 0.6f;
+            canvasGroup.blocksRaycasts = false;
         }
-        previousParent = transform.parent;
-
-        transform.SetParent(transform.parent);
-        transform.SetAsLastSibling();
-
-        canvasGroup.alpha = 0.6f;
-        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rect.position = eventData.position;
+        if(item.name != null && item.name != string.Empty)
+        {
+            rect.position = eventData.position;
+            transform.position = Input.mousePosition;
+        }
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(transform.parent == previousParent)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            // 조건에 맞는 오브젝트인지 확인
+            Pieces equipableItem = hitInfo.transform.GetComponent<Pieces>();
+            if (equipableItem != null)
+            {
+                // 아이템 장착
+                Debug.Log("EquipItem");
+                equipableItem.EquipItem(this);
+                canvasGroup.alpha = 1f;
+                canvasGroup.blocksRaycasts = false;
+                _item = new Item();
+                return;
+            }
+        }
+
+        if (transform.parent == previousParent)
         {
             transform.SetParent(previousParent);
             rect.position = previousParent.GetComponent<RectTransform>().position;
         }
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    void SwitchImage()
+    {
+        if(item.image != null)
+        {
+            image.sprite = item.image;
+        }
+        else
+        {
+            image.sprite = null;
+        }
     }
 }

@@ -1247,6 +1247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72faece70fa7f3428e745b6f0a6055e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invPanel: {fileID: 0}
 --- !u!1001 &253456189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3267,6 +3268,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Item 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6940920301737524114, guid: 40a3c0f3140313b439db8805e3769afc,
+        type: 3}
+      propertyPath: item.name
+      value: aa
       objectReference: {fileID: 0}
     - target: {fileID: 6940920301737524114, guid: 40a3c0f3140313b439db8805e3769afc,
         type: 3}
@@ -6707,6 +6713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 6940920301737524114, guid: 2497c94bd63bb2647b989097c54f2335,
+        type: 3}
+      propertyPath: item.name
+      value: asd
       objectReference: {fileID: 0}
     - target: {fileID: 6940920301737524114, guid: 2497c94bd63bb2647b989097c54f2335,
         type: 3}

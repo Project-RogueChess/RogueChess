@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
     public Image image;
     public RectTransform rect;
     public bool isSlotEmpty = true;
+    public GameObject itemGO;
     public void Awake()
     {
        image = GetComponent<Image>();
@@ -31,8 +32,10 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
     {
         if (eventData.pointerDrag != null && isSlotEmpty)
         {
-            eventData.pointerDrag.transform.SetParent(transform);
-            eventData.pointerDrag.GetComponent<RectTransform>().position = rect.position;
+            //eventData.pointerDrag.transform.SetParent(transform);
+            //eventData.pointerDrag.GetComponent<RectTransform>().position = rect.position;
+            itemGO.GetComponent<ItemObject>()._item = eventData.pointerDrag.GetComponent<ItemObject>()._item;
+            eventData.pointerDrag.GetComponent<ItemObject>()._item = new Item();
             isSlotEmpty = false;
         }
     }
