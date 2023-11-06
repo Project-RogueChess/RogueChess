@@ -65,7 +65,7 @@ public class HexaGridTilemapManager : MonoBehaviour
         {
             var tileIndex = GetTileIndex(hitInfo.transform.gameObject, gridPivot.position, spaceX, spaceY);
 
-            //Debug.Log(tileIndex);
+            Debug.Log(tileIndex);
 
             //시작 지점 지정
             if(Input.GetKeyDown(KeyCode.Z) && !selectStart)
@@ -163,7 +163,8 @@ public class HexaGridTilemapManager : MonoBehaviour
                 hexaGrid[i, j] = Instantiate(tilePrefabs[tilePrefabs.Length > 1 ? (j + i % 2) % 2 : 0]);
                 hexaGrid[i, j].transform.position = new Vector3(j * spaceX + (i % 2 == 0 ? 0.5f * spaceX : 0), 0, i * spaceY) + pivot;
                 hexaGrid[i, j].transform.parent = tilemapParent;
-                hexaGrid[i, j].GetComponent<MeshRenderer>().material.color = tileDefaultColor;
+                if(Application.isPlaying)
+                    hexaGrid[i, j].GetComponent<MeshRenderer>().material.color = tileDefaultColor;
             }
         }
     }
@@ -328,17 +329,34 @@ public class HexaGridTilemapManager : MonoBehaviour
 
     public List<Vector2Int> RangeOfHexaGridIndex(Vector2Int center, int radius)
     {
+        center = EvenToAxial(center);
+
         List<Vector2Int> indexList = new List<Vector2Int>();
 
         for (int i = -radius; i <= radius; i++)
             for (int j = Math.Max(-radius, -i - radius); j <= Math.Min(radius, -i + radius); j++)
             {
-                Debug.Log($"{center.x + i} : {center.y + j}");
-                indexList.Add(center + new Vector2Int(i, j));
+                var cal = AxialToEven(center + new Vector2Int(i, j));
+                if(cal.x >= 0 && cal.x < _currentMapX && cal.y >= 0 && cal.y < _currentMapY)
+                    indexList.Add(cal);
             }
-             
-
+        //중복 인덱스 제거
+        indexList.Distinct().ToList();
         return indexList;
+    }
+
+    Vector2Int AxialToEven(Vector2Int input)
+    {
+        var col = input.x + (input.y + (input.y & 1)) / 2;
+        var row = input.y;
+        return new Vector2Int(col, row);
+    }
+
+    Vector2Int EvenToAxial(Vector2Int input)
+    {
+        var q = input.x - (input.y + (input.y & 1)) / 2;
+        var r = input.y;
+        return new Vector2Int(q, r);
     }
 }
 
