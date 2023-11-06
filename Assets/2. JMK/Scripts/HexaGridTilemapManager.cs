@@ -6,6 +6,7 @@ using UnityEditor.Experimental.GraphView;
 using Unity.Collections;
 using System.Linq;
 using Unity.VisualScripting;
+using static UnityEditor.PlayerSettings;
 
 public class HexaGridTilemapManager : MonoBehaviour
 {
@@ -56,12 +57,15 @@ public class HexaGridTilemapManager : MonoBehaviour
 
     [SerializeField] GameObject[] loadPath;
     [SerializeField] GameObject loadTiles;
+    [SerializeField] int range;
 
     private void Update()
     {
         if(Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition),out RaycastHit hitInfo,Mathf.Infinity,-1,QueryTriggerInteraction.Ignore))
         {
             var tileIndex = GetTileIndex(hitInfo.transform.gameObject, gridPivot.position, spaceX, spaceY);
+
+            //Debug.Log(tileIndex);
 
             //시작 지점 지정
             if(Input.GetKeyDown(KeyCode.Z) && !selectStart)
@@ -75,6 +79,26 @@ public class HexaGridTilemapManager : MonoBehaviour
             {
                 selectEnd = true;
                 selectEndIndex = tileIndex;
+            }
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                if (loadPath != null)
+                {
+                    foreach (var obj in loadPath)
+                        Destroy(obj);
+                    loadPath = null;
+                }
+
+                var currentList = RangeOfHexaGridIndex(tileIndex, range);
+
+                loadPath = new GameObject[currentList.Count];
+
+                for(int i = 0; i < loadPath.Length; i++)
+                {
+                    loadPath[i] = Instantiate(loadTiles);
+                    loadPath[i].transform.position = hexaGrid[currentList[i].y, currentList[i].x].transform.position;
+                }
             }
         }
 
@@ -302,7 +326,20 @@ public class HexaGridTilemapManager : MonoBehaviour
         return Math.Max(Math.Abs(vec.x), Math.Max(Math.Abs(vec.y) ,Math.Abs(vec.z)));
     }
 
+    public List<Vector2Int> RangeOfHexaGridIndex(Vector2Int center, int radius)
+    {
+        List<Vector2Int> indexList = new List<Vector2Int>();
 
+        for (int i = -radius; i <= radius; i++)
+            for (int j = Math.Max(-radius, -i - radius); j <= Math.Min(radius, -i + radius); j++)
+            {
+                Debug.Log($"{center.x + i} : {center.y + j}");
+                indexList.Add(center + new Vector2Int(i, j));
+            }
+             
+
+        return indexList;
+    }
 }
 
 public struct Tile : IComparable<Tile>
