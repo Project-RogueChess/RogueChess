@@ -7,7 +7,20 @@ using UnityEngine.EventSystems;
 public class DragObject : MonoBehaviour
 {
 
-    public static bool isOnDrag;
+    private bool isOnDrag = false;
+
+    public bool IsOnDrag
+    {
+        get
+        {
+            return isOnDrag;
+        }
+        set
+        {
+            isOnDrag = value;
+        }
+    }
+
     public static GameObject GO;
 
     [SerializeField]
@@ -28,24 +41,21 @@ public class DragObject : MonoBehaviour
     #region 테스트용(추후삭제 or 재사용)
     public Color highlightColor = Color.red;
 
-    
+    private Vector3 gridTargetPosition;
 
     #endregion
-    
+
     private void Start()
     {
         GO = this.gameObject;
         map = GameObject.Find("Scripts").GetComponent<Map>();
 
-
-        
     }
     private void FixedUpdate()
     {
        
        if (isOnDrag)
         {
-            
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             float enter = 100.0f;
@@ -57,7 +67,7 @@ public class DragObject : MonoBehaviour
 
                 this.transform.position = Vector3.Lerp(this.transform.position, p, dragSpeed);
             }
-
+            
             /*transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x,
             Input.mousePosition.y, - Camera.main.transform.position.z));*/
             //5.0f -Camera.main.transform.position.z
@@ -68,16 +78,33 @@ public class DragObject : MonoBehaviour
             Material mat = gameObject.GetComponentInChildren<MeshRenderer>().material;
             mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.6f);
         }
+        else
+        {
+            //if (DragController.currentGameStage == GameStage.Preparation)
+
+            //calc distance
+            float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
+
+            if (distance > 0.25f)
+            {
+                this.transform.position = Vector3.Lerp(this.transform.position, gridTargetPosition, 0.1f);
+            }
+            else
+            {
+                this.transform.position = gridTargetPosition;
+            }
+
+        }
 
     }
 
     public void OnMouseDown()
-    {
+    {  
         isOnDrag = true;
 
         backObject = transform.position;
 
-        GetComponent<CapsuleCollider>().enabled = false;       
+        GetComponent<CapsuleCollider>().enabled = true;       
     }
 
     public void OnMouseUp()
@@ -88,11 +115,9 @@ public class DragObject : MonoBehaviour
 
         if (checkPosition)
         {
-            GameObject aGO = GO.GetComponent<Tile>().otherGO;
-            if(aGO = null)
+            GameObject aGO = GO.GetComponent<DragTile>().otherGO;
+            if(aGO == null)
             {
-                
-
                 aGO = this.gameObject;
 
                 transform.position = GO.transform.position;
@@ -103,9 +128,9 @@ public class DragObject : MonoBehaviour
             else
             {
                 aGO.transform.position = backObject;
-
+                
                 transform.position = GO.transform.position;
-
+                
                 aGO = this.gameObject;
             }
             
