@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,39 +8,46 @@ using UnityEngine;
 
 public class HexaUnit : MonoBehaviour
 {
-    private UnitState _currentState;
+    private bool _needUpdate;
     private Vector2Int _gridIndex;
-    private Vector2Int _reservedIndex;
+    private Vector2Int _reservedIndex = new Vector2Int(-1,-1);
     private int _team;
     private int _range;
-    private float _actTime;
-    private float _actRate;
+    private float _atkRate;
+    private float _moveRate;
     private HexaUnit _target;
 
-    public UnitState currentState => _currentState;
+    public bool needUpdate => _needUpdate;
     public Vector2Int gridIndex => _gridIndex;
     public Vector2Int reservedIndex => _reservedIndex;
     public int team => _team;
     public int range => _range;
-    public float actTime => _actTime;
-    public float actRate => _actRate;
+    public float actRate => _moveRate;
     public HexaUnit target => _target;
 
-    private void Start()
+    public void Move()
     {
-        _actTime = 0;
-        
+        StartCoroutine(ExcuteMove());
     }
 
-    private void Update()
+    public void Attack()
     {
-        _actTime = Mathf.Clamp01(_actTime + _actRate * Time.deltaTime); 
-    }
-}
 
-public enum UnitState
-{
-    Idle = 0,
-    Move,
-    Attack
+    }
+
+    IEnumerator ExcuteMove()
+    {
+        //회전이 필요한경우 회전먼저
+        _needUpdate = false;
+        var startPos = TilemapManager.instance.hexa_tilePosList[_gridIndex.y, _gridIndex.x];
+        var endPos = TilemapManager.instance.hexa_tilePosList[_reservedIndex.y, _reservedIndex.x];
+
+        var timer = 0f;
+        while (timer > _moveRate)
+        {
+            timer += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, endPos, timer / _moveRate);
+            yield return null;
+        }
+    }
 }

@@ -12,15 +12,12 @@ public class HexaUnitManager : MonoBehaviour
 
     public List<HexaUnit> unitList;
 
-    public Vector3[,] positionMap;
-    public bool[,] collisionMap;
+    public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
+    public bool[,] collisionMap = new bool[MAX_MAP_Y,MAX_MAP_X];
+    public Camera mainCam;
 
-    public Transform tilePivot;
-
-    const int MAX_MAP_X = 8;
-    const int MAX_MAP_Y = 8;
-    const float SPACE_X = 1;
-    const float SPACE_Y = 0.86f;
+    private const int MAX_MAP_X = 8;
+    private const int MAX_MAP_Y = 8;
 
     [SerializeField] HexaUnit debugPrefab;
     [SerializeField] private bool selectStart;
@@ -48,13 +45,57 @@ public class HexaUnitManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+       
+        mainCam = Camera.main;
+    }
+
+    private void FixedUpdate()
+    {
+        var updateUnitList = new List<HexaUnit>();
+
+        foreach (var u in unitList)
+        {
+            if (u.needUpdate)
+                updateUnitList.Add(u);
+        }
+
+        HexaUnitUpdate(updateUnitList);
+    }
+
+    public void HexaUnitUpdate(List<HexaUnit> units)
+    {
+        //À¯´Ö¸®½ºÆ®
+       
+        foreach (var u in units)
+        {
+            Dictionary<HexaUnit, int> distList = new Dictionary<HexaUnit, int>();
+
+            int closestDist = int.MaxValue;
+            HexaUnit closestUnit = new HexaUnit();
+
+            foreach(var other in unitList)
+            {
+                if (other == u)
+                    continue;
+
+                var currnetDist = CalcDist(u.gridIndex, other.gridIndex);
+                if (currnetDist < closestDist)
+                {
+                    closestDist = currnetDist;
+                    closestUnit = other;
+                }
+            }
+        }
+    }
+
     private void Update()
     {
-        /*if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore) 
+            && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
         {
-            var tileIndex = GetTileIndex(hitInfo.transform.gameObject, hexaGridPivot.position, spaceX, spaceY);
-
-            //Debug.Log(tileIndex);
+            var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
 
             //½ÃÀÛ ÁöÁ¡ ÁöÁ¤
             if (Input.GetKeyDown(KeyCode.Z) && !selectStart)
@@ -86,7 +127,7 @@ public class HexaUnitManager : MonoBehaviour
                 for (int i = 0; i < loadPath.Length; i++)
                 {
                     loadPath[i] = Instantiate(loadTiles);
-                    loadPath[i].transform.position = hexaGrid[currentList[i].y, currentList[i].x].transform.position;
+                    loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
                 }
             }
         }
@@ -116,16 +157,16 @@ public class HexaUnitManager : MonoBehaviour
             loadPath = new GameObject[pathlist.Count];
             int addCount = 0;
 
-            foreach (var pos in pathlist)
+            foreach (var path in pathlist)
             {
                 loadPath[addCount] = Instantiate(loadTiles);
-                loadPath[addCount].transform.position = pos;
+                loadPath[addCount].transform.position = positionMap[path.y, path.x];
                 addCount++;
             }
-        }*/
+        }
     }
 
-    private int CalcCost(Vector2Int a, Vector2Int b)
+    private int CalcDist(Vector2Int a, Vector2Int b)
     {
         var axialA = EvenToAxial(a);
         var axialB = EvenToAxial(b);
@@ -133,11 +174,11 @@ public class HexaUnitManager : MonoBehaviour
         return AxialDistance(axialA, axialB);
     }
 
-    public List<Vector3> PathFinding(Vector2Int start, Vector2Int end)
+    public List<Vector2Int> PathFinding(Vector2Int start, Vector2Int end)
     {
-        List<Vector3> paths = new List<Vector3>();
+        List<Vector2Int> paths = new List<Vector2Int>();
 
-        int[] oddDirX = { -1, -1, -1, 0, 1, 0 };       //È¦¼ö
+        int[] oddDirX = { -1, -1, -1, 0, 1, 0 };    //È¦¼ö
         int[] evenDirX = { 0, -1, 0, 1, 1, 1 };     //Â¦¼ö
         int[] dirY = { 1, 0, -1, -1, 0, 1 };
         int[] cost = { 7, 10, 7, 7, 10, 7 };
@@ -152,7 +193,7 @@ public class HexaUnitManager : MonoBehaviour
         Vector2Int[,] parent = new Vector2Int[MAX_MAP_Y, MAX_MAP_X];
         PriorityQueue<PathNode> priorityQueue = new PriorityQueue<PathNode>();
 
-        open[start.y, start.x] = CalcCost(start, end);
+        open[start.y, start.x] = CalcDist(start, end);
         priorityQueue.Push(new PathNode { G = 0, H = open[start.y, start.x], index = new Vector2Int(start.x, start.y) });
         parent[start.y, start.x] = new Vector2Int(start.x, start.y);
 
@@ -179,8 +220,10 @@ public class HexaUnitManager : MonoBehaviour
                     continue;
                 if (closed[next.y, next.x])
                     continue;
+                if (collisionMap[next.y, next.x])
+                    continue;
                 int g = t.G + cost[i];
-                int h = CalcCost(next, end);
+                int h = CalcDist(next, end);
 
                 if (open[next.y, next.x] < g + h)
                     continue;
@@ -191,24 +234,29 @@ public class HexaUnitManager : MonoBehaviour
             }
         }
 
-        CalcPathFormParent(parent, end, paths);
-
-        return paths;
-    }
-
-    public void CalcPathFormParent(Vector2Int[,] parent, Vector2Int end, List<Vector3> paths)
-    {
-/*        Vector2Int current = new Vector2Int(end.x, end.y);
+        Vector2Int current = new Vector2Int(end.x, end.y);
 
         while (parent[current.y, current.x].y != current.y || parent[current.y, current.x].x != current.x)
         {
-            paths.Add(hexaGrid[current.y, current.x].transform.position);
+            paths.Add(new Vector2Int(current.x, current.y));
             var newPos = parent[current.y, current.x];
             current.x = newPos.x;
             current.y = newPos.y;
         }
-        paths.Add(hexaGrid[current.y, current.x].transform.position);
-        paths.Reverse();*/
+        paths.Add(new Vector2Int(current.x, current.y));
+        paths.Reverse();
+
+        return paths;
+    }
+
+    public void RegisterHexaUnit(HexaUnit unit)
+    {
+        unitList.Add(unit);
+    }
+
+    public void UnRegisterHexaUnit(HexaUnit unit)
+    {
+        unitList.Remove(unit);
     }
 
     public int AxialDistance(Vector2Int a, Vector2Int b)
