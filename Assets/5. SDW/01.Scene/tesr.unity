@@ -380,15 +380,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976e8a05901c9ab4782653718a8075c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapLengthX: 9
-  mapLengthY: 9
-  createResearchLengthX: 1
-  createResearchLengthY: 1
-  createMaxNord: 1
-  secondFloorNordNumber: 3
+  mapLengthX: 27
+  mapLengthY: 27
+  startNodeHeight: 2
+  xCreateResearchLength: 2
+  YMaxCreateResearchLength: 3
+  YMinCreateResearchLength: 3
+  createTreeCount: 6
+  secondFloorNodeNumber: 1
   childrenPanelPrefab: {fileID: 7401011017432063214, guid: 5894fa7d4c4911f44b7d0089bdff9406,
     type: 3}
-  currentNordXY: {x: 0, y: 0}
+  currentNodeXY: {x: 0, y: 0}
 --- !u!114 &928208489
 MonoBehaviour:
   m_ObjectHideFlags: 0

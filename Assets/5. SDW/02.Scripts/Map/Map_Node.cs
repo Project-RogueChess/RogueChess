@@ -4,15 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Map_Nord : MonoBehaviour
+public class Map_Node : MonoBehaviour
 {
     [SerializeField] private List<Vector2Int> prevNordKeys = new List<Vector2Int>();
 
     public Vector2Int mykey;
 
-    public void AddPrevNordKey(Vector2Int key)
+    public void AddPrevNodeKey(Vector2Int key)
     {
-        prevNordKeys.Add(key);
+        bool alreadySameXY = prevNordKeys.Contains(key);
+
+        if (alreadySameXY == false)
+        {
+            prevNordKeys.Add(key);
+        }
     }
 
     public void SettingNord(int settValue)
