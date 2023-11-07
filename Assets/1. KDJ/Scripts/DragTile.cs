@@ -19,8 +19,7 @@ public class DragTile : MonoBehaviour
         if (dragObject.IsOnDrag)
         {
             DragObject.checkPosition = true;
-
-            HighlightTile(this.gameObject, Color.red);
+            
             DragObject.GO = this.gameObject;
         }
     }
@@ -28,25 +27,7 @@ public class DragTile : MonoBehaviour
     {
         DragObject.checkPosition = false;
 
-        HighlightTile(this.gameObject, Color.white);
+        
     }
-
-
-
-    void HighlightTile(GameObject tile, Color color)
-    {
-        Renderer tileRenderer = tile.GetComponent<Renderer>();
-        if (tileRenderer != null)
-        {
-            Material originalMaterial = tileRenderer.material;
-
-            Material highlightMaterial = new Material(originalMaterial);
-            highlightMaterial.color = color;
-
-            tileRenderer.material = highlightMaterial;
-        }
-    }
-
-
 
 }

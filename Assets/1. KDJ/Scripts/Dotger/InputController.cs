@@ -9,13 +9,14 @@ public class InputController : MonoBehaviour
     public DragController dragController;
 
     public Map map;
+    public TilemapManager tilemapManager;
 
     public LayerMask triggerLayer;
 
     [HideInInspector]
-    public TriggerInfo triggerInfo = null;
+    public TilemapTriggerInfo triggerInfo = null;
 
-
+    private Vector3 mousePosition;
 
     // Update is called once per frame
     void Update()
@@ -29,7 +30,7 @@ public class InputController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100f, triggerLayer, QueryTriggerInteraction.Collide))
         {
             //get trigger info of the  hited object
-            triggerInfo = hit.collider.gameObject.GetComponent<TriggerInfo>();
+            triggerInfo = hit.collider.gameObject.GetComponent<TilemapTriggerInfo>();
 
             //this is a trigger
             if (triggerInfo != null)
@@ -38,7 +39,7 @@ public class InputController : MonoBehaviour
                 GameObject indicator = map.GetIndicatorFromTriggerInfo(triggerInfo);
 
                 //set indicator color to active
-                indicator.GetComponent<MeshRenderer>().material.color = map.indicatorActiveColor;
+                indicator.GetComponent<MeshRenderer>().material.color = tilemapManager.hexa_activeColor;
             }
             else
                 map.resetIndicators(); //reset colors
@@ -49,8 +50,12 @@ public class InputController : MonoBehaviour
             dragController.StartDrag();
         }
 
+        if(Input.GetMouseButtonUp(0))
+        {
+            dragController.StopDrag();
+        }
 
-
+        mousePosition = Input.mousePosition;
     }
     
 

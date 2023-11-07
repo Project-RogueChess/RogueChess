@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class DragObject : MonoBehaviour
 {
-
+    
     private bool isOnDrag = false;
 
     public bool IsOnDrag
@@ -26,6 +26,13 @@ public class DragObject : MonoBehaviour
     [SerializeField]
     [Range(0, 1)]
     float dragSpeed;
+
+    [HideInInspector]
+    public int gridType = 0;
+    [HideInInspector]
+    public int gridPositionX = 0;
+    [HideInInspector]
+    public int gridPositionZ = 0;
 
     //private GameObject draggedObject = null;
     private Camera cam;
@@ -48,7 +55,7 @@ public class DragObject : MonoBehaviour
     private void Start()
     {
         GO = this.gameObject;
-        map = GameObject.Find("Scripts").GetComponent<Map>();
+        map = GameObject.Find("TilemapSystem").GetComponent<Map>();
 
     }
     private void FixedUpdate()
@@ -81,21 +88,19 @@ public class DragObject : MonoBehaviour
         else
         {
             //if (DragController.currentGameStage == GameStage.Preparation)
+            
+                //calc distance
+                float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
 
-            //calc distance
-            float distance = Vector3.Distance(gridTargetPosition, this.transform.position);
-
-            if (distance > 0.25f)
-            {
-                this.transform.position = Vector3.Lerp(this.transform.position, gridTargetPosition, 0.1f);
-            }
-            else
-            {
-                this.transform.position = gridTargetPosition;
-            }
-
+                if (distance > 0.25f)
+                {
+                    this.transform.position = Vector3.Lerp(this.transform.position, gridTargetPosition, 0.1f);
+                }
+                else
+                {
+                    this.transform.position = gridTargetPosition;
+                }            
         }
-
     }
 
     public void OnMouseDown()
@@ -104,7 +109,7 @@ public class DragObject : MonoBehaviour
 
         backObject = transform.position;
 
-        GetComponent<CapsuleCollider>().enabled = true;       
+        GetComponent<CapsuleCollider>().enabled = false;       
     }
 
     public void OnMouseUp()
@@ -166,18 +171,5 @@ public class DragObject : MonoBehaviour
         //}
     }
 
-/*    void HighlightTile(GameObject tile, Color color)
-    {
-        Renderer tileRenderer = tile.GetComponent<Renderer>();
-        if (tileRenderer != null)
-        {
-            Material originalMaterial = tileRenderer.material;
-
-            Material highlightMaterial = new Material(originalMaterial);
-            highlightMaterial.color = color;
-
-            tileRenderer.material = highlightMaterial;
-        }
-    }*/
 
 }
