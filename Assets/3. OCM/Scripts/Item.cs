@@ -11,5 +11,4 @@ public class Item
     public int attack;
     public int mana;
     public int attackSpeed;
-
 }

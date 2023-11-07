@@ -49,6 +49,7 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         }
         rect = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        image = GetComponent<Image>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -56,11 +57,11 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (item.name != null && item.name != string.Empty)
         {
             previousParent = transform.parent;
-            currentSlot = transform.parent.GetComponent<InventorySlot>();
-            if (currentSlot != null)
-            {
-                currentSlot.OnItemDraggedOut();
-            }
+            //currentSlot = transform.parent.GetComponent<InventorySlot>();
+            //if (currentSlot != null)
+            //{
+            //    currentSlot.OnItemDraggedOut();
+            //}
             previousParent = transform.parent;
 
             transform.SetParent(transform.parent);
@@ -70,7 +71,6 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             canvasGroup.blocksRaycasts = false;
         }
     }
-
     public void OnDrag(PointerEventData eventData)
     {
         if(item.name != null && item.name != string.Empty)
@@ -92,13 +92,9 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             Pieces equipableItem = hitInfo.transform.GetComponent<Pieces>();
             if (equipableItem != null)
             {
-                // æ∆¿Ã≈€ ¿Â¬¯
-                Debug.Log("EquipItem");
+                
                 equipableItem.EquipItem(this);
-                canvasGroup.alpha = 1f;
-                canvasGroup.blocksRaycasts = false;
                 _item = new Item();
-                return;
             }
         }
 
