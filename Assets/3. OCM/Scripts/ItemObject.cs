@@ -54,7 +54,7 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (item.name != null && item.name != string.Empty)
+        if (item.itemName != null && item.itemName != string.Empty)
         {
             previousParent = transform.parent;
             //currentSlot = transform.parent.GetComponent<InventorySlot>();
@@ -73,7 +73,7 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     }
     public void OnDrag(PointerEventData eventData)
     {
-        if(item.name != null && item.name != string.Empty)
+        if(item.itemName != null && item.itemName != string.Empty)
         {
             rect.position = eventData.position;
             transform.position = Input.mousePosition;
@@ -92,7 +92,6 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             Pieces equipableItem = hitInfo.transform.GetComponent<Pieces>();
             if (equipableItem != null)
             {
-                
                 equipableItem.EquipItem(this);
                 _item = new Item();
             }
@@ -109,9 +108,9 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     void SwitchImage()
     {
-        if(item.image != null)
+        if(item.itemSprite != null)
         {
-            image.sprite = item.image;
+            image.sprite = item.itemSprite;
         }
         else
         {

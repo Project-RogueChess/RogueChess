@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,35 +23,25 @@ public class Pieces : MonoBehaviour
     private void Awake()
     {
         pos = GetComponent<Transform>();
-        
+        items = new Item[3];
     }
 
     private void Start()
     {
-        items = new Item[3];
+        
     }
 
 
     public void EquipItem(ItemObject item)
     {
-        //item.transform.SetParent(transform);
-        //item.transform.localPosition = Vector3.zero; // 장착한 아이템의 위치를 유닛의 중심으로 설정
-        items[0] = item._item;
+        for (int i=0; i < items.Length;i++)
+        {
+            if (items[i] == null)
+            {
+                items[i] = item._item;
+                return;
+            }
+        }
     }
-
-
-
-
-    //public int Gold { get { return gold; } set {  gold = value; } }
-    //public string Name { get { return name; } set { name = value; } }
-    //public string Synergy { get {  return synergy; } set {  synergy = value; } }
-    //public Sprite PiecesImg { get { return piecesImg; } set {  piecesImg = value; } }
-
-    //public Pieces(Sprite PiecesImg,string Name,string Synergy, int Gold )
-    //{
-    //    this.name = Name;
-    //    this.synergy = Synergy;
-    //    this.gold = Gold;
-    //    this.piecesImg = PiecesImg;
-    //}
+  
 }
