@@ -30,13 +30,17 @@ public class UIManager : MonoBehaviour
 
     public bool shopOnOffBool;
 
-    
+
+    public GameObject inventory;
+    public bool inventoryOnOffBool;
+    private InventoryPanel inventoryPanel;
 
     private void Awake()
     {
         instance = this;
         
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
+        inventoryPanel = inventory.GetComponent<InventoryPanel>();
     }
 
     private void Update()
@@ -54,6 +58,20 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReRoolForBtn();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InventoryUIDraw();
+            inventoryOnOffBool = !inventoryOnOffBool;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            inventoryPanel.AddItem();
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            inventoryPanel.AddItem();
         }
     }
 
@@ -120,6 +138,18 @@ public class UIManager : MonoBehaviour
         else
         {
             rerollLockImg.SetActive(false);
+        }
+    }
+
+    public void InventoryUIDraw()
+    {
+        if (inventoryOnOffBool == true)
+        {
+            inventory.SetActive(false);
+        }
+        else
+        {
+            inventory.SetActive(true);
         }
     }
 }

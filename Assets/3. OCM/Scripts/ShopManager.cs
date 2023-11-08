@@ -18,6 +18,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
     public string piecesSynergy;
     public int piecesGold;
     PiecesList piecesList;
+    PiecesDB piecesDB;
     private Image piecesShopImage;
 
     //상점에서 보여줄 정보
@@ -42,6 +43,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         
         canvasGroup = GetComponent<CanvasGroup>();
         piecesList = FindObjectOfType<PiecesList>();
+        piecesDB = FindObjectOfType<PiecesDB>();
         piecesShopImage = GetComponent<Image>();
     }
 
@@ -53,9 +55,8 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         piecesImage = piecesInfo.piecesImg;
         piecesName = piecesInfo.name;
         piecesSynergy = piecesInfo.synergy;
-        //piecesName = piecesList.piecesNames[num];
-        //piecesSynergy = piecesList.piecesSynergys[num];
-        //piecesGold = piecesList.piecesGolds[num];
+
+
         piecesShopImage.sprite = piecesImage;
         nameTxt.text = piecesName;
         synergyTxt.text = piecesSynergy;

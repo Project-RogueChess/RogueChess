@@ -36,7 +36,6 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     
 
-    
     private void Awake()
     {
         inventorySlots = FindObjectsOfType<InventorySlot>();
@@ -57,11 +56,11 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (item.itemName != null && item.itemName != string.Empty)
         {
             previousParent = transform.parent;
-            //currentSlot = transform.parent.GetComponent<InventorySlot>();
-            //if (currentSlot != null)
-            //{
-            //    currentSlot.OnItemDraggedOut();
-            //}
+            currentSlot = transform.parent.GetComponent<InventorySlot>();
+            if (currentSlot != null)
+            {
+                currentSlot.OnItemDraggedOut();
+            }
             previousParent = transform.parent;
 
             transform.SetParent(transform.parent);
@@ -89,11 +88,19 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (Physics.Raycast(ray, out hitInfo))
         {
             // 조건에 맞는 오브젝트인지 확인
+            
             Pieces equipableItem = hitInfo.transform.GetComponent<Pieces>();
             if (equipableItem != null)
             {
-                equipableItem.EquipItem(this);
-                _item = new Item();
+                if (equipableItem.items[2].itemName != string.Empty)
+                {
+
+                }
+                else
+                {
+                    equipableItem.EquipItem(this);
+                    _item = new Item();
+                }
             }
         }
 

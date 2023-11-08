@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,23 +34,30 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
     {
         if ( eventData.pointerDrag != null && isSlotEmpty == true)
         {
-            itemGO.GetComponent<ItemObject>()._item = eventData.pointerDrag.GetComponent<ItemObject>()._item;
-            eventData.pointerDrag.GetComponent<ItemObject>()._item = new Item();
+            if (eventData.pointerDrag.GetComponent<ItemObject>()._item == itemGO.GetComponent<ItemObject>()._item)
+            {
+                itemGO.GetComponent<ItemObject>()._item = eventData.pointerDrag.GetComponent<ItemObject>()._item;
+            }
+            else 
+            {
+                itemGO.GetComponent<ItemObject>()._item = eventData.pointerDrag.GetComponent<ItemObject>()._item;
+                eventData.pointerDrag.GetComponent<ItemObject>()._item = new Item();
+            }
             isSlotEmpty = false;
         }
         else if(eventData.pointerDrag != null && isSlotEmpty == false)
         {
-             //GameObject temp;
-             //temp = itemGO;
+            //GameObject temp;
+            //temp = itemGO;
             Item tempItem = itemGO.GetComponent<ItemObject>()._item;
             itemGO.GetComponent<ItemObject>()._item = eventData.pointerDrag.GetComponent<ItemObject>()._item;
             eventData.pointerDrag.GetComponent<ItemObject>()._item = tempItem;
             isSlotEmpty = false;
         }
     }
-
-    //public void OnItemDraggedOut()
-    //{
-    //    isSlotEmpty = true;
-    //}
+    
+    public void OnItemDraggedOut()
+    {
+        isSlotEmpty = true;
+    }
 }

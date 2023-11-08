@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class Pieces : MonoBehaviour
 {
     public Sprite piecesImg;
-    public string name;
+    public new string name;
     public string synergy;
     public int gold;
 
@@ -20,28 +20,47 @@ public class Pieces : MonoBehaviour
     public Transform pos;
     public Item[] items;
 
+    public int tier;
+
+    public int maxHp;
+    public int hp;
+    public int maxMp;
+    public int mp;
+    public int attack;
+    public int attackSpeed;
+    
+    
     private void Awake()
     {
         pos = GetComponent<Transform>();
         items = new Item[3];
-    }
 
-    private void Start()
-    {
-        
+        for(int i = 0; i < items.Length; i++)
+        {
+            items[i] = new Item(string.Empty,0,0,0,0);
+        }
     }
 
 
     public void EquipItem(ItemObject item)
     {
+
         for (int i=0; i < items.Length;i++)
         {
-            if (items[i] == null)
+            
+            if (items[i].itemName == string.Empty || items[i].itemName == null)
             {
                 items[i] = item._item;
+                hp += item._item.itemHp;
+                attack += item._item.itemAttack;
+                attackSpeed += item._item.itemAttackSpeed;
+                mp += item._item.itemMp;
                 return;
             }
         }
     }
-  
+
+    
+
+
 }

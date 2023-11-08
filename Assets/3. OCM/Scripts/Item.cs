@@ -10,7 +10,7 @@ public class Item
     public int itemHp;
     public int itemAttack;
     public int itemAttackSpeed;
-    public int itemMana;
+    public int itemMp;
 
     public Item(string name, int hp, int attack, int attackSpeed, int mana)
     {
@@ -18,7 +18,7 @@ public class Item
         this.itemHp = hp;
         this.itemAttack = attack;
         this.itemAttackSpeed = attackSpeed;
-        this.itemMana = mana;
+        this.itemMp = mana;
     }
 
     public Item()
