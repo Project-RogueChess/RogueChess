@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
 
     public GameObject tile;
 
+    public TilemapTriggerInfo triggerInfo;
 
     private void OnMouseDown()
     {
@@ -16,17 +17,19 @@ public class Tile : MonoBehaviour
             TileManager.Instance.isDrag = true;
             TileManager.Instance.prevPiece = piece;
             TileManager.Instance.prevTile = this;
-
+            
         }
     }
 
     private void OnMouseOver()
     {
-        
+
         TileManager.Instance.nextTile = this;
         TileManager.Instance.nextPiece = piece;
-        if(TileManager.Instance.isDrag)
-        tile.GetComponent<MeshRenderer>().material.color =  TilemapManager.instance.hexa_activeColor;
+        if (TileManager.Instance.isDrag)
+        {
+            tile.GetComponent<MeshRenderer>().material.color = TilemapManager.instance.hexa_activeColor;
+        }
     }
 
     private void OnMouseExit()

@@ -58,6 +58,7 @@ public class DragObject : MonoBehaviour
         map = GameObject.Find("TilemapSystem").GetComponent<Map>();
 
     }
+
     private void FixedUpdate()
     {
        
