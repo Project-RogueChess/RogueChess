@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 public class Main_Map : MonoBehaviour
 {
     [Header("Panel Control")]
+    [SerializeField] private GameObject childrenPanelPrefab;
     [SerializeField] private int mapLengthX = 2;
     [SerializeField] private int mapLengthY = 2;
     [SerializeField] private int startNodeHeight = 1;
@@ -19,8 +20,11 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private int createTreeCount = 1;
     [SerializeField] private int secondFloorNodeNumber = 3;
 
-    [Header("Children Panel Prefab")]
-    [SerializeField] private GameObject childrenPanelPrefab;
+    [Header("Line Control")]
+    [SerializeField] private GameObject linePrefab;
+    [SerializeField] private float lineThickness = 10f;
+    private float lineHeight = 0f;
+    
 
     [Header("CurrentNodeInfomation")]
     [SerializeField] private Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
@@ -100,6 +104,9 @@ public class Main_Map : MonoBehaviour
         secoundFloorFirstNode.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
         for (int i = 0; i < createTreeCount; i++)
         CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight));
+
+        if (FindPanelToSearchDictionary(new Vector2Int(secondFloorFirstNodeX, startNodeHeight)).GetComponent<Map_Node>() != null)
+            LineDrawer(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), new Vector2Int(startNodeX, 0));
 
         for (int i = 1; i < secondFloorNodeNumber; i++)
         {
@@ -225,5 +232,20 @@ public class Main_Map : MonoBehaviour
 
     }
 
+
+    private void LineDrawer(Vector2Int targetPanelVector, Vector2Int currentPanelVector)
+    {
+        GameObject targetPanel = FindPanelToSearchDictionary(targetPanelVector);
+        GameObject currnetPanel = FindPanelToSearchDictionary(currentPanelVector);
+
+        Vector3 linePos = Vector3.Lerp(targetPanel.transform.position, currnetPanel.transform.position, 0.5f);
+        float lineHeight = (targetPanel.transform.position - currnetPanel.transform.position).magnitude;
+
+        GameObject lineObject = Instantiate(linePrefab, targetPanel.transform);
+        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
+        lineRect.sizeDelta = new Vector2(lineThickness, lineHeight);
+        lineObject.transform.position = linePos;
+        lineObject.transform.up = targetPanel.transform.position;
+    }
 
 }
