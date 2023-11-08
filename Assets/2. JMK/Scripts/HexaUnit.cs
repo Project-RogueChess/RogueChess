@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public enum HexaUnitAttackType
 {
@@ -60,7 +61,7 @@ public class HexaUnit : MonoBehaviour
     {
         _needUpdate = false;
         //이전의 이동방향 기억하기
-
+        
 
         //회전이 필요한경우 회전먼저
         var temp = _gridIndex;
