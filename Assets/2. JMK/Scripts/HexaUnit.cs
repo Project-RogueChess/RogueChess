@@ -22,16 +22,19 @@ public class HexaUnit : MonoBehaviour
     public float moveRate = 0.5f;
 
     private bool _needUpdate = true;
-    private Vector3 _preDir;
     private Vector2Int _gridIndex;
     private Vector2Int _preIndex = new Vector2Int(-1,-1);
     private HexaUnit _target;
-
 
     public bool needUpdate => _needUpdate;
     public Vector2Int gridIndex => _gridIndex;
     public Vector2Int preIndex => _preIndex;
     public HexaUnit target => _target;
+
+    private void OnDisable()
+    {
+        
+    }
 
     public void SetGridIndex(Vector2Int index, bool isPre = false)
     {
@@ -61,7 +64,6 @@ public class HexaUnit : MonoBehaviour
     {
         _needUpdate = false;
         //이전의 이동방향 기억하기
-        
 
         //회전이 필요한경우 회전먼저
         var temp = _gridIndex;
@@ -86,7 +88,6 @@ public class HexaUnit : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
 
-        _preDir = dir;
         _needUpdate = true;
     }
 }

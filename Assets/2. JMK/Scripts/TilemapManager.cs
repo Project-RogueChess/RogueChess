@@ -53,7 +53,7 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void initTilePosList()
+    public void InitTilePosList()
     {
         hexa_tilePosList = new Vector3[hexa_tilemapSizeY, hexa_tilemapSizeX]; 
         inv_tilePosList = new Vector3[inv_size];
@@ -72,7 +72,7 @@ public class TilemapManager : MonoBehaviour
 
     public void CreateTilemaps()
     {
-        initTilePosList();
+        InitTilePosList();
 
         //À°°¢Å¸ÀÏ¸Ê »ý¼º
         GameObject hexaTilemapContainer = new GameObject();

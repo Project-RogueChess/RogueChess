@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UIElements;
 
 public class HexaUnitManager : MonoBehaviour
 {
@@ -13,8 +14,15 @@ public class HexaUnitManager : MonoBehaviour
 
     public List<HexaUnit> unitList;
 
+    public string cubeString = "Cube";
+
+    public void Update2()
+    {
+        Resources.Load("Prefabs/" + cubeString);
+    }
+
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
-    public bool[,] collisionMap = new bool[MAX_MAP_Y,MAX_MAP_X];
+    public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public Camera mainCam;
 
     public bool excuteUnitControll = false;
@@ -35,14 +43,14 @@ public class HexaUnitManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            if(instance != this)
+            if (instance != this)
             {
                 Destroy(gameObject);
             }
@@ -51,7 +59,7 @@ public class HexaUnitManager : MonoBehaviour
 
     private void Start()
     {
-       
+
         mainCam = Camera.main;
     }
 
@@ -77,7 +85,7 @@ public class HexaUnitManager : MonoBehaviour
         foreach (var u in units)
         {
             //예약된 충돌 인덱스 초기화
-            if(u.preIndex.x != -1)
+            if (u.preIndex.x != -1)
             {
                 collisionMap[u.preIndex.y, u.preIndex.x] = false;
                 u.SetGridIndex(new Vector2Int(-1, -1), true);
@@ -97,7 +105,10 @@ public class HexaUnitManager : MonoBehaviour
             }
 
             distDic = distDic.OrderBy(item => item.Value).ToDictionary(x => x.Key, x => x.Value);
-            var distList = distDic.Keys.ToList();
+            var distList = new Queue<HexaUnit>();
+
+            foreach (var key in distDic.Keys)
+                distList.Enqueue(key);
 
             //첫번째 체크 - 보정없이 길찾기
             var firstCheck = false;
@@ -105,27 +116,42 @@ public class HexaUnitManager : MonoBehaviour
             //가까운 적부터 길찾기
             while (distList.Count > 0)
             {
-                u.SetTarget(distList[0]);
-                distList.RemoveAt(0);
+                var currentTarget = distList.Dequeue();
 
                 //사정거리 계산
-                var rangeTile = RangeOfHexaGridIndex(u.target.gridIndex, u.range + 1);
+                var rangeTile = RangeOfHexaGridIndex(currentTarget.gridIndex, u.range + 1);
                 if (rangeTile.Contains(u.gridIndex))
                 {
                     //성공시 공격으로 전환
+                    u.SetTarget(currentTarget);
                     u.Attack();
                     firstCheck = true;
                     break;
                 }
 
+                //빈공간 체크
+                var ringIndex = RingOfHexaGridIndex(currentTarget.gridIndex, u.range + 1);
+                var inUseIndexCount = 0;
+
+                foreach (var idx in ringIndex)
+                    if (collisionMap[idx.y, idx.x])
+                        inUseIndexCount++;
+
+                if (inUseIndexCount == ringIndex.Count)
+                {
+                    //공간 없음, 다음 적 확인
+                    continue;
+                }
+
                 //충돌맵 세팅
                 var tileTemp = collisionMap.Clone();
-                collisionMap[u.target.gridIndex.y, u.target.gridIndex.x] = false;
+                collisionMap[currentTarget.gridIndex.y, currentTarget.gridIndex.x] = false;
+
 
                 //사정거리 긴 유닛은 사정거리를 고려한 충돌맵 사용
                 if (u.range > 0)
                 {
-                    rangeTile = RangeOfHexaGridIndex(u.target.gridIndex, u.range);
+                    rangeTile = RangeOfHexaGridIndex(currentTarget.gridIndex, u.range);
 
                     foreach (var t in rangeTile)
                     {
@@ -133,7 +159,7 @@ public class HexaUnitManager : MonoBehaviour
                     }
                 }
 
-                var pathTile = PathFinding(u.gridIndex, u.target.gridIndex);
+                var pathTile = PathFinding(u.gridIndex, currentTarget.gridIndex);
                 if (pathTile.Count > 1)
                 {
                     //성공시 이동으로 전환
@@ -151,6 +177,8 @@ public class HexaUnitManager : MonoBehaviour
             //길찾기 성공시 다음 업데이트가 필요한 유닛으로
             if (firstCheck)
                 continue;
+
+            var secondCheck = false;
 
             u.SetTarget(null);
         }
@@ -170,10 +198,10 @@ public class HexaUnitManager : MonoBehaviour
             {
                 GOArray[idx++] = r.gameObject;
                 collisionMap[r.gridIndex.y, r.gridIndex.x] = false;
-                if(r.preIndex.x != -1)
-                collisionMap[r.preIndex.y, r.preIndex.x] = false;
+                if (r.preIndex.x != -1)
+                    collisionMap[r.preIndex.y, r.preIndex.x] = false;
             }
-                
+
 
             for (int i = 0; i < GOArray.Length; i++)
                 Destroy(GOArray[i]);
@@ -181,7 +209,7 @@ public class HexaUnitManager : MonoBehaviour
             unitList.Clear();
         }
 
-        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore) 
+        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore)
             && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
         {
             var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
@@ -220,6 +248,27 @@ public class HexaUnitManager : MonoBehaviour
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (loadPath != null)
+                {
+                    foreach (var obj in loadPath)
+                        Destroy(obj);
+                    loadPath = null;
+                }
+
+                var currentList = RingOfHexaGridIndex(tileIndex, range + 1);
+
+                loadPath = new GameObject[currentList.Count];
+
+                for (int i = 0; i < loadPath.Length; i++)
+                {
+                    loadPath[i] = Instantiate(loadTiles);
+                    loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
+                }
+            }
+
+
             var indexList = new List<Vector2Int>();
             foreach (var item in unitList)
                 indexList.Add(item.gridIndex);
@@ -241,6 +290,20 @@ public class HexaUnitManager : MonoBehaviour
                 unitGO.SetGridIndex(tileIndex);
                 unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
                 RegisterHexaUnit(unitGO);
+            }
+
+            if (Input.GetMouseButton(1))
+            {
+                var unitGO = new GameObject();
+                foreach (var u in unitList)
+                {
+                    if (u.gridIndex == tileIndex)
+                        unitGO = u.gameObject;
+                }
+
+
+                UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
+                Destroy(unitGO.gameObject);
             }
         }
 
@@ -410,6 +473,24 @@ public class HexaUnitManager : MonoBehaviour
         return indexList;
     }
 
+    public List<Vector2Int> RingOfHexaGridIndex(Vector2Int center, int radius)
+    {
+        center = EvenToAxial(center);
+
+        List<Vector2Int> indexList = AxialRing(center, radius);
+
+        List<Vector2Int> result = new List<Vector2Int>();
+
+        foreach (var index in indexList)
+        {
+            var cal = AxialToEven(index);
+            if (cal.x >= 0 && cal.x < MAX_MAP_X && cal.y >= 0 && cal.y < MAX_MAP_Y)
+                result.Add(cal);
+        }
+
+        return result;
+    }
+
     Vector2Int AxialToEven(Vector2Int input)
     {
         var col = input.x + (input.y + (input.y & 1)) / 2;
@@ -423,6 +504,30 @@ public class HexaUnitManager : MonoBehaviour
         var r = input.y;
         return new Vector2Int(q, r);
     }
+
+    public Vector2Int[] axialDirVec = { new Vector2Int(1, 0), new Vector2Int(1, -1), new Vector2Int(0, -1),
+        new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0, 1) };
+
+    public Vector2Int AxialDir(int dir) => axialDirVec[dir];
+
+    public Vector2Int AxialNeighbor(Vector2Int axial, int dir) => axial + AxialDir(dir);
+
+    public List<Vector2Int> AxialRing(Vector2Int center, int radius)
+    {
+        List<Vector2Int> result = new List<Vector2Int>();
+
+        var hex = center + AxialDir(4) * radius;
+
+        for (int i = 0; i < 6; i++)
+            for (int j = 0; j < radius; j++)
+            {
+                result.Add(hex);
+                hex = AxialNeighbor(hex, i);
+            }
+
+        return result;
+    }
+
 }
 
 
