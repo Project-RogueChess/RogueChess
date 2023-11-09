@@ -20,7 +20,7 @@ public class Pieces : MonoBehaviour
     public Transform pos;
     public Item[] items;
 
-    public int tier;
+    public int grade;
 
     public int maxHp;
     public int hp;
@@ -28,8 +28,14 @@ public class Pieces : MonoBehaviour
     public int mp;
     public int attack;
     public int attackSpeed;
-    
-    
+
+    public void Parse(Piece piece)
+    {
+        pieceImg = piece.pieceImg;
+        name = piece.name;
+        grade = piece.grade;
+
+    }
     private void Awake()
     {
         pos = GetComponent<Transform>();
