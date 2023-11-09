@@ -47,7 +47,10 @@ public class UIManager : MonoBehaviour
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
         inventoryPanel1 = inventory1.GetComponent<InventoryPanel>();
         inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
-
+        inventory1.SetActive(true);
+        inventory2.SetActive(true);
+        inventory1.SetActive(false);
+        inventory2.SetActive(false);
     }
 
     private void Update()
@@ -154,12 +157,16 @@ public class UIManager : MonoBehaviour
         {
             inventory1.SetActive(false);
             inventory2.SetActive(false);
+            inventoryLeftBtn.SetActive(false);
+            inventoryRightBtn.SetActive(false);
             inventorySwitchBool = false;
         }
         else
         {
             inventory1.SetActive(true);
             inventory2.SetActive(false);
+            inventoryLeftBtn.SetActive(true);
+            inventoryRightBtn.SetActive(true);
             inventorySwitchBool = true;
         }
     }
