@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Security.Cryptography.X509Certificates;
 
 public class ButtonSpawner : MonoBehaviour
 {
     public GameObject spawnGO;
 
+    public static ButtonSpawner instance;
 
+    private void Start()
+    {
+        instance = this;
+    }
 
     public void btnClick()
     {

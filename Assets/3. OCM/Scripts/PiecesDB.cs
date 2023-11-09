@@ -44,7 +44,7 @@ public class PiecesDB : MonoBehaviour
             piece.attackRange = int.Parse(dicList[i]["attackRange"].ToString());
             piece.moveSpeed = float.Parse(dicList[i]["moveSpeed"].ToString());
             piece.pieceImg = Resources.Load<Sprite>("PiecesImages/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
-
+            piece.piecePrefab = Resources.Load<GameObject>("PiecesPrefabs/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
             pieces.Add(piece);
         }
 
