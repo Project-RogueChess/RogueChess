@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50088526cfab8e34193bc362f72ba402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team: 1
   range: 0
+  attackType: 0
   atkRate: 2
   moveRate: 0.3
 --- !u!1 &6754217013840560572

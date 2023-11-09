@@ -33,7 +33,13 @@ public class HexaUnit : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        if (preIndex.x != -1)
+        {
+            _gridIndex = preIndex;
+
+        }
+            
+
     }
 
     public void SetGridIndex(Vector2Int index, bool isPre = false)

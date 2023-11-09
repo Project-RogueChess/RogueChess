@@ -301,7 +301,6 @@ public class HexaUnitManager : MonoBehaviour
                         unitGO = u.gameObject;
                 }
 
-
                 UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
                 Destroy(unitGO.gameObject);
             }
@@ -434,7 +433,7 @@ public class HexaUnitManager : MonoBehaviour
         unitList.Add(unit);
     }
 
-    public void RegisterHexaUnit(HexaUnit unit, ArticleData data, int team)
+/*    public void RegisterHexaUnit(HexaUnit unit, ArticleData data, int team)
     {
         unit.moveRate = data._moveSpeed;
         unit.atkRate = data._attackSpeed;
@@ -442,10 +441,17 @@ public class HexaUnitManager : MonoBehaviour
         unit.team = team;
         unitList.Add(unit);
     }
-
+*/
 
     public void UnRegisterHexaUnit(HexaUnit unit)
     {
+        if (unit.preIndex.x != -1)
+        {
+            collisionMap[unit.preIndex.y, unit.preIndex.x] = false;
+            unit.SetGridIndex(unit.preIndex);
+        }
+
+        collisionMap[unit.gridIndex.y, unit.gridIndex.x] = false;
         unitList.Remove(unit);
     }
 
