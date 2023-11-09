@@ -142,6 +142,8 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
     public void CreatePiece()
     {
         Debug.Log("prefab받아오는 거 해야함 ㅠ");
+        InvSpawnManager.instance.spawnUnit = pieceInfo.piecePrefab;
+        ButtonSpawner.instance.btnClick();
         //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }

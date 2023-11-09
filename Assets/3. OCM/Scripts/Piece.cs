@@ -6,6 +6,7 @@ using UnityEngine;
 public class Piece
 {
     public Sprite pieceImg;
+    public GameObject piecePrefab;
 
     public string name;
     public int gold;
