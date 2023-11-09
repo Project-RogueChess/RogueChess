@@ -260,6 +260,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &666944146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 666944147}
+  m_Layer: 5
+  m_Name: LineParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &666944147
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666944146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849390814}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &709472596
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,14 +421,30 @@ MonoBehaviour:
   mapLengthX: 27
   mapLengthY: 27
   startNodeHeight: 2
-  xCreateResearchLength: 2
+  xCreateResearchLength: 1
   YMaxCreateResearchLength: 3
   YMinCreateResearchLength: 3
-  createTreeCount: 1
-  secondFloorNodeNumber: 3
-  linePrefab: {fileID: 3919719055620895461, guid: 22e6ebb0dbfeb0440b91eebcb7a2169a,
+  secondFloorNodeNumber: 1
+  createTreeCount: 6
+  createCopyTreeCount: 0
+  addTreePercent: 0
+  linePrefab: {fileID: 836711488715771938, guid: ad4be1f16d58bbd40b77e991ec8798b8,
     type: 3}
-  lineThickness: 10
+  lineParent: {fileID: 666944147}
+  lineThickness: 50
+  normalMonsterPer: 50
+  normalMonsterSprite: {fileID: 21300000, guid: cdfaba35bca3b8241a9ca6db0d661623,
+    type: 3}
+  eliteMonsterPer: 10
+  eliteMonsterSprite: {fileID: 21300000, guid: c06b47cd0c33b614bae718ba488d3655, type: 3}
+  storePer: 10
+  storeSprite: {fileID: 21300000, guid: 19cccbe335ac5984a9a6a13e74e7263f, type: 3}
+  treasurePer: 5
+  treasureSprite: {fileID: 21300000, guid: cd5d0c9f24f291347b76f059f58fb3d7, type: 3}
+  randomEventPer: 10
+  randomEventSprite: {fileID: 21300000, guid: 60a2d63dcbb846a40ab122482e16a85f, type: 3}
+  shelterPer: 5
+  shelterSprite: {fileID: 21300000, guid: b5001ebca9a1d814f95c01c626630fd9, type: 3}
   currentNodeXY: {x: 0, y: 0}
 --- !u!114 &928208489
 MonoBehaviour:
@@ -774,6 +826,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 666944147}
   - {fileID: 928208487}
   m_Father: {fileID: 0}
   m_RootOrder: 3

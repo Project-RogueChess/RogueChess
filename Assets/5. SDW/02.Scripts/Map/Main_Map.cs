@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 public class Main_Map : MonoBehaviour
@@ -17,14 +17,29 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private int xCreateResearchLength = 1;
     [SerializeField] private int YMaxCreateResearchLength = 1;
     [SerializeField] private int YMinCreateResearchLength = 1;
-    [SerializeField] private int createTreeCount = 1;
     [SerializeField] private int secondFloorNodeNumber = 3;
+    [SerializeField] private int createTreeCount = 1;
+    [SerializeField] private int createCopyTreeCount = 1;
+    [SerializeField] private float addTreePercent = 15f;
 
     [Header("Line Control")]
     [SerializeField] private GameObject linePrefab;
+    [SerializeField] private Transform lineParent;
     [SerializeField] private float lineThickness = 10f;
-    private float lineHeight = 0f;
-    
+
+    [Header("Node Control")]
+    [SerializeField] private float normalMonsterPer = 0f;
+    [SerializeField] private Sprite normalMonsterSprite;
+    [SerializeField] private float eliteMonsterPer = 0f;
+    [SerializeField] private Sprite eliteMonsterSprite;
+    [SerializeField] private float storePer = 0f;
+    [SerializeField] private Sprite storeSprite;
+    [SerializeField] private float treasurePer = 0f;
+    [SerializeField] private Sprite treasureSprite;
+    [SerializeField] private float randomEventPer = 0f;
+    [SerializeField] private Sprite randomEventSprite;
+    [SerializeField] private float shelterPer = 0f;
+    [SerializeField] private Sprite shelterSprite;
 
     [Header("CurrentNodeInfomation")]
     [SerializeField] private Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
@@ -32,17 +47,97 @@ public class Main_Map : MonoBehaviour
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
     private GameObject endNode;
-    private Map_Node nodeScript;
+    private Map_Node[] nodeScripts;
+    private int nodeTypeCount;
+
 
     private void Start()
     {
         UI_MapRenderStart();
 
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    Debug.Log(i);
-        //    //결과값 0 1 2 3 4
-        //}
+        nodeScripts = gameObject.GetComponentsInChildren<Map_Node>();
+
+
+        StartCoroutine(StartMethod());
+        //Invoke("LineDrawerLauncher", 0.1f);
+        //Invoke("SettingNodeSystem", 0.2f); // Invoke 아니어도 될거같음
+        ////SettingNodeSystem();
+        //Invoke("DeleteNodeSystem", 0.3f);
+        
+    }
+    IEnumerator StartMethod()
+    {
+        yield return new WaitForEndOfFrame();
+        LineDrawerLauncher();
+        SettingNodeSystem();
+        DeleteNodeSystem();
+    }
+
+    private void DeleteNodeSystem()
+    {
+        if (gameObject.GetComponent<GridLayoutGroup>() != null)
+        {
+            Destroy(gameObject.GetComponent<GridLayoutGroup>());
+        }
+
+        for (int y = 0; y < mapLengthY; y++)
+        {
+            for (int x = 0; x < mapLengthX; x++)
+            {
+                if (FindPanelToSearchDictionary(x, y) != null)
+                {
+                    GameObject panel = FindPanelToSearchDictionary(x, y);
+                    if (panel.GetComponent<Map_Node>() == null)
+                    {
+                        Destroy(panel);
+                    }
+                }
+            }
+        }
+    }
+
+    private void SettingNodeSystem()
+    {
+        foreach(var nodeScript in nodeScripts)
+        {
+            float randomValue = Random.Range(0, normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer);
+
+            if (randomValue < normalMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.NormalMonster;
+                nodeScript.ChangeImageSprite(normalMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.EliteMonster;
+                nodeScript.ChangeImageSprite(eliteMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Store;
+                nodeScript.ChangeImageSprite(storeSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Treasure;
+                nodeScript.ChangeImageSprite(treasureSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.RandomEvent;
+                nodeScript.ChangeImageSprite(randomEventSprite);
+            }
+
+            else if (randomValue <= normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Shelter;
+                nodeScript.ChangeImageSprite(shelterSprite);
+            }
+        }
     }
     private void Update()
     {
@@ -53,7 +148,16 @@ public class Main_Map : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-
+            foreach (var nodeScript in nodeScripts)
+            {
+                if (nodeScript.prevNodeKeysProp != null)
+                {
+                    foreach (var prevNodeKey in nodeScript.prevNodeKeysProp)
+                    {
+                        LineDrawer(nodeScript.transform.position, childPanelDictionary[prevNodeKey].transform.position);
+                    }
+                }
+            }
         }
     }
     /// <summary>
@@ -103,10 +207,8 @@ public class Main_Map : MonoBehaviour
         secoundFloorFirstNode.AddComponent<Map_Node>();
         secoundFloorFirstNode.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
         for (int i = 0; i < createTreeCount; i++)
-        CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight));
+            CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), createCopyTreeCount);
 
-        if (FindPanelToSearchDictionary(new Vector2Int(secondFloorFirstNodeX, startNodeHeight)).GetComponent<Map_Node>() != null)
-            LineDrawer(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), new Vector2Int(startNodeX, 0));
 
         for (int i = 1; i < secondFloorNodeNumber; i++)
         {
@@ -115,8 +217,8 @@ public class Main_Map : MonoBehaviour
 
             secondNodePanel.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
 
-        for (int j = 0; j < createTreeCount; j++)
-            CreateRandomNode(new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight));
+            for (int j = 0; j < createTreeCount; j++)
+                CreateRandomNode(new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight), createCopyTreeCount);
         }
 
     }
@@ -186,32 +288,33 @@ public class Main_Map : MonoBehaviour
     }
 
 
-    private void CreateRandomNode(Vector2Int startNodeKey)
+    private void CreateRandomNode(Vector2Int startNodeKey, int repeatCount)
     {
-        if (startNodeKey.y != startNodeHeight) { Debug.LogWarning("Wrong Access"); return; }
+        //if (startNodeKey.y != startNodeHeight) { Debug.LogWarning("Wrong Access"); return; }
 
         List<Vector2Int> readyNode = new List<Vector2Int>();
         Vector2Int currentNodeCreate = startNodeKey;
+        Vector2Int treeCreate = startNodeKey;
         bool repeatWhile = true;
 
         while (repeatWhile)
         {
-            int randomListValue = 0;
-
-
             for (int nodeY = Mathf.Clamp((currentNodeCreate.y + YMinCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY <= Mathf.Clamp((currentNodeCreate.y + YMaxCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY++)
             {
                 for (int nodeX = Mathf.Clamp((currentNodeCreate.x + xCreateResearchLength), 0, mapLengthX - 1); nodeX >= Mathf.Clamp((currentNodeCreate.x - xCreateResearchLength), 0, (mapLengthX - 1)); nodeX--)
                 {
                     readyNode.Add(new Vector2Int(nodeX, nodeY));
-                    Debug.Log("AddRange");
                 }
-
             }
-            randomListValue = Random.Range(0, readyNode.Count);
+            int randomListValue = Random.Range(0, readyNode.Count);
 
-            Debug.Log(readyNode[randomListValue]);
             GameObject createTargetPanel = FindPanelToSearchDictionary(readyNode[randomListValue]);
+
+            float addTreeValue = Random.Range(0, 100);
+            if (addTreePercent > addTreeValue)
+            {
+                treeCreate = readyNode[randomListValue];
+            }
 
             if (createTargetPanel.GetComponent<Map_Node>() == null)
             {
@@ -221,6 +324,11 @@ public class Main_Map : MonoBehaviour
             createTargetPanel.GetComponent<Map_Node>().mykey = readyNode[randomListValue];
 
             currentNodeCreate = readyNode[randomListValue];
+
+            if (treeCreate != startNodeKey && repeatCount > 0)
+            {
+                CreateRandomNode(treeCreate, repeatCount-1);
+            }
 
             if (currentNodeCreate.y == (mapLengthY - 2))
             {
@@ -232,20 +340,35 @@ public class Main_Map : MonoBehaviour
 
     }
 
-
-    private void LineDrawer(Vector2Int targetPanelVector, Vector2Int currentPanelVector)
+    private void LineDrawerLauncher()
     {
-        GameObject targetPanel = FindPanelToSearchDictionary(targetPanelVector);
-        GameObject currnetPanel = FindPanelToSearchDictionary(currentPanelVector);
-
-        Vector3 linePos = Vector3.Lerp(targetPanel.transform.position, currnetPanel.transform.position, 0.5f);
-        float lineHeight = (targetPanel.transform.position - currnetPanel.transform.position).magnitude;
-
-        GameObject lineObject = Instantiate(linePrefab, targetPanel.transform);
-        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
-        lineRect.sizeDelta = new Vector2(lineThickness, lineHeight);
-        lineObject.transform.position = linePos;
-        lineObject.transform.up = targetPanel.transform.position;
+        foreach (var nodeScript in nodeScripts)
+        {
+            if (nodeScript.prevNodeKeysProp != null)
+            {
+                foreach (var prevNodeKey in nodeScript.prevNodeKeysProp)
+                {
+                    LineDrawer(nodeScript.transform.position, childPanelDictionary[prevNodeKey].transform.position);
+                }
+            }
+        }
     }
+    private void LineDrawer(Vector3 targetPanelVector, Vector3 currentPanelVector)
+    {
+        Vector3 linePos = Vector3.Lerp(targetPanelVector, currentPanelVector, 0.5f);
+        Vector3 differenceVector = targetPanelVector - currentPanelVector;
 
+        float angleRadian = Mathf.Atan2(differenceVector.y, differenceVector.x);
+        float degrees = angleRadian * Mathf.Rad2Deg;
+
+        GameObject lineObject = Instantiate(linePrefab, lineParent);
+        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
+
+        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 25, 1);
+
+        lineRect.sizeDelta = new Vector2(differenceVector.magnitude, lineThickness);
+        lineRect.rotation = Quaternion.Euler(0, 0, degrees);
+        lineRect.position = linePos;
+
+    }
 }
