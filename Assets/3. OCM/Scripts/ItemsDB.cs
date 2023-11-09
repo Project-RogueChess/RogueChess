@@ -1,18 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class ItemsDB : MonoBehaviour
 {
     public List<Item> items = new List<Item>();
-
-
+    
     private void Awake()
     {
         ReadCharData("itemDB", items);
+        
     }
+
    
-    
     private void ReadCharData(string v, List<Item> items)
     {
         items.Clear();
@@ -32,6 +34,7 @@ public class ItemsDB : MonoBehaviour
         }
     }
 
+   
 
 
 

@@ -13,23 +13,25 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
     
     private CanvasGroup canvasGroup;
     public int num ;
-    public Sprite piecesImage;
-    public string piecesName;
-    public string piecesSynergy;
-    public int piecesGold;
-    PiecesList piecesList;
+    public Sprite pieceImage;
+    public string pieceName;
+    public string pieceSpieces;
+    public string pieceClass;
+    public int pieceGold;
+
+
     PiecesDB piecesDB;
     private Image piecesShopImage;
 
     //상점에서 보여줄 정보
     public TMP_Text nameTxt;
-    public TMP_Text synergyTxt;
+    public TMP_Text synergysTxt;
     public TMP_Text goldTxt;
 
     public int[] percentages = new int[5];
-    Pieces piecesInfo;
-
-    public float rangeNum;
+    List<Piece> pieceInfos = new List<Piece>();
+    public Piece pieceInfo;
+    public int rangeNum;
 
     
 
@@ -42,7 +44,6 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         }
         
         canvasGroup = GetComponent<CanvasGroup>();
-        piecesList = FindObjectOfType<PiecesList>();
         piecesDB = FindObjectOfType<PiecesDB>();
         piecesShopImage = GetComponent<Image>();
     }
@@ -51,16 +52,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
     {
         ReRoll(DataManager.instance.reroolLock);
 
-        piecesGold = piecesInfo.gold;
-        piecesImage = piecesInfo.piecesImg;
-        piecesName = piecesInfo.name;
-        piecesSynergy = piecesInfo.synergy;
-
-
-        piecesShopImage.sprite = piecesImage;
-        nameTxt.text = piecesName;
-        synergyTxt.text = piecesSynergy;
-        goldTxt.text = "$" + piecesInfo.gold;
+        ShowShopPieces();
 
     }
 
@@ -80,48 +72,55 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
             }
 
-            rangeNum = Random.Range(0, 100);
-            if (rangeNum <= 100)//percentages[0]
+            rangeNum = Random.Range(0, 101);
+            if (rangeNum <= 101)
             {
                 num = Random.Range(0, 5);
-                piecesInfo = piecesList.gold1Pieces[num].GetComponent<Pieces>();
+                pieceInfos = piecesDB.gold1list;
+                pieceInfo = pieceInfos[num];
             }
-            //else if (rangeNum <= percentages[0] + percentages[1])
-            //{
-            //    num = Random.Range(0, 5);
-            //    piecesInfo = piecesList.gold2Pieces[num].GetComponent<Pieces>();
-            //}
-            //else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
-            //{
-            //    num = Random.Range(0, 5);
-            //    piecesInfo = piecesList.gold3Pieces[num].GetComponent<Pieces>();
-            //}
-            //else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
-            //{
-            //    num = Random.Range(0, 5);
-            //    piecesInfo = piecesList.gold4Pieces[num].GetComponent<Pieces>();
-            //}
-            //else
-            //{
-            //    num = Random.Range(0, 5);
-            //    piecesInfo = piecesList.gold5Pieces[num].GetComponent<Pieces>();
-            //}
-
-
+            else if (rangeNum <= percentages[0] + percentages[1])
+            {
+                num = Random.Range(0, 5);
+                pieceInfos = piecesDB.gold2list;
+                pieceInfo = pieceInfos[num];
+            }
+            else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
+            {
+                num = Random.Range(0, 5);
+                pieceInfos = piecesDB.gold3list;
+                pieceInfo = pieceInfos[num];
+            }
+            else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
+            {
+                num = Random.Range(0, 5);
+                pieceInfos = piecesDB.gold4list;
+                pieceInfo = pieceInfos[num];
+            }
+            else
+            {
+                num = Random.Range(0, 5);
+                pieceInfos = piecesDB.gold5list;
+                pieceInfo = pieceInfos[num];
+            }
             ShowShopPieces();
         } 
     }
 
     public void ShowShopPieces()
     {
-        piecesShopImage.sprite = piecesInfo.piecesImg;
-        piecesName = piecesInfo.name;
-        piecesSynergy = piecesInfo.synergy;
-        piecesGold = piecesInfo.gold;
+        piecesShopImage.sprite = pieceInfo.pieceImg;
+        pieceName = pieceInfo.name;
+        pieceSpieces = pieceInfo.spieces;
+        pieceClass = pieceInfo.classes;
+        pieceGold = pieceInfo.gold;
 
-        nameTxt.text = piecesInfo.name;
-        goldTxt.text = "$" + piecesInfo.gold;
-        synergyTxt.text = piecesInfo.synergy;
+
+        pieceImage = piecesShopImage.sprite;
+        nameTxt.text = pieceName;
+        synergysTxt.text = pieceSpieces + ", " + pieceClass;
+        goldTxt.text = "$" + pieceGold;
+
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
         UIManager.instance.UIRefresh();
@@ -129,11 +128,11 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(DataManager.instance.myGold >= piecesInfo.gold)
+        if(DataManager.instance.myGold >= pieceInfo.gold)
         {
             canvasGroup.alpha = 0f;
             canvasGroup.blocksRaycasts = false;
-            DataManager.instance.myGold -= piecesInfo.gold;
+            DataManager.instance.myGold -= pieceInfo.gold;
             
             CreatePiece();
             UIManager.instance.UIRefresh();
@@ -142,6 +141,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     public void CreatePiece()
     {
-        Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
+        Debug.Log("prefab받아오는 거 해야함 ㅠ");
+        //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }

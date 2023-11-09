@@ -621,6 +621,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieces: []
+  gold1list: []
+  gold2list: []
+  gold3list: []
+  gold4list: []
+  gold5list: []
 --- !u!1 &90151035
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,6 +981,11 @@ PrefabInstance:
       objectReference: {fileID: 1490064320}
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
+      propertyPath: synergysTxt
+      value: 
+      objectReference: {fileID: 1490064320}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
       propertyPath: percentages.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -1319,6 +1329,11 @@ PrefabInstance:
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: synergyTxt
+      value: 
+      objectReference: {fileID: 132869768}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: synergysTxt
       value: 
       objectReference: {fileID: 132869768}
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
@@ -2217,6 +2232,11 @@ PrefabInstance:
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: synergyTxt
+      value: 
+      objectReference: {fileID: 1225773177}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: synergysTxt
       value: 
       objectReference: {fileID: 1225773177}
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
@@ -6533,6 +6553,11 @@ PrefabInstance:
       objectReference: {fileID: 1778644371}
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
+      propertyPath: synergysTxt
+      value: 
+      objectReference: {fileID: 1778644371}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
       propertyPath: percentages.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -7743,6 +7768,11 @@ PrefabInstance:
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
         type: 3}
       propertyPath: synergyTxt
+      value: 
+      objectReference: {fileID: 687375895}
+    - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,
+        type: 3}
+      propertyPath: synergysTxt
       value: 
       objectReference: {fileID: 687375895}
     - target: {fileID: 320781199029238992, guid: 89f50e4872bb99e4a9942c4bdb6e0b8b,

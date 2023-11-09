@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class Pieces : MonoBehaviour
 {
-    public Sprite piecesImg;
+    public Sprite pieceImg;
     public new string name;
     public string synergy;
     public int gold;
