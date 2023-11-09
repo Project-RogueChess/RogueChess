@@ -1,0 +1,11 @@
+﻿name,hp,attack,attackSpeed,mp
+sword1,0,10,0,0
+sword2,0,20,0,0
+stone1,50,0,0,0
+stone2,100,0,0,0
+amulet1,0,0,1,0
+amulet2,0,0,2,0
+elixir1,0,0,0,10
+elixir2,0,0,0,20
+elixir3,0,0,0,30
+elixir3,0,0,0,40
