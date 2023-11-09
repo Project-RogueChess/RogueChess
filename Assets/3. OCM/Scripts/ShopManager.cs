@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,6 +8,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour, IPointerClickHandler
 {
@@ -128,22 +130,35 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(DataManager.instance.myGold >= pieceInfo.gold)
+        for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
         {
-            canvasGroup.alpha = 0f;
-            canvasGroup.blocksRaycasts = false;
-            DataManager.instance.myGold -= pieceInfo.gold;
-            
-            CreatePiece();
-            UIManager.instance.UIRefresh();
+            if (InvSpawnManager.instance.invTiles[i].piece == null)
+            {
+                if (DataManager.instance.myGold >= pieceInfo.gold)
+                {
+                    canvasGroup.alpha = 0f;
+                    canvasGroup.blocksRaycasts = false;
+                    DataManager.instance.myGold -= pieceInfo.gold;
+
+                    CreatePiece();
+                    UIManager.instance.UIRefresh();
+                    return ;
+                }
+            }
+
         }
+        
     }
 
     public void CreatePiece()
     {
-        Debug.Log("prefab받아오는 거 해야함 ㅠ");
         InvSpawnManager.instance.spawnUnit = pieceInfo.piecePrefab;
         int index = ButtonSpawner.instance.btnClick();
+
+        if(index == -1)
+        {
+            return;     // 위에서 애초에 클릭해도 반응없게 해서 상관없는데 일단 냅둠
+        }
         var currentPiece = InvSpawnManager.instance.invTiles[index].piece.GetComponent<Pieces>();
 
         currentPiece.Parse(pieceInfo);

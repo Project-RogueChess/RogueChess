@@ -25,6 +25,9 @@ public class Piece
     public float moveSpeed;
 
 
+    public Avatar avatar;
+    public Animator animator;
+
     public Piece(string name, string spieces, string classes, int gold, int grade, int maxHp, int hp, int maxMp, int mp, int attackDamage, float attackSpeed, int attackRange, float moveSpeed)
     {
         this.name = name;

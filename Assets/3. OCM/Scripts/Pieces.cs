@@ -13,28 +13,37 @@ public class Pieces : MonoBehaviour
 {
     public Sprite pieceImg;
     public new string name;
-    public string synergy;
+    
     public int gold;
-
-
-    public Transform pos;
-    public Item[] items;
-
+    public string spieces;
+    public string classes;
     public int grade;
-
     public int maxHp;
     public int hp;
     public int maxMp;
     public int mp;
-    public int attack;
-    public int attackSpeed;
+    public int attackDamage;
+    public float attackSpeed;
+    public int attackRange;
+    public float moveSpeed;
+
+    public Transform pos;
+    public Item[] items;
+
 
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
         name = piece.name;
         grade = piece.grade;
-
+        maxHp = piece.maxHp;
+        hp = piece.hp;
+        maxMp = piece.maxMp;
+        mp = piece.mp;
+        attackDamage = piece.attackDamage;
+        attackSpeed = piece.attackSpeed;
+        attackRange = piece.attackRange;
+        moveSpeed = piece.moveSpeed;
     }
     private void Awake()
     {
@@ -58,15 +67,11 @@ public class Pieces : MonoBehaviour
             {
                 items[i] = item._item;
                 hp += item._item.itemHp;
-                attack += item._item.itemAttack;
+                attackDamage += item._item.itemAttack;
                 attackSpeed += item._item.itemAttackSpeed;
                 mp += item._item.itemMp;
                 return;
             }
         }
     }
-
-    
-
-
 }

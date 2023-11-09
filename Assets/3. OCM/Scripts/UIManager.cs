@@ -31,16 +31,23 @@ public class UIManager : MonoBehaviour
     public bool shopOnOffBool;
 
 
-    public GameObject inventory;
+    public GameObject inventory1;
+    public GameObject inventory2;
+    public GameObject inventoryLeftBtn;
+    public GameObject inventoryRightBtn;
     public bool inventoryOnOffBool;
-    private InventoryPanel inventoryPanel;
+    public bool inventorySwitchBool;
+    private InventoryPanel inventoryPanel1;
+    private InventoryPanel inventoryPanel2;
 
     private void Awake()
     {
         instance = this;
         
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
-        inventoryPanel = inventory.GetComponent<InventoryPanel>();
+        inventoryPanel1 = inventory1.GetComponent<InventoryPanel>();
+        inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
+
     }
 
     private void Update()
@@ -67,11 +74,11 @@ public class UIManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            inventoryPanel.AddItem();
+            AddItem();
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            inventoryPanel.AddItem();
+            AddRandomItem();
         }
     }
 
@@ -145,11 +152,77 @@ public class UIManager : MonoBehaviour
     {
         if (inventoryOnOffBool == true)
         {
-            inventory.SetActive(false);
+            inventory1.SetActive(false);
+            inventory2.SetActive(false);
+            inventorySwitchBool = false;
         }
         else
         {
-            inventory.SetActive(true);
+            inventory1.SetActive(true);
+            inventory2.SetActive(false);
+            inventorySwitchBool = true;
+        }
+    }
+
+    public void InventoryUISwitch()
+    {
+        if (inventorySwitchBool == true)
+        {
+            inventory2.SetActive(true);
+            inventory1.SetActive(false);
+        }
+        else
+        {
+            inventory1.SetActive(true);
+            inventory2.SetActive(false);
+        }
+        inventorySwitchBool = !inventorySwitchBool;
+    }
+
+    public void AddItem()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+            {
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel1.itemsDB.items[i];
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().isSlotEmpty = false;
+                return;
+            }
+        }
+        for(int i = 0;i< 9; i++)
+        {
+            if(inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty)
+            {
+                inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[i];
+                inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().isSlotEmpty = false;
+                return;
+            }
+        }
+            
+    }
+    public void AddRandomItem()
+    {
+        int j = Random.Range(0, inventoryPanel1.itemsDB.items.Count);
+        for (int i = 0; i < 9; i++)
+        {
+            if (inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+            {
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel1.itemsDB.items[j];
+                inventoryPanel1.inventorySlots[i].GetComponent<InventorySlot>().isSlotEmpty = false;
+                return;
+            }
+        }
+        for (int i = 0; i < 9; i++)
+        {
+            if (inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty)
+            {
+                inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[j];
+                inventoryPanel2.inventorySlots[i].GetComponent<InventorySlot>().isSlotEmpty = false;
+                return;
+            }
         }
     }
 }
