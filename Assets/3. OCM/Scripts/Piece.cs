@@ -9,6 +9,7 @@ public class Piece
     public GameObject piecePrefab;
 
     public string name;
+    public int id;
     public int gold;
     public string spieces;
     public string classes;
@@ -25,9 +26,13 @@ public class Piece
     public float moveSpeed;
 
 
-    public Piece(string name, string spieces, string classes, int gold, int grade, int maxHp, int hp, int maxMp, int mp, int attackDamage, float attackSpeed, int attackRange, float moveSpeed)
+    public Avatar avatar;
+    public Animator animator;
+
+    public Piece(string name,int id ,string spieces, string classes, int gold, int grade, int maxHp, int hp, int maxMp, int mp, int attackDamage, float attackSpeed, int attackRange, float moveSpeed)
     {
         this.name = name;
+        this.id = id;
         this.spieces = spieces;
         this.classes = classes;
         this.gold = gold;

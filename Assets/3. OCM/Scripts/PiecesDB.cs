@@ -31,6 +31,7 @@ public class PiecesDB : MonoBehaviour
             
             piece.name = dicList[i]["name"].ToString();
             piece.gold = int.Parse(dicList[i]["gold"].ToString());
+            piece.id = int.Parse(dicList[i]["id"].ToString());
             piece.spieces = dicList[i]["spieces"].ToString();
             piece.classes = dicList[i]["classes"].ToString();
             piece.grade = int.Parse(dicList[i]["grade"].ToString());
@@ -45,6 +46,12 @@ public class PiecesDB : MonoBehaviour
             piece.moveSpeed = float.Parse(dicList[i]["moveSpeed"].ToString());
             piece.pieceImg = Resources.Load<Sprite>("PiecesImages/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
             piece.piecePrefab = Resources.Load<GameObject>("PiecesPrefabs/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
+
+
+            piece.avatar = Resources.Load<Avatar>("PiecesAvatar/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
+            piece.animator = Resources.Load<Animator>("PiecesAnimation/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
+
+
             pieces.Add(piece);
         }
 

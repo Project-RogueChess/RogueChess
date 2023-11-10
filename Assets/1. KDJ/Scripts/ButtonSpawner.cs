@@ -16,9 +16,10 @@ public class ButtonSpawner : MonoBehaviour
         instance = this;
     }
 
-    public void btnClick()
+    public int btnClick()
     {
-        Tile testTile = FindTile();
+        int index = -1;
+        Tile testTile = FindTile(out index);
 
         if (testTile != null)
         {
@@ -30,14 +31,19 @@ public class ButtonSpawner : MonoBehaviour
         {
             Debug.Log("ÀÎº¥²ËÂü");
         }
+
+        return index;
     }
 
-    Tile FindTile()
+    Tile FindTile(out int index)
     {
+        index = -1;
+
         for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
         {
             if (InvSpawnManager.instance.invTiles[i].piece == null)
             {
+                index = i;
                 return InvSpawnManager.instance.invTiles[i];
             }
         }
