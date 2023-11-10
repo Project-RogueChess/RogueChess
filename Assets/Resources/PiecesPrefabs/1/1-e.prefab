@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2834202864604444948}
   - component: {fileID: -2113120281116301858}
   - component: {fileID: -869276449206582582}
-  - component: {fileID: -750718166312557420}
   m_Layer: 0
   m_Name: 1-e
   m_TagString: Untagged
@@ -153,20 +152,4 @@ MonoBehaviour:
   attackType: 0
   atkRate: 0.5
   moveRate: 0.5
---- !u!114 &-750718166312557420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5484763399133008077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50088526cfab8e34193bc362f72ba402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 0
-  range: 0
-  attackType: 0
-  atkRate: 0.5
-  moveRate: 0.5
+  _target: {fileID: 0}

@@ -22,32 +22,28 @@ public class HexaUnit : MonoBehaviour
     public float moveRate = 0.5f;
 
     private bool _needUpdate = true;
-    private Vector2Int _gridIndex;
+    private Vector2Int _tileIndex;
     private Vector2Int _preIndex = new Vector2Int(-1,-1);
-    private HexaUnit _target;
+    private Vector2Int _lastTargetIndex;
+    public HexaUnit _target;
 
     public bool needUpdate => _needUpdate;
-    public Vector2Int gridIndex => _gridIndex;
+    public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
+    public Vector2Int lastTargetIndex => _lastTargetIndex;
     public HexaUnit target => _target;
 
-    private void OnDisable()
+    void OnDisable()
     {
-        if (preIndex.x != -1)
-        {
-            _gridIndex = preIndex;
-
-        }
-            
 
     }
 
-    public void SetGridIndex(Vector2Int index, bool isPre = false)
+    public void SetTileIndex(Vector2Int index, bool isPre = false)
     {
         if (isPre)
             _preIndex = index;
         else
-            _gridIndex = index;
+            _tileIndex = index;
     }
 
     public void SetTarget(HexaUnit unit)
@@ -62,27 +58,37 @@ public class HexaUnit : MonoBehaviour
 
     public void Attack()
     {
-        var dir = (target.transform.position - transform.position).normalized;
-        transform.forward = dir;
+        StartCoroutine(ExcuteAttack());
     }
 
     IEnumerator ExcuteMove(Vector2Int next)
     {
         _needUpdate = false;
-        //이전의 이동방향 기억하기
 
-        //회전이 필요한경우 회전먼저
-        var temp = _gridIndex;
-        _gridIndex = next;
+        var temp = _tileIndex;
+        _tileIndex = next;
         _preIndex = temp;
 
-        var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
-        var endPos = TilemapManager.instance.hexa_tilePosList[_gridIndex.y, _gridIndex.x];
-
-        var dir = (endPos - startPos).normalized;
-        transform.forward = dir;
-
         var timer = 0f;
+
+        var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
+        var endPos = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
+
+        var preDir = transform.forward;
+        var dir = (endPos - startPos).normalized;
+        var turnRate = moveRate * 0.5f;
+        if (preDir != dir)
+        {
+            while(timer < turnRate)
+            {
+                timer += Time.deltaTime;
+                transform.forward = Vector3.Lerp(preDir, dir, timer / turnRate);
+                yield return null;
+            }
+        }
+
+        timer = 0f;
+
         while (timer < moveRate)
         {
             timer += Time.deltaTime;
@@ -91,9 +97,26 @@ public class HexaUnit : MonoBehaviour
         }
 
         //이전의 이동방향이 지금방향과 같았다면 기다림 무시
-        
-        yield return new WaitForSeconds(0.1f);
 
         _needUpdate = true;
+    }
+
+    IEnumerator ExcuteAttack()
+    {
+        _lastTargetIndex = target.tileIndex;
+
+        var dir = (target.transform.position - transform.position).normalized;
+        var timer = 0f;
+        var preDir = transform.forward;
+
+        if (preDir != dir)
+        {
+            while (timer < moveRate)
+            {
+                timer += Time.deltaTime;
+                transform.forward = Vector3.Lerp(preDir, dir, timer / moveRate);
+                yield return null;
+            }
+        }
     }
 }
