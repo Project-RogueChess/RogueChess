@@ -52,9 +52,20 @@ public class Pieces : MonoBehaviour
 
         for(int i = 0; i < items.Length; i++)
         {
-            items[i] = new Item(string.Empty,0,0,0,0);
+            items[i] = new Item(string.Empty,0,0,0,0,0);
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            GivingItemInfo();
+            Destroy(gameObject);
+            
+        }
+    }
+
 
 
     public void EquipItem(ItemObject item)
@@ -67,11 +78,23 @@ public class Pieces : MonoBehaviour
             {
                 items[i] = item._item;
                 hp += item._item.itemHp;
-                attackDamage += item._item.itemAttack;
+                attackDamage += item._item.itemAttackDamage;
                 attackSpeed += item._item.itemAttackSpeed;
                 mp += item._item.itemMp;
                 return;
             }
         }
+    }
+
+    public void GivingItemInfo()
+    {
+        for(int i=0;i < items.Length; i++)
+        {
+            if (items[i].itemName != string.Empty)
+            {
+                UIManager.instance.AddTheItem(items[i]);
+            }
+        }
+        
     }
 }
