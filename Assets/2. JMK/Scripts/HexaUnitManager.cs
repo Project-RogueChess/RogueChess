@@ -555,9 +555,10 @@ public class HexaUnitManager : MonoBehaviour
             return;
         }
 
-        var unitGO = Instantiate(debugUnit01);
+        var unitGO = Instantiate(debugUnit02);
         unitGO.SetTileIndex(tileIndex);
         unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+        unitGO.transform.forward = Vector3.back;
         collisionMap[tileIndex.y, tileIndex.x] = true;
         RegisterHexaUnit(unitGO);
     }

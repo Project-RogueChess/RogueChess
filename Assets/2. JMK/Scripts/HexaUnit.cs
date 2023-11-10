@@ -74,15 +74,16 @@ public class HexaUnit : MonoBehaviour
         var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
         var endPos = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
 
-        var preDir = transform.forward;
-        var dir = (endPos - startPos).normalized;
+        var preDir = transform.rotation;
+        var dir = Quaternion.LookRotation((endPos - startPos).normalized);
         var turnRate = moveRate * 0.5f;
+
         if (preDir != dir)
         {
             while(timer < turnRate)
             {
                 timer += Time.deltaTime;
-                transform.forward = Vector3.Lerp(preDir, dir, timer / turnRate);
+                transform.rotation = Quaternion.Slerp(preDir, dir, timer / turnRate);
                 yield return null;
             }
         }
@@ -103,6 +104,7 @@ public class HexaUnit : MonoBehaviour
 
     IEnumerator ExcuteAttack()
     {
+        _needUpdate = false;
         _lastTargetIndex = target.tileIndex;
 
         var dir = (target.transform.position - transform.position).normalized;
@@ -118,5 +120,6 @@ public class HexaUnit : MonoBehaviour
                 yield return null;
             }
         }
+        _needUpdate = true;
     }
 }
