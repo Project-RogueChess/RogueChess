@@ -41,13 +41,15 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private float shelterPer = 0f;
     [SerializeField] private Sprite shelterSprite;
 
-    [Header("CurrentNodeInfomation")]
+    [Header("Optional")]
     [SerializeField] private Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
+    [SerializeField] private GameObject motherMapObject;
 
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
     private GameObject endNode;
     private Map_Node[] nodeScripts;
+    bool isOnMap = false;
     private int nodeTypeCount;
 
 
@@ -68,9 +70,17 @@ public class Main_Map : MonoBehaviour
     IEnumerator StartMethod()
     {
         yield return new WaitForEndOfFrame();
+
         LineDrawerLauncher();
         SettingNodeSystem();
         DeleteNodeSystem();
+
+        DisableMap();
+    }
+
+    void DisableMap()
+    {
+        motherMapObject.SetActive(false);
     }
 
     private void DeleteNodeSystem()
@@ -272,17 +282,16 @@ public class Main_Map : MonoBehaviour
 
     private void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
     {
-        bool isOnMap = false;
 
         if (isOnMap == false)
         {
-            this.enabled = true;
+            motherMapObject.SetActive(true);
             isOnMap = true;
         }
 
         else if (isOnMap == true)
         {
-            this.enabled = false;
+            motherMapObject.SetActive(false);
             isOnMap = false;
         }
     }
@@ -364,7 +373,7 @@ public class Main_Map : MonoBehaviour
         GameObject lineObject = Instantiate(linePrefab, lineParent);
         RectTransform lineRect = lineObject.GetComponent<RectTransform>();
 
-        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 25, 1);
+        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 20, 1);
 
         lineRect.sizeDelta = new Vector2(differenceVector.magnitude, lineThickness);
         lineRect.rotation = Quaternion.Euler(0, 0, degrees);
