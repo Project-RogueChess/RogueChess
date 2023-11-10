@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class Main_Map : MonoBehaviour
 {
+    #region InputValue
     [Header("Panel Control")]
     [SerializeField] private GameObject childrenPanelPrefab;
     [SerializeField] private int mapLengthX = 2;
@@ -51,7 +52,25 @@ public class Main_Map : MonoBehaviour
     private Map_Node[] nodeScripts;
     bool isOnMap = false;
     private int nodeTypeCount;
+    #endregion
 
+    #region External Call
+    public void UI_MapOnOff()
+    {
+
+        if (isOnMap == false)
+        {
+            motherMapObject.SetActive(true);
+            isOnMap = true;
+        }
+
+        else if (isOnMap == true)
+        {
+            motherMapObject.SetActive(false);
+            isOnMap = false;
+        }
+    }
+    #endregion
 
     private void Start()
     {
@@ -59,12 +78,7 @@ public class Main_Map : MonoBehaviour
 
         nodeScripts = gameObject.GetComponentsInChildren<Map_Node>();
 
-
         StartCoroutine(StartMethod());
-        //Invoke("LineDrawerLauncher", 0.1f);
-        //Invoke("SettingNodeSystem", 0.2f); // Invoke 아니어도 될거같음
-        ////SettingNodeSystem();
-        //Invoke("DeleteNodeSystem", 0.3f);
         
     }
     IEnumerator StartMethod()
@@ -77,104 +91,7 @@ public class Main_Map : MonoBehaviour
 
         DisableMap();
     }
-
-    void DisableMap()
-    {
-        motherMapObject.SetActive(false);
-    }
-
-    private void DeleteNodeSystem()
-    {
-        if (gameObject.GetComponent<GridLayoutGroup>() != null)
-        {
-            Destroy(gameObject.GetComponent<GridLayoutGroup>());
-        }
-
-        for (int y = 0; y < mapLengthY; y++)
-        {
-            for (int x = 0; x < mapLengthX; x++)
-            {
-                if (FindPanelToSearchDictionary(x, y) != null)
-                {
-                    GameObject panel = FindPanelToSearchDictionary(x, y);
-                    if (panel.GetComponent<Map_Node>() == null)
-                    {
-                        Destroy(panel);
-                    }
-                }
-            }
-        }
-    }
-
-    private void SettingNodeSystem()
-    {
-        foreach(var nodeScript in nodeScripts)
-        {
-            float randomValue = Random.Range(0, normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer);
-
-            if (randomValue < normalMonsterPer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.NormalMonster;
-                nodeScript.ChangeImageSprite(normalMonsterSprite);
-            }
-
-            else if (randomValue < normalMonsterPer + eliteMonsterPer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.EliteMonster;
-                nodeScript.ChangeImageSprite(eliteMonsterSprite);
-            }
-
-            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Store;
-                nodeScript.ChangeImageSprite(storeSprite);
-            }
-
-            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Treasure;
-                nodeScript.ChangeImageSprite(treasureSprite);
-            }
-
-            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.RandomEvent;
-                nodeScript.ChangeImageSprite(randomEventSprite);
-            }
-
-            else if (randomValue <= normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer)
-            {
-                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Shelter;
-                nodeScript.ChangeImageSprite(shelterSprite);
-            }
-        }
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            UI_MapOnOff();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            foreach (var nodeScript in nodeScripts)
-            {
-                if (nodeScript.prevNodeKeysProp != null)
-                {
-                    foreach (var prevNodeKey in nodeScript.prevNodeKeysProp)
-                    {
-                        LineDrawer(nodeScript.transform.position, childPanelDictionary[prevNodeKey].transform.position);
-                    }
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// motherPanelX,Y 는 본인의 너비 높이
-    /// childrenPanelX,Y 는 자식으로 들어갈 cell패널의 크기
-    /// </summary>
-
+    #region Starting Methods
     private void UI_MapRenderStart()
     {
         float motherPanelX = gameObject.GetComponent<RectTransform>().rect.width;
@@ -232,71 +149,6 @@ public class Main_Map : MonoBehaviour
         }
 
     }
-
-    private GameObject FindPanelToSearchDictionary(int X, int Y)
-    {
-        GameObject resultGameObject;
-        Vector2Int key = new Vector2Int(X, Y);
-
-        if (childPanelDictionary.TryGetValue(key, out resultGameObject))
-        {
-            return resultGameObject;
-        }
-
-        return null;
-    }
-    private GameObject FindPanelToSearchDictionary(Vector2Int xy)
-    {
-        GameObject resultGameObject;
-        Vector2Int key = xy;
-
-        if (childPanelDictionary.TryGetValue(key, out resultGameObject))
-        {
-            return resultGameObject;
-        }
-
-        return null;
-    }
-
-    private Vector2Int ChangePossibleIndexVector2Int(Vector2Int key)
-    {
-        key.x = Mathf.Clamp(key.x, 0, mapLengthX);
-        key.y = Mathf.Clamp(key.y, 0, mapLengthY);
-
-        return key;
-    }
-
-    private int ChangePossibleIndexintX(int key)
-    {
-        key = Mathf.Clamp(key, 0, mapLengthX);
-
-        return key;
-    }
-
-    private int ChangePossibleIndexintY(int key)
-    {
-        key = Mathf.Clamp(key, 0, mapLengthY);
-
-        return key;
-    }
-
-    public void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
-    {
-
-        if (isOnMap == false)
-        {
-            motherMapObject.SetActive(true);
-            isOnMap = true;
-        }
-
-        else if (isOnMap == true)
-        {
-            motherMapObject.SetActive(false);
-            isOnMap = false;
-        }
-    }
-
-
     private void CreateRandomNode(Vector2Int startNodeKey, int repeatCount)
     {
         //if (startNodeKey.y != startNodeHeight) { Debug.LogWarning("Wrong Access"); return; }
@@ -348,7 +200,6 @@ public class Main_Map : MonoBehaviour
         }
 
     }
-
     private void LineDrawerLauncher()
     {
         foreach (var nodeScript in nodeScripts)
@@ -380,4 +231,128 @@ public class Main_Map : MonoBehaviour
         lineRect.position = linePos;
 
     }
+    private void SettingNodeSystem()
+    {
+        foreach(var nodeScript in nodeScripts)
+        {
+            float randomValue = Random.Range(0, normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer);
+
+            if (randomValue < normalMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.NormalMonster;
+                nodeScript.ChangeImageSprite(normalMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.EliteMonster;
+                nodeScript.ChangeImageSprite(eliteMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Store;
+                nodeScript.ChangeImageSprite(storeSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Treasure;
+                nodeScript.ChangeImageSprite(treasureSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.RandomEvent;
+                nodeScript.ChangeImageSprite(randomEventSprite);
+            }
+
+            else if (randomValue <= normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Shelter;
+                nodeScript.ChangeImageSprite(shelterSprite);
+            }
+        }
+    }
+    private void DeleteNodeSystem()
+    {
+        if (gameObject.GetComponent<GridLayoutGroup>() != null)
+        {
+            Destroy(gameObject.GetComponent<GridLayoutGroup>());
+        }
+
+        for (int y = 0; y < mapLengthY; y++)
+        {
+            for (int x = 0; x < mapLengthX; x++)
+            {
+                if (FindPanelToSearchDictionary(x, y) != null)
+                {
+                    GameObject panel = FindPanelToSearchDictionary(x, y);
+                    if (panel.GetComponent<Map_Node>() == null)
+                    {
+                        Destroy(panel);
+                    }
+                }
+            }
+        }
+    }
+    void DisableMap()
+    {
+        motherMapObject.SetActive(false);
+    }
+    #endregion
+
+    #region DeveloperTools
+    private GameObject FindPanelToSearchDictionary(int X, int Y)
+    {
+        GameObject resultGameObject;
+        Vector2Int key = new Vector2Int(X, Y);
+
+        if (childPanelDictionary.TryGetValue(key, out resultGameObject))
+        {
+            return resultGameObject;
+        }
+
+        return null;
+    }
+    private GameObject FindPanelToSearchDictionary(Vector2Int xy)
+    {
+        GameObject resultGameObject;
+        Vector2Int key = xy;
+
+        if (childPanelDictionary.TryGetValue(key, out resultGameObject))
+        {
+            return resultGameObject;
+        }
+
+        return null;
+    }
+
+    private Vector2Int ChangePossibleIndexVector2Int(Vector2Int key)
+    {
+        key.x = Mathf.Clamp(key.x, 0, mapLengthX);
+        key.y = Mathf.Clamp(key.y, 0, mapLengthY);
+
+        return key;
+    }
+
+    private int ChangePossibleIndexintX(int key)
+    {
+        key = Mathf.Clamp(key, 0, mapLengthX);
+
+        return key;
+    }
+
+    private int ChangePossibleIndexintY(int key)
+    {
+        key = Mathf.Clamp(key, 0, mapLengthY);
+
+        return key;
+    }
+    #endregion
+
+
+
+
+
 }
