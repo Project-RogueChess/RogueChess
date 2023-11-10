@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
-public enum HexaUnitAttackType
+public enum HexaUnitActType
 {
-    Melee,
-    Marksman
+    Common,
+    Jumper
 }
 
 public class HexaUnit : MonoBehaviour
 {
     public int team;
     public int range;
-    public HexaUnitAttackType attackType;
+    public HexaUnitActType actType;
     public float atkRate = 0.5f;
     public float moveRate = 0.5f;
 
@@ -25,18 +20,14 @@ public class HexaUnit : MonoBehaviour
     private Vector2Int _tileIndex;
     private Vector2Int _preIndex = new Vector2Int(-1,-1);
     private Vector2Int _lastTargetIndex;
-    public HexaUnit _target;
+    private HexaUnit _target;
 
     public bool needUpdate => _needUpdate;
     public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
     public Vector2Int lastTargetIndex => _lastTargetIndex;
+
     public HexaUnit target => _target;
-
-    void OnDisable()
-    {
-
-    }
 
     public void SetTileIndex(Vector2Int index, bool isPre = false)
     {
@@ -64,7 +55,6 @@ public class HexaUnit : MonoBehaviour
     IEnumerator ExcuteMove(Vector2Int next)
     {
         _needUpdate = false;
-
         var temp = _tileIndex;
         _tileIndex = next;
         _preIndex = temp;
@@ -76,6 +66,7 @@ public class HexaUnit : MonoBehaviour
 
         var preDir = transform.rotation;
         var dir = Quaternion.LookRotation((endPos - startPos).normalized);
+
         var turnRate = moveRate * 0.5f;
 
         if (preDir != dir)
@@ -98,7 +89,6 @@ public class HexaUnit : MonoBehaviour
         }
 
         //이전의 이동방향이 지금방향과 같았다면 기다림 무시
-
         _needUpdate = true;
     }
 
