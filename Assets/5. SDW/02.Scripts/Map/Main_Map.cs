@@ -24,7 +24,8 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private float addTreePercent = 15f;
 
     [Header("Line Control")]
-    [SerializeField] private GameObject linePrefab;
+    [SerializeField] private GameObject linePrefabBlack;
+    [SerializeField] private GameObject linePrefabRed;
     [SerializeField] private Transform lineParent;
     [SerializeField] private float lineThickness = 10f;
 
@@ -43,7 +44,7 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private Sprite shelterSprite;
 
     [Header("Optional")]
-    [SerializeField] private Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
+    [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
     [SerializeField] private GameObject motherMapObject;
 
 
@@ -119,9 +120,13 @@ public class Main_Map : MonoBehaviour
 
         GameObject startNodePanel = FindPanelToSearchDictionary(startNodeX, 0);
         startNodePanel.AddComponent<Map_Node>();
+        startNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, 0);
+
+        currentNodeXY = new Vector2Int(startNodeX, 0); // this
 
         GameObject endNodePanel = FindPanelToSearchDictionary(startNodeX, (mapLengthY - 1));
         endNodePanel.AddComponent<Map_Node>();
+        endNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, (mapLengthY - 1));
         endNode = endNodePanel;
 
 
@@ -133,6 +138,7 @@ public class Main_Map : MonoBehaviour
         GameObject secoundFloorFirstNode = FindPanelToSearchDictionary(secondFloorFirstNodeX, startNodeHeight);
         secoundFloorFirstNode.AddComponent<Map_Node>();
         secoundFloorFirstNode.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
+        secoundFloorFirstNode.GetComponent<Map_Node>().mykey = new Vector2Int(secondFloorFirstNodeX, startNodeHeight);
         for (int i = 0; i < createTreeCount; i++)
             CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), createCopyTreeCount);
 
@@ -141,7 +147,7 @@ public class Main_Map : MonoBehaviour
         {
             GameObject secondNodePanel = FindPanelToSearchDictionary(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight);
             secondNodePanel.AddComponent<Map_Node>();
-
+            secondNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight);
             secondNodePanel.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
 
             for (int j = 0; j < createTreeCount; j++)
@@ -208,28 +214,10 @@ public class Main_Map : MonoBehaviour
             {
                 foreach (var prevNodeKey in nodeScript.prevNodeKeysProp)
                 {
-                    LineDrawer(nodeScript.transform.position, childPanelDictionary[prevNodeKey].transform.position);
+                    LineDrawer(nodeScript.mykey, prevNodeKey, linePrefabBlack);
                 }
             }
         }
-    }
-    private void LineDrawer(Vector3 targetPanelVector, Vector3 currentPanelVector)
-    {
-        Vector3 linePos = Vector3.Lerp(targetPanelVector, currentPanelVector, 0.5f);
-        Vector3 differenceVector = targetPanelVector - currentPanelVector;
-
-        float angleRadian = Mathf.Atan2(differenceVector.y, differenceVector.x);
-        float degrees = angleRadian * Mathf.Rad2Deg;
-
-        GameObject lineObject = Instantiate(linePrefab, lineParent);
-        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
-
-        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 20, 1);
-
-        lineRect.sizeDelta = new Vector2(differenceVector.magnitude, lineThickness);
-        lineRect.rotation = Quaternion.Euler(0, 0, degrees);
-        lineRect.position = linePos;
-
     }
     private void SettingNodeSystem()
     {
@@ -302,6 +290,26 @@ public class Main_Map : MonoBehaviour
     }
     #endregion
 
+    #region Click System
+
+    public void ClickedTrueNodeAndMove(Vector2Int trueNode)
+    {
+        Vector2Int prevNodeKey = currentNodeXY;
+        currentNodeXY = trueNode;
+
+        NodeAction();
+
+        LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
+        
+    }
+
+    private void NodeAction()
+    {
+
+    }
+
+    #endregion
+
     #region DeveloperTools
     private GameObject FindPanelToSearchDictionary(int X, int Y)
     {
@@ -348,6 +356,45 @@ public class Main_Map : MonoBehaviour
         key = Mathf.Clamp(key, 0, mapLengthY);
 
         return key;
+    }
+    private void LineDrawer(Vector2Int targetPanelKey, Vector2Int currentPanelKey, GameObject linePrefab)
+    {
+        Vector3 targetPanelVector = FindPanelToSearchDictionary(targetPanelKey).transform.position;
+        Vector3 currentPanelVector = FindPanelToSearchDictionary(currentPanelKey).transform.position;
+        GameObject targetPanelObject = FindPanelToSearchDictionary(targetPanelKey);
+
+        Vector3 linePos = Vector3.Lerp(targetPanelVector, currentPanelVector, 0.5f);
+        Vector3 differenceVector = targetPanelVector - currentPanelVector;
+
+        float angleRadian = Mathf.Atan2(differenceVector.y, differenceVector.x);
+        float degrees = angleRadian * Mathf.Rad2Deg;
+
+        //if (targetPanelObject.GetComponentInChildren<RawImage>() != null)
+        //{
+        //    List<GameObject> goLineList = new List<GameObject>();
+
+        //    goLineList.AddRange(targetPanelObject.GetComponentsInChildren<GameObject>());
+
+        //    foreach (GameObject goLine in goLineList)
+        //    {
+        //        if (goLine.CompareTag("Line"))
+        //        {
+        //            if(goLine.transform.position == linePos)
+        //            Destroy(goLine);
+        //        }
+        //    }
+        //}
+
+        //GameObject lineObject = Instantiate(linePrefab, targetPanelObject.transform);
+        GameObject lineObject = Instantiate(linePrefab, lineParent);
+        RectTransform lineRect = lineObject.GetComponent<RectTransform>();
+
+        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 20, 1);
+
+        lineRect.sizeDelta = new Vector2(differenceVector.magnitude, lineThickness);
+        lineRect.rotation = Quaternion.Euler(0, 0, degrees);
+        lineRect.position = linePos;
+
     }
     #endregion
 
