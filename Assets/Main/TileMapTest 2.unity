@@ -11047,6 +11047,8 @@ GameObject:
   - component: {fileID: 1280159648}
   - component: {fileID: 1280159647}
   - component: {fileID: 1280159646}
+  - component: {fileID: 1280159651}
+  - component: {fileID: 1280159650}
   m_Layer: 5
   m_Name: UI_Map_Main
   m_TagString: Untagged
@@ -11092,7 +11094,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 6
-  m_StartCorner: 0
+  m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 0, y: 0}
@@ -11122,7 +11124,9 @@ MonoBehaviour:
   createTreeCount: 6
   createCopyTreeCount: 0
   addTreePercent: 0
-  linePrefab: {fileID: 836711488715771938, guid: ad4be1f16d58bbd40b77e991ec8798b8,
+  linePrefabBlack: {fileID: 836711488715771938, guid: ad4be1f16d58bbd40b77e991ec8798b8,
+    type: 3}
+  linePrefabRed: {fileID: 836711488715771938, guid: fca969cdfd265ae41b80241886e8795a,
     type: 3}
   lineParent: {fileID: 1579593458}
   lineThickness: 40
@@ -11155,7 +11159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.8517514, b: 0.6556604, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -11179,6 +11183,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280159644}
   m_CullTransparentMesh: 1
+--- !u!114 &1280159650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280159644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!223 &1280159651
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280159644}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1001 &1300981040
 PrefabInstance:
   m_ObjectHideFlags: 0
