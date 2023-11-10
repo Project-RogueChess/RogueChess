@@ -280,7 +280,7 @@ public class Main_Map : MonoBehaviour
         return key;
     }
 
-    private void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
+    public void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
     {
 
         if (isOnMap == false)

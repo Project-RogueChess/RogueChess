@@ -16132,8 +16132,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   shopOnOffBool: 0
-  inventory: {fileID: 1478945350}
+  inventory1: {fileID: 1478945350}
   inventoryOnOffBool: 0
+  inventorySwitchBool: 0
+  mapObject: {fileID: 1329862816}
 --- !u!4 &1226867867
 Transform:
   m_ObjectHideFlags: 0

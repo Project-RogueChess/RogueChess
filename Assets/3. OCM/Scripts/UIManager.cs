@@ -32,13 +32,16 @@ public class UIManager : MonoBehaviour
 
 
     public GameObject inventory1;
-    public GameObject inventory2;
-    public GameObject inventoryLeftBtn;
-    public GameObject inventoryRightBtn;
+    //public GameObject inventory2;
+    //public GameObject inventoryLeftBtn;
+    //public GameObject inventoryRightBtn;
     public bool inventoryOnOffBool;
     public bool inventorySwitchBool;
     private InventoryPanel inventoryPanel1;
     private InventoryPanel inventoryPanel2;
+
+
+    public GameObject mapObject;
 
     private void Awake()
     {
@@ -46,11 +49,12 @@ public class UIManager : MonoBehaviour
         
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
         inventoryPanel1 = inventory1.GetComponent<InventoryPanel>();
-        inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
+        //inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
         inventory1.SetActive(true);
-        inventory2.SetActive(true);
+        //inventory2.SetActive(true);
         inventory1.SetActive(false);
-        inventory2.SetActive(false);
+        //inventory2.SetActive(false);
+        
     }
 
     private void Update()
@@ -82,6 +86,10 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))    
         {
             AddRandomItem();
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            mapObject.GetComponent<Main_Map>().UI_MapOnOff();
         }
         
     }
@@ -157,17 +165,17 @@ public class UIManager : MonoBehaviour
         if (inventoryOnOffBool == true)
         {
             inventory1.SetActive(false);
-            inventory2.SetActive(false);
-            inventoryLeftBtn.SetActive(false);
-            inventoryRightBtn.SetActive(false);
+            //inventory2.SetActive(false);
+            //inventoryLeftBtn.SetActive(false);
+            //inventoryRightBtn.SetActive(false);
             inventorySwitchBool = false;
         }
         else
         {
             inventory1.SetActive(true);
-            inventory2.SetActive(false);
-            inventoryLeftBtn.SetActive(true);
-            inventoryRightBtn.SetActive(true);
+            //inventory2.SetActive(false);
+            //inventoryLeftBtn.SetActive(true);
+            //inventoryRightBtn.SetActive(true);
             inventorySwitchBool = true;
         }
     }
@@ -176,13 +184,13 @@ public class UIManager : MonoBehaviour
     {
         if (inventorySwitchBool == true)
         {
-            inventory2.SetActive(true);
+            //inventory2.SetActive(true);
             inventory1.SetActive(false);
         }
         else
         {
             inventory1.SetActive(true);
-            inventory2.SetActive(false);
+            //inventory2.SetActive(false);
         }
         inventorySwitchBool = !inventorySwitchBool;
     }
