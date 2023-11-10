@@ -53,6 +53,11 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        CreateTilemaps();
+    }
+
 
     public void initTilePosList()
     {
