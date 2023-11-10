@@ -30,7 +30,9 @@ public class Pieces : MonoBehaviour
     public Transform pos;
     public Item[] items;
 
+    public HpBar hpbarScript;
 
+    public Canvas canvas;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
@@ -54,6 +56,14 @@ public class Pieces : MonoBehaviour
         {
             items[i] = new Item(string.Empty,0,0,0,0,0);
         }
+        canvas = GetComponentInChildren<Canvas>();
+        hpbarScript = FindObjectOfType<HpBar>().GetComponent<HpBar>();
+        //hpbarScript.test.Add(gameObject);
+        //hpbarScript.m_objectList.Add(gameObject.transform);
+        hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
+        //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
+
+
     }
 
     private void Update()
@@ -77,6 +87,7 @@ public class Pieces : MonoBehaviour
             if (items[i].itemName == string.Empty || items[i].itemName == null)
             {
                 items[i] = item._item;
+                maxHp += item._item.itemHp;
                 hp += item._item.itemHp;
                 attackDamage += item._item.itemAttackDamage;
                 attackSpeed += item._item.itemAttackSpeed;
