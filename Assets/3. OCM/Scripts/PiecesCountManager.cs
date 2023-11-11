@@ -16,6 +16,4 @@ public class PiecesCountManager : MonoBehaviour
         piecesDB = FindObjectOfType<PiecesDB>();
         piecesIdCounts = new int[piecesDB.pieces.Count];
     }
-
-
 }

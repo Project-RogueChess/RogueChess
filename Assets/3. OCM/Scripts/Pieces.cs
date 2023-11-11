@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 
 
@@ -30,9 +32,11 @@ public class Pieces : MonoBehaviour
     public Transform pos;
     public Item[] items;
 
+    public Canvas canvas;
     public HpBar hpbarScript;
 
-    public Canvas canvas;
+    public int t_objectsNum;
+    public ItemsImg itemImage;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
@@ -56,14 +60,26 @@ public class Pieces : MonoBehaviour
         {
             items[i] = new Item(string.Empty,0,0,0,0,0);
         }
-        canvas = GetComponentInChildren<Canvas>();
+        canvas = FindObjectOfType<Canvas>();
         hpbarScript = FindObjectOfType<HpBar>().GetComponent<HpBar>();
-        //hpbarScript.test.Add(gameObject);
+        itemImage = FindObjectOfType<ItemsImg>();
+        for ( int i = 0;i<hpbarScript.t_objects.Length;i++)
+        {
+            if (!hpbarScript.t_objects[i].GetComponent<Pieces>())
+            {
+                hpbarScript.t_objects[i] = gameObject;
+                t_objectsNum = i;
+                hpbarScript.m_hpBarsList[i].SetActive(true);
+                hpbarScript.m_ItemsList[i*3+0].SetActive(true);
+                hpbarScript.m_ItemsList[i*3+1].SetActive(true);
+                hpbarScript.m_ItemsList[i*3+2].SetActive(true);
+                return;
+            }
+        }
+       
         //hpbarScript.m_objectList.Add(gameObject.transform);
-        hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
+        //hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
         //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
-
-
     }
 
     private void Update()
@@ -72,7 +88,17 @@ public class Pieces : MonoBehaviour
         {
             GivingItemInfo();
             Destroy(gameObject);
-            
+            hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
+            hpbarScript.t_objects[t_objectsNum].SetActive(false);
+            for( int i =0; i< 3; i++)
+            {
+                hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
+
+                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().sprite = null;
+                Color color = itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color;
+                color.a = 0;
+                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color = color;
+            }
         }
     }
 
@@ -91,7 +117,29 @@ public class Pieces : MonoBehaviour
                 hp += item._item.itemHp;
                 attackDamage += item._item.itemAttackDamage;
                 attackSpeed += item._item.itemAttackSpeed;
-                mp += item._item.itemMp;
+                mp += item._item.itemMp ;
+                if (i==0)
+                {
+                    itemImage.transform.GetChild(t_objectsNum*3).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
+                    Color color = itemImage.transform.GetChild(t_objectsNum * 3).gameObject.GetComponent<Image>().color;
+                    color.a = 1;
+                    itemImage.transform.GetChild(t_objectsNum * 3).gameObject.GetComponent<Image>().color = color;
+                }
+                else if (i==1)
+                {
+                    itemImage.transform.GetChild(t_objectsNum * 3 + 1).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
+                    Color color = itemImage.transform.GetChild(t_objectsNum * 3+1).gameObject.GetComponent<Image>().color;
+                    color.a = 1;
+                    itemImage.transform.GetChild(t_objectsNum * 3+1).gameObject.GetComponent<Image>().color = color;
+                }
+                else
+                {
+                    itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
+                    Color color = itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().color;
+                    color.a = 1;
+                    itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().color = color;
+                }
+                
                 return;
             }
         }
@@ -105,7 +153,11 @@ public class Pieces : MonoBehaviour
             {
                 UIManager.instance.AddTheItem(items[i]);
             }
-        }
-        
+        } 
+    }
+
+    public void GivingItemImage()
+    {
+
     }
 }

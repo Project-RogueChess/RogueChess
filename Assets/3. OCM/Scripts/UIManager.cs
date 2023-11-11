@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
         inventory2.SetActive(false);
         itemAddNumTxt.enabled = false;
         itemAddNumImg.SetActive(false);
+        shopOnOffBool = true;
 
     }
 
