@@ -77,7 +77,6 @@ public class TileManager : MonoBehaviour
                 
 
                 Vector3 p = new Vector3(hitPoint.x, 1.0f, hitPoint.z);
-                Debug.Log(p);
 
                 prevPiece.transform.position = Vector3.Lerp(prevPiece.transform.position, p, dragSpeed);
 

@@ -17,7 +17,10 @@ public class Tile : MonoBehaviour
             TileManager.Instance.isDrag = true;
             TileManager.Instance.prevPiece = piece;
             TileManager.Instance.prevTile = this;
-            
+
+            HexaUnit unit = piece.GetComponent<HexaUnit>();
+            if (HexaUnitManager.instance.unitList.Contains(unit))
+                HexaUnitManager.instance.UnRegisterHexaUnit(unit);
         }
     }
 
@@ -50,8 +53,14 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
                 TileManager.Instance.prevTile.piece = tempGO;
+				HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
+                unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
+                HexaUnitManager.instance.RegisterHexaUnit(unit);
+
                 if (tempGO != null)
                 {
+                    HexaUnit otherUnit = TileManager.Instance.nextPiece.GetComponent<HexaUnit>();
+                    otherUnit.SetTileIndex(new Vector2Int(TileManager.Instance.prevTile.triggerInfo.x, TileManager.Instance.prevTile.triggerInfo.y));
                     TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
                 }
             }
