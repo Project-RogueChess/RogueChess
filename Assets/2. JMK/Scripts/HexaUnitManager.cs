@@ -17,8 +17,6 @@ public class HexaUnitManager : MonoBehaviour
 
     public List<HexaUnit> unitList;
 
-    public string cubeString = "Cube";
-
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public Camera mainCam;
@@ -69,8 +67,6 @@ public class HexaUnitManager : MonoBehaviour
 
     private void Update()
     {
-
-
         Debug_HexatileTool();
         Debug_UnitControll();
 
