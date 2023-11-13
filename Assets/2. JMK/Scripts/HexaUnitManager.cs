@@ -17,8 +17,6 @@ public class HexaUnitManager : MonoBehaviour
 
     public List<HexaUnit> unitList;
 
-    public string cubeString = "Cube";
-
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public Camera mainCam;
@@ -64,16 +62,6 @@ public class HexaUnitManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-    }
-
-    private void Update()
-    {
-
-
-        Debug_HexatileTool();
-        Debug_UnitControll();
-
         if (!excuteUnitControll)
             return;
 
@@ -86,6 +74,12 @@ public class HexaUnitManager : MonoBehaviour
         }
 
         HexaUnitUpdate(updateUnitList);
+    }
+
+    private void Update()
+    {
+        Debug_HexatileTool();
+        Debug_UnitControll();
     }
 
     public void HexaUnitUpdate(List<HexaUnit> units)
@@ -189,9 +183,10 @@ public class HexaUnitManager : MonoBehaviour
                     pathTile.RemoveAt(0);
                     u.Move(pathTile[0]);
                     firstCheck = true;
+                    Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
                     collisionMap[pathTile[0].y, pathTile[0].x] = true;
-                    Buffer.BlockCopy(collisionMap, 0, tileTemp, 0, collisionMap.Length);
                     distList.Clear();
+                    break;
                 }
 
                 Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
@@ -438,6 +433,27 @@ public class HexaUnitManager : MonoBehaviour
         return result;
     }
 
+    void Debug_GenerateUnit(Vector2Int tileIndex)
+    {
+        var indexList = new List<Vector2Int>();
+        foreach (var item in unitList)
+            indexList.Add(item.tileIndex);
+
+        if (indexList.Count >= 32)
+            return;
+
+        if (indexList.Contains(tileIndex))
+        {
+            return;
+        }
+        var unitGO = Instantiate(debugUnit02);
+        unitGO.SetTileIndex(tileIndex);
+        unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+        unitGO.transform.forward = Vector3.back;
+        collisionMap[tileIndex.y, tileIndex.x] = true;
+        RegisterHexaUnit(unitGO);
+    }
+
     void Debug_UnitControll()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -449,7 +465,12 @@ public class HexaUnitManager : MonoBehaviour
             
 
         if (Input.GetKeyDown(KeyCode.Y))
-            Debug_GenerateUnit();
+            Debug_AutoGenerateUnit();
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Debug_GenerateUnit(new Vector2Int(6, 4));
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -534,7 +555,7 @@ public class HexaUnitManager : MonoBehaviour
             }
         }
     }
-    void Debug_GenerateUnit()
+    void Debug_AutoGenerateUnit()
     {
         var tileIndex = new Vector2Int(UnityEngine.Random.Range(0,MAX_MAP_X), UnityEngine.Random.Range(4, MAX_MAP_Y));
 
@@ -547,7 +568,7 @@ public class HexaUnitManager : MonoBehaviour
 
         if (indexList.Contains(tileIndex))
         {
-            Debug_GenerateUnit();
+            Debug_AutoGenerateUnit();
             return;
         }
 

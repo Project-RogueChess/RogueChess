@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
             TileManager.Instance.isDrag = true;
             TileManager.Instance.prevPiece = piece;
             TileManager.Instance.prevTile = this;
+
             HexaUnit unit = piece.GetComponent<HexaUnit>();
             if (HexaUnitManager.instance.unitList.Contains(unit))
                 HexaUnitManager.instance.UnRegisterHexaUnit(unit);
@@ -52,7 +53,7 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
                 TileManager.Instance.prevTile.piece = tempGO;
-                HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
+				HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
                 unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
                 HexaUnitManager.instance.RegisterHexaUnit(unit);
 

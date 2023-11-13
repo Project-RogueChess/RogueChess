@@ -7,17 +7,19 @@ public class Item
 {
     public Sprite itemSprite;
     public string itemName;
+    public int id;
     public int itemHp;
-    public int itemAttack;
-    public int itemAttackSpeed;
+    public int itemAttackDamage;
+    public float itemAttackSpeed;
     public int itemMp;
 
-    public Item(string name, int hp, int attack, int attackSpeed, int mana)
+    public Item(string name,int id, int hp, int itemAttackDamage, float itemAttackSpeed, int mana)
     {
+        this.id = id;
         this.itemName = name;
         this.itemHp = hp;
-        this.itemAttack = attack;
-        this.itemAttackSpeed = attackSpeed;
+        this.itemAttackDamage = itemAttackDamage;
+        this.itemAttackSpeed = itemAttackSpeed;
         this.itemMp = mana;
     }
 

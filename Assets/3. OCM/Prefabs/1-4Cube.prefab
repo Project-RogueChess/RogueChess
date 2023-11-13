@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1504447032729873380}
   - component: {fileID: 2834202864604444948}
   - component: {fileID: -2113120281116301858}
-  - component: {fileID: -2892146514676169710}
   m_Layer: 0
   m_Name: 1-4Cube
   m_TagString: Untagged
@@ -119,36 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18760c637e35b564ea398e8bae61ec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceImg: {fileID: 0}
+  piecesImg: {fileID: 21300000, guid: 826a03657a236784d990488dae189dfa, type: 3}
   name: 1-4
+  synergy: 1-4
   gold: 1
-  spieces: 
-  classes: 
-  grade: 0
-  maxHp: 0
-  hp: 0
-  maxMp: 0
-  mp: 0
-  attackDamage: 0
-  attackSpeed: 0
-  attackRange: 0
-  moveSpeed: 0
-  pos: {fileID: 0}
-  items: []
---- !u!114 &-2892146514676169710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5484763399133008077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50088526cfab8e34193bc362f72ba402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: 0
-  range: 0
-  attackType: 0
-  atkRate: 0.5
-  moveRate: 0.5
