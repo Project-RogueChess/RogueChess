@@ -237,5 +237,7 @@ MonoBehaviour:
   moveSpeed: 0
   pos: {fileID: 0}
   items: []
-  hpbarScript: {fileID: 0}
   canvas: {fileID: 0}
+  hpbarScript: {fileID: 0}
+  t_objectsNum: 0
+  itemImage: {fileID: 0}

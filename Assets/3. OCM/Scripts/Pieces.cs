@@ -147,7 +147,7 @@ public class Pieces : MonoBehaviour
 
     public void SellPiece()
     {
-        DataManager.instance.myGold += gold;
+        DataManager.instance.myGold += CalculateGold();
         UIManager.instance.UIRefresh();
         GivingItemInfo();
         hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
@@ -161,5 +161,16 @@ public class Pieces : MonoBehaviour
             hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
         }
         Destroy(gameObject);
+    }
+    public int CalculateGold()
+    {
+        if(grade == 1)
+        {
+            return gold = gold;
+        }
+        else 
+        {
+            return gold = gold+2*grade;
+        }
     }
 }
