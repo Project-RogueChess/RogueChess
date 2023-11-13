@@ -74,7 +74,7 @@ public class Tile : MonoBehaviour
                     TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
                 }
                 
-            }
+            }   
             else
             {
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
@@ -83,5 +83,23 @@ public class Tile : MonoBehaviour
 
             UIManager.instance.CloseSellText();
         }
+    }
+
+    //그리드 위치를 월드 포지션으로 변환
+    public Vector3 GetWorldPosition(TileType type)
+    {
+        Vector3 worldPosition = Vector3.zero;
+
+        if(type == TileType.Hexa)
+        {
+            worldPosition = tile.transform.position;
+        }            
+        else if(type == TileType.Inv)
+        {
+            worldPosition = tile.transform.position;
+
+        }
+
+        return worldPosition;
     }
 }
