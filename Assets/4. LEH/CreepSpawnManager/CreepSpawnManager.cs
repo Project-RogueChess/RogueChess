@@ -6,12 +6,6 @@ using System.Net.NetworkInformation;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-스테이지, 크립 직업, x, y // 크립 능력치
-크립 모든 종류 읽어서 리스트에 추가
-0 전사 1 원딜
-껍데기에 크립 데이터 넣었고
-풀링해서 리스트에 넣은 다음에 스폰 만들기.
-
 public class CreepSpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject shellOfCreep;
