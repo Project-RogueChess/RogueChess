@@ -19,6 +19,11 @@ public class HexaUnitManager : MonoBehaviour
 
     public string cubeString = "Cube";
 
+    public void Update2()
+    {
+        Resources.Load("Prefabs/" + cubeString);
+    }
+
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public Camera mainCam;
@@ -100,7 +105,11 @@ public class HexaUnitManager : MonoBehaviour
             Dictionary<HexaUnit, int> distDic = new Dictionary<HexaUnit, int>();
 
             //타겟이 있는경우 -> 이전에 공격을 실행 했었음
+<<<<<<< HEAD
             //1. 타겟이 죽었는지.
+=======
+            //1. 타겟이 죽었는 지.
+>>>>>>> parent of b20d4d9 (HexaUnit_rework01)
             //2. 타겟이 이동을 실행했는지.
 
             //위의 조건이 만족하지 않는다면 계속 공격해도 됨. 공격실행
@@ -163,8 +172,15 @@ public class HexaUnitManager : MonoBehaviour
                 }
 
                 //충돌맵 세팅
+<<<<<<< HEAD
                 collisionMap[currentTarget.tileIndex.y, currentTarget.tileIndex.x] = false;
 
+=======
+                var tileTemp = collisionMap.Clone();
+                collisionMap[currentTarget.tileIndex.y, currentTarget.tileIndex.x] = false;
+
+
+>>>>>>> parent of b20d4d9 (HexaUnit_rework01)
                 //사정거리 긴 유닛은 사정거리를 고려한 충돌맵 사용
                 if (u.range > 0)
                 {
@@ -368,6 +384,10 @@ public class HexaUnitManager : MonoBehaviour
                 if (cal.x >= 0 && cal.x < MAX_MAP_X && cal.y >= 0 && cal.y < MAX_MAP_Y)
                     indexList.Add(cal);
             }
+<<<<<<< HEAD
+=======
+        //중복 인덱스 제거
+>>>>>>> parent of b20d4d9 (HexaUnit_rework01)
         indexList.Distinct().ToList();
         return indexList;
     }
