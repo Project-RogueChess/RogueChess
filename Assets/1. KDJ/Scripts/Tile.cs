@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -53,6 +54,10 @@ public class Tile : MonoBehaviour
             TileManager.Instance.isDrag = false;
             if (TileManager.Instance.nextTile != null)
             {
+                if(TileManager.Instance.nextTile.tag == "Sell")
+                {
+                    piece.GetComponent<Pieces>().SellPiece();
+                }
                 GameObject tempGO = TileManager.Instance.nextPiece;
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
@@ -67,6 +72,8 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
                 Debug.Log("ºóÄ­¿¡ ³öµÒ");
             }
+
+
         }
         UIManager.instance.CloseSellText();
     }

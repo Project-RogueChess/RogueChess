@@ -86,26 +86,6 @@ public class Pieces : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GivingItemInfo();
-            Destroy(gameObject);
-            hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
-            hpbarScript.t_objects[t_objectsNum].SetActive(false);
-            for( int i =0; i< 3; i++)
-            {
-                hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
-
-                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().sprite = null;
-                Color color = itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color;
-                color.a = 0;
-                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color = color;
-            }
-        }
-    }
-
 
 
     public void EquipItem(ItemObject item)
@@ -163,5 +143,23 @@ public class Pieces : MonoBehaviour
     public void OnBoxCollider()
     {
         boxCollider.enabled = true;
+    }
+
+    public void SellPiece()
+    {
+        DataManager.instance.myGold += gold;
+        UIManager.instance.UIRefresh();
+        GivingItemInfo();
+        hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
+        hpbarScript.m_hpBarsList[t_objectsNum].SetActive(false);
+        for (int i = 0; i < 3; i++)
+        {
+            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().sprite = null;
+            Color color = itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color;
+            color.a = 0;
+            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color = color;
+            hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
+        }
+        Destroy(gameObject);
     }
 }
