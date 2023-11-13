@@ -85,36 +85,34 @@ public class HexaUnitManager : MonoBehaviour
 
     public void HexaUnitUpdate(List<HexaUnit> units)
     {
-        //?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ∆Æ?øΩ?øΩ ?øΩ ø?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩœ≥?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ
+        //æ˜µ•¿Ã∆Æ∞° « ø‰«— ¿Ø¥÷ «œ≥™æø ∞ËªÍ
         foreach (var u in units)
         {
-            //?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩÊµπ ?øΩŒµ?øΩ?øΩ?øΩ ?øΩ ±?øΩ»≠
+            //øπæ‡µ» √Êµπ ¿Œµ¶Ω∫ √ ±‚»≠
             if (u.preIndex.x != -1)
             {
                 collisionMap[u.preIndex.y, u.preIndex.x] = false;
                 u.SetTileIndex(new Vector2Int(-1, -1), true);
             }
 
-            if (u.tileIndex.x < 0 || u.tileIndex.x >= MAX_MAP_X || u.tileIndex.y < 0 || u.tileIndex.y >= MAX_MAP_Y)
-                Debug.Log($"{u.tileIndex.x} : {u.tileIndex.y}");
             collisionMap[u.tileIndex.y, u.tileIndex.x] = true;
 
             Dictionary<HexaUnit, int> distDic = new Dictionary<HexaUnit, int>();
 
-            //≈∏?øΩ?øΩ?øΩ?øΩ ?øΩ÷¥¬∞?øΩ?øΩ -> ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩﬂæ?øΩ?øΩ?øΩ
-            //1. ≈∏?øΩ?øΩ?øΩ?øΩ ?øΩ◊æ?øΩ?øΩ?øΩ ?øΩ?øΩ.
-            //2. ≈∏?øΩ?øΩ?øΩ?øΩ ?øΩÃµ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩﬂ¥?øΩ?øΩ?øΩ.
+            //≈∏∞Ÿ¿Ã ¿÷¥¬∞ÊøÏ -> ¿Ã¿¸ø° ∞¯∞›¿ª Ω««‡ «ﬂæ˙¿Ω
+            //1. ≈∏∞Ÿ¿Ã ¡◊æ˙¥¬¡ˆ.
+            //2. ≈∏∞Ÿ¿Ã ¿Ãµø¿ª Ω««‡«ﬂ¥¬¡ˆ.
 
-            //?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ ¥¬¥Ÿ∏?øΩ ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩÿµ?øΩ ?øΩ?øΩ. ?øΩ?øΩ?øΩ›Ω?øΩ?øΩ?øΩ
-            //?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩﬂ¥Ÿ∏?øΩ ≈∏?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩÿæ?øΩ?øΩ?øΩ -> ≈∏?øΩ?øΩ?øΩ?øΩ NULL?øΩ?øΩ ?øΩŸ≤Ÿ∞?øΩ ?øΩ–Ω?øΩ?øΩ?øΩ?øΩŒµ?øΩ
+            //¿ß¿« ¡∂∞«¿Ã ∏∏¡∑«œ¡ˆ æ ¥¬¥Ÿ∏È ∞Ëº” ∞¯∞›«ÿµµ µ . ∞¯∞›Ω««‡
+            //¡∂∞«¿ª ∏∏¡∑«ﬂ¥Ÿ∏È ≈∏∞Ÿ¿ª ∫Ø∞Ê«ÿæﬂ«‘ -> ≈∏∞Ÿ¿ª NULL∑Œ πŸ≤Ÿ∞Ì ∆–Ω∫∆ƒ¿Œµ˘
 
             if (u.target != null && u.lastTargetIndex == u.target.tileIndex)
             {
                 u.Attack();
                 continue;
             }
-            
-            //?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ ?øΩ?º±?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ∆Æ ?øΩ?øΩ?øΩ?øΩ
+
+            //∞°±ÓøÓ ¿˚ øÏº±º¯¿ß ∏ÆΩ∫∆Æ ª˝º∫
             foreach (var other in unitList)
             {
                 if (other == u || other.team == u.team)
@@ -129,26 +127,28 @@ public class HexaUnitManager : MonoBehaviour
             foreach (var key in distDic.Keys)
                 distList.Enqueue(key);
 
-            //√π?øΩ?øΩ¬∞ √º≈© - ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ√£?øΩ?øΩ
+            //√ππ¯¬∞ √º≈© - ∫∏¡§æ¯¿Ã ±Ê√£±‚
             var firstCheck = false;
+            var tileTemp = new bool[MAX_MAP_Y, MAX_MAP_X];
+            Buffer.BlockCopy(collisionMap, 0, tileTemp, 0, collisionMap.Length);
 
-            //?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ√£?øΩ?øΩ
+            //∞°±ÓøÓ ¿˚∫Œ≈Õ ±Ê√£±‚
             while (distList.Count > 0)
             {
                 var currentTarget = distList.Dequeue();
 
-                //?øΩ?øΩ?øΩ?øΩ?øΩ≈∏?øΩ ?øΩ?øΩ?øΩ
+                //ªÁ¡§∞≈∏Æ ∞ËªÍ
                 var rangeTile = RangeOfHexaGridIndex(currentTarget.tileIndex, u.range + 1);
                 if (rangeTile.Contains(u.tileIndex))
                 {
-                    //?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ»Ø
+                    //º∫∞¯Ω√ ∞¯∞›¿∏∑Œ ¿¸»Ø
                     u.SetTarget(currentTarget);
                     u.Attack();
                     firstCheck = true;
                     break;
                 }
 
-                //?øΩ?øΩ?øΩ?øΩ?øΩ √º≈©
+                //∫Û∞¯∞£ √º≈©
                 var ringIndex = RingOfHexaGridIndex(currentTarget.tileIndex, u.range + 1);
                 var inUseIndexCount = 0;
 
@@ -158,16 +158,14 @@ public class HexaUnitManager : MonoBehaviour
 
                 if (inUseIndexCount == ringIndex.Count)
                 {
-                    //?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ, ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ »Æ?øΩ?øΩ
+                    //∞¯∞£ æ¯¿Ω, ¥Ÿ¿Ω ¿˚ »Æ¿Œ
                     continue;
                 }
 
-                //?øΩÊµπ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
-                var tileTemp = collisionMap.Clone();
+                //√Êµπ∏  ºº∆√
                 collisionMap[currentTarget.tileIndex.y, currentTarget.tileIndex.x] = false;
 
-
-                //?øΩ?øΩ?øΩ?øΩ?øΩ≈∏?øΩ ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ≈∏?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩÊµπ?øΩ?øΩ ?øΩ?øΩ?øΩ
+                //ªÁ¡§∞≈∏Æ ±‰ ¿Ø¥÷¿∫ ªÁ¡§∞≈∏Æ∏¶ ∞Ì∑¡«— √Êµπ∏  ªÁøÎ
                 if (u.range > 0)
                 {
                     rangeTile = RangeOfHexaGridIndex(currentTarget.tileIndex, u.range);
@@ -182,26 +180,25 @@ public class HexaUnitManager : MonoBehaviour
                
                 if (pathTile.Count > 0)
                 {
-                    //?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩÃµ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ»Ø
+                    //º∫∞¯Ω√ ¿Ãµø¿∏∑Œ ¿¸»Ø
                     pathTile.RemoveAt(0);
                     u.Move(pathTile[0]);
                     firstCheck = true;
-                    collisionMap = (bool[,])tileTemp;
                     collisionMap[pathTile[0].y, pathTile[0].x] = true;
-                    break;
+                    Buffer.BlockCopy(collisionMap, 0, tileTemp, 0, collisionMap.Length);
+                    distList.Clear();
                 }
 
-                collisionMap = (bool[,])tileTemp;
+                Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
             }
 
-            //?øΩ?øΩ√£?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ∆Æ?øΩ?øΩ ?øΩ ø?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ
+            //±Ê√£±‚ º∫∞¯Ω√ ¥Ÿ¿Ω æ˜µ•¿Ã∆Æ∞° « ø‰«— ¿Ø¥÷¿∏∑Œ
             if (firstCheck || distDic.Count == 0)
                 continue;
 
             var secondCheckTarget = distDic.FirstOrDefault().Key;
-            var secondTileTemp = collisionMap.Clone();
 
-            //?øΩÊµπ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //√Êµπ∏  ºº∆√
             var secondRangeTile = RangeOfHexaGridIndex(secondCheckTarget.tileIndex, u.range + 1);
             collisionMap[secondCheckTarget.tileIndex.y, secondCheckTarget.tileIndex.x] = false;
 
@@ -213,17 +210,17 @@ public class HexaUnitManager : MonoBehaviour
             var secondPathTile = PathFinding(u.tileIndex, secondCheckTarget.tileIndex);
             if(secondPathTile.Count > 0)
                 secondPathTile.RemoveAt(0);
-            collisionMap = (bool[,])secondTileTemp;
+            Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
 
             if (secondPathTile.Count > 0 && !collisionMap[secondPathTile[0].y, secondPathTile[0].x])
             {
-                //?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩÃµ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ»Ø
+                //º∫∞¯Ω√ ¿Ãµø¿∏∑Œ ¿¸»Ø
                 u.Move(secondPathTile[0]);
                 collisionMap[secondPathTile[0].y, secondPathTile[0].x] = true;
             }
             else
             {
-                //6?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ≈∏?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ ?øΩÃµ?øΩ (?øΩ?º±?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ∆Æ ?øΩ€º?øΩ)
+                //6πÊ«‚¡ﬂ ∞≈∏Æ∞° ∞°¿Â ∞°±ÓøÓ πÊ«‚¿∏∑Œ ¿Ãµø (øÏº±º¯¿ß ∏ÆΩ∫∆Æ ¿€º∫)
                 PriorityQueue<PathNode> checkTiles = new PriorityQueue<PathNode>();
                 List<Vector2Int> neighborTile = RingOfHexaGridIndex(u.tileIndex, 1);
 
@@ -274,8 +271,8 @@ public class HexaUnitManager : MonoBehaviour
     {
         List<Vector2Int> paths = new List<Vector2Int>();
 
-        int[] oddDirX = { -1, -1, -1, 0, 1, 0 };    //»¶?øΩ?øΩ
-        int[] evenDirX = { 0, -1, 0, 1, 1, 1 };     //¬¶?øΩ?øΩ
+        int[] oddDirX = { -1, -1, -1, 0, 1, 0 };    //»¶ºˆ
+        int[] evenDirX = { 0, -1, 0, 1, 1, 1 };     //¬¶ºˆ
         int[] dirY = { 1, 0, -1, -1, 0, 1 };
         int[] cost = { 7, 10, 7, 7, 10, 7 };
 
@@ -371,7 +368,6 @@ public class HexaUnitManager : MonoBehaviour
                 if (cal.x >= 0 && cal.x < MAX_MAP_X && cal.y >= 0 && cal.y < MAX_MAP_Y)
                     indexList.Add(cal);
             }
-        //?øΩﬂ∫?øΩ ?øΩŒµ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
         indexList.Distinct().ToList();
         return indexList;
     }
@@ -565,14 +561,14 @@ public class HexaUnitManager : MonoBehaviour
         {
             var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
 
-            //?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //Ω√¿€ ¡ˆ¡° ¡ˆ¡§
             if (Input.GetKeyDown(KeyCode.Z) && !selectStart)
             {
                 selectStart = true;
                 selectStartIndex = tileIndex;
             }
 
-            //?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //≥° ¡ˆ¡° ¡ˆ¡§
             if (Input.GetKeyDown(KeyCode.X) && !selectEnd)
             {
                 selectEnd = true;
@@ -622,11 +618,11 @@ public class HexaUnitManager : MonoBehaviour
 
         if (selectStart && selectEnd)
         {
-            //∆Æ?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //∆Æ∏Æ∞≈ ∏Æº¬
             selectStart = false;
             selectEnd = false;
 
-            //?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ «•?øΩ√¥?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //¿Ã¿¸ ±Ê «•Ω√¥¬ ªË¡¶
             if (loadPath != null)
             {
                 foreach (var obj in loadPath)
@@ -634,14 +630,14 @@ public class HexaUnitManager : MonoBehaviour
                 loadPath = null;
             }
 
-            //?øΩ?øΩ √£?øΩ?øΩ
+            //±Ê √£±‚
             var pathlist = PathFinding(selectStartIndex, selectEndIndex);
 
-            //?øΩ?øΩ √£?øΩ?øΩ?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ
+            //∏¯ √£æ“¿Ω ∏Æ≈œ
             if (pathlist.Count == 0)
                 return;
 
-            //?øΩ?øΩ «•?øΩ?øΩ ?øΩ?øΩ?øΩ?øΩ?øΩ?øΩ∆Æ ?øΩ?øΩ?øΩ?øΩ
+            //±Ê «•Ω√ ø¿∫Í¡ß∆Æ ª˝º∫
             loadPath = new GameObject[pathlist.Count];
             int addCount = 0;
 

@@ -28,6 +28,7 @@ public class HexaUnit : MonoBehaviour
     private Vector2Int _lastTargetIndex;
     private HexaUnit _target;
     private Vector3 _deltaPos;
+    private Vector2Int _savedDirIndex;
     private Quaternion _savedRot;
     private float _actTimer = 0f;
     
@@ -38,7 +39,6 @@ public class HexaUnit : MonoBehaviour
     public float turnRate => moveRate * 0.5f;
 
     public HexaUnit target => _target;
-
 
     void Update()
     {
@@ -75,16 +75,22 @@ public class HexaUnit : MonoBehaviour
         _deltaPos = endPos - startPos;
 
         //터닝이 필요한 경우
-        _turnDirty = true;
-        _savedRot = transform.rotation;
+        var lastDirIndex = _savedDirIndex;
+        _savedDirIndex = HexaUnitManager.instance.EvenToAxial(_tileIndex) - HexaUnitManager.instance.EvenToAxial(_preIndex);
+
+        if(_savedDirIndex != lastDirIndex)
+        {
+            _turnDirty = true;
+            _savedRot = transform.rotation;
+        }
     }
 
     public void Attack()
     {
         _turnDirty = true;
         _savedRot = transform.rotation;
-        _deltaPos = target.transform.position - transform.position;
 
+        _deltaPos = target.transform.position - transform.position;
         _lastTargetIndex = target.tileIndex;
     }
 
@@ -106,62 +112,22 @@ public class HexaUnit : MonoBehaviour
         }
         if(_moveDirty)
         {
-            transform.position = Vector3.Lerp(TilemapManager.instance.hexa_tilePosList[preIndex.y,preIndex.x],
-            TilemapManager.instance.hexa_tilePosList[tileIndex.y,tileIndex.x],_actTimer/moveRate);
-            if(_actTimer > moveRate)
+            var currentDeltaPos = Vector3.Lerp(Vector3.zero,_deltaPos
+            ,_actTimer/moveRate);
+
+            transform.position = TilemapManager.instance.hexa_tilePosList[_preIndex.y, preIndex.x] + currentDeltaPos;
+
+            if (_actTimer > moveRate)
             {
                 _actTimer = 0f;
                 _moveDirty = false;
+                transform.position = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
             }
             return;
         }
-    }
-
-    IEnumerator ExcuteMove(Vector2Int next)
-    {
-        var temp = _tileIndex;
-        _tileIndex = next;
-        _preIndex = temp;
-
-        var timer = 0f;
-
-        var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
-        var endPos = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
-
-        var preDir = transform.rotation;
-        var dir = Quaternion.LookRotation((endPos - startPos).normalized);
-
-        var turnRate = moveRate * 0.5f;
-        while (timer < moveRate)
+        if (_atkDirty)
         {
-            timer += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, endPos, timer / moveRate);
-            transform.rotation = Quaternion.Slerp(preDir, dir, timer / turnRate);
-            yield return null;
+
         }
-
-        //이전의 이동방향이 지금방향과 같았다면 기다림 무시
-        //_needUpdate = true;
-    }
-
-    IEnumerator ExcuteAttack()
-    {
-        //_needUpdate = false;
-        _lastTargetIndex = target.tileIndex;
-
-        var dir = (target.transform.position - transform.position).normalized;
-        var timer = 0f;
-        var preDir = transform.forward;
-
-        if (preDir != dir)
-        {
-            while (timer < moveRate)
-            {
-                timer += Time.deltaTime;
-                transform.forward = Vector3.Lerp(preDir, dir, timer / moveRate);
-                yield return null;
-            }
-        }
-        // _needUpdate = true;
     }
 }
