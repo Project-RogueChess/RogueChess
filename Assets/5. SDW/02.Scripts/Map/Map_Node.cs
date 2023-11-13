@@ -1,94 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Map_Node : MonoBehaviour, IPointerClickHandler
+public class Map_Node : MonoBehaviour
 {
-    [SerializeField] private List<Vector2Int> prevNodeKeys = new List<Vector2Int>();
-    public List<Vector2Int> prevNodeKeysProp => prevNodeKeys;
-    public currentNodeTypeEnum myNodeType;
+    [SerializeField] private List<Vector2Int> prevNordKeys = new List<Vector2Int>();
+
+    public List<Vector2Int> prevNordKeysProp => prevNordKeys;
 
     public Vector2Int mykey;
 
-    private Main_Map main_map;
-
-    RectTransform panelRect;
-    public enum currentNodeTypeEnum
-    {
-        None,
-        NormalMonster,
-        EliteMonster,
-        Store,
-        Treasure,
-        RandomEvent,
-        Shelter
-    }
-
-
     public void AddPrevNodeKey(Vector2Int key)
     {
-        bool alreadySameXY = prevNodeKeys.Contains(key);
+        bool alreadySameXY = prevNordKeys.Contains(key);
 
         if (alreadySameXY == false)
         {
-            prevNodeKeys.Add(key);
+            prevNordKeys.Add(key);
         }
+    }
+
+    public void SettingNord(int settValue)
+    {
+
     }
 
     private void Start()
     {
-        myNodeType = currentNodeTypeEnum.None;
         gameObject.GetComponent<Image>().color = new Color(160, 0, 0, 100f);
-        panelRect = gameObject.GetComponent<RectTransform>();
-        main_map = gameObject.GetComponentInParent<Main_Map>();
     }
 
-    public void ChangeImageSprite(Sprite sprite)
-    {
-        gameObject.GetComponent<Image>().sprite = sprite;
-    }
-
-    public bool IsContainPrevNode(Vector2Int key)
-    {
-        if (prevNodeKeys.Contains(key) == false)
-        {
-            Debug.Log("FALSE");
-            return false;
-        }
-
-        else if(prevNodeKeys.Contains(key) == true)
-        {
-            Debug.Log("TRUE");
-            return true;
-        }
-
-        Debug.Log("IsContainError");
-        return false;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Debug.Log("OnClick");
-            Debug.Log(mykey);
-
-            bool isCanMove;
-            isCanMove = IsContainPrevNode(main_map.currentNodeXY);
-
-            if (isCanMove == true)
-            {
-                main_map.ClickedTrueNodeAndMove(mykey);
-            }
-            else
-            {
-
-            }
-        }
-    }
 }
-

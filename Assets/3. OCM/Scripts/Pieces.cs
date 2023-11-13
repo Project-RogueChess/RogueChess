@@ -30,9 +30,7 @@ public class Pieces : MonoBehaviour
     public Transform pos;
     public Item[] items;
 
-    public HpBar hpbarScript;
 
-    public Canvas canvas;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
@@ -54,28 +52,9 @@ public class Pieces : MonoBehaviour
 
         for(int i = 0; i < items.Length; i++)
         {
-            items[i] = new Item(string.Empty,0,0,0,0,0);
-        }
-        canvas = GetComponentInChildren<Canvas>();
-        hpbarScript = FindObjectOfType<HpBar>().GetComponent<HpBar>();
-        //hpbarScript.test.Add(gameObject);
-        //hpbarScript.m_objectList.Add(gameObject.transform);
-        hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
-        //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
-
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GivingItemInfo();
-            Destroy(gameObject);
-            
+            items[i] = new Item(string.Empty,0,0,0,0);
         }
     }
-
 
 
     public void EquipItem(ItemObject item)
@@ -87,25 +66,12 @@ public class Pieces : MonoBehaviour
             if (items[i].itemName == string.Empty || items[i].itemName == null)
             {
                 items[i] = item._item;
-                maxHp += item._item.itemHp;
                 hp += item._item.itemHp;
-                attackDamage += item._item.itemAttackDamage;
+                attackDamage += item._item.itemAttack;
                 attackSpeed += item._item.itemAttackSpeed;
                 mp += item._item.itemMp;
                 return;
             }
         }
-    }
-
-    public void GivingItemInfo()
-    {
-        for(int i=0;i < items.Length; i++)
-        {
-            if (items[i].itemName != string.Empty)
-            {
-                UIManager.instance.AddTheItem(items[i]);
-            }
-        }
-        
     }
 }

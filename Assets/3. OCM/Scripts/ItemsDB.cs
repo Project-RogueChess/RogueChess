@@ -25,10 +25,9 @@ public class ItemsDB : MonoBehaviour
         {
             Item item = new Item();
             item.itemName = dicList[i]["name"].ToString();
-            item.id = int.Parse(dicList[i]["id"].ToString());
             item.itemHp = int.Parse(dicList[i]["hp"].ToString());
-            item.itemAttackDamage = int.Parse(dicList[i]["itemAttackDamage"].ToString());
-            item.itemAttackSpeed = float.Parse(dicList[i]["itemAttackSpeed"].ToString());
+            item.itemAttack = int.Parse(dicList[i]["attack"].ToString());
+            item.itemAttackSpeed = int.Parse(dicList[i]["attackSpeed"].ToString());
             item.itemMp = int.Parse(dicList[i]["mp"].ToString());
             item.itemSprite = Resources.Load<Sprite>("RPG icons/512X512/" + dicList[i]["name"].ToString());
             items.Add(item);
