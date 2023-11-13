@@ -28,7 +28,7 @@ public class HexaUnit : MonoBehaviour
     private Vector2Int _lastTargetIndex;
     private HexaUnit _target;
     private Vector3 _deltaPos;
-    private Vector2Int _savedDirIndex;
+    [SerializeField] private Vector2Int _savedDirIndex;
     private Quaternion _savedRot;
     private float _actTimer = 0f;
     
@@ -78,7 +78,7 @@ public class HexaUnit : MonoBehaviour
         var lastDirIndex = _savedDirIndex;
         _savedDirIndex = HexaUnitManager.instance.EvenToAxial(_tileIndex) - HexaUnitManager.instance.EvenToAxial(_preIndex);
 
-        if(_savedDirIndex != lastDirIndex)
+        if(_savedDirIndex != lastDirIndex || _savedDirIndex == Vector2Int.zero)
         {
             _turnDirty = true;
             _savedRot = transform.rotation;
@@ -89,7 +89,7 @@ public class HexaUnit : MonoBehaviour
     {
         _turnDirty = true;
         _savedRot = transform.rotation;
-
+        _savedDirIndex = HexaUnitManager.instance.EvenToAxial(target.tileIndex) - HexaUnitManager.instance.EvenToAxial(_tileIndex);
         _deltaPos = target.transform.position - transform.position;
         _lastTargetIndex = target.tileIndex;
     }
