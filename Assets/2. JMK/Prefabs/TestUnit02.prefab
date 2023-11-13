@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 1
   range: 0
+  actType: 0
   atkRate: 2
   moveRate: 0.3
 --- !u!1 &6754217013840560572

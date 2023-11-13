@@ -15,7 +15,7 @@ public class TilemapManager : MonoBehaviour
     [Header("공통 설정")]
     public float triggerSize = 3f;
 
-  
+    
     [HideInInspector] public Vector3[,] hexa_tilePosList;
     [Header("육각타일맵")]
     public Color hexa_defColor = Color.white;
@@ -27,7 +27,7 @@ public class TilemapManager : MonoBehaviour
     public float hexa_spaceX = 1;
     public float hexa_spaceY = 1;
 
- 
+    
     [HideInInspector] public Vector3[] inv_tilePosList;
     [Header("인벤토리 타일맵")]
     public Color inv_defColor = Color.white;
@@ -53,7 +53,12 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public void InitTilePosList()
+    private void Start()
+    {
+        CreateTilemaps();
+    }
+
+    public void initTilePosList()
     {
         hexa_tilePosList = new Vector3[hexa_tilemapSizeY, hexa_tilemapSizeX]; 
         inv_tilePosList = new Vector3[inv_size];
@@ -72,7 +77,7 @@ public class TilemapManager : MonoBehaviour
 
     public void CreateTilemaps()
     {
-        InitTilePosList();
+        initTilePosList();
 
         //육각타일맵 생성
         GameObject hexaTilemapContainer = new GameObject();
@@ -84,10 +89,13 @@ public class TilemapManager : MonoBehaviour
         hexaTileTriggerContainer.transform.parent = hexa_tilemapPivot;
 
         for (int i = 0; i < hexa_tilemapSizeY; i++)
-            for(int j = 0; j < hexa_tilemapSizeX; j++)
+            for (int j = 0; j < hexa_tilemapSizeX; j++)
             {
+                if (i > 3)
+                    continue;
+
                 GameObject tileGO = Instantiate(hexa_tilePrefab);
-               
+
                 tileGO.transform.position = hexa_tilePosList[i, j];
                 tileGO.transform.parent = hexaTilemapContainer.transform;
                 tileGO.name = $"[{tileGO.transform.parent.childCount}]Tile";
@@ -95,11 +103,15 @@ public class TilemapManager : MonoBehaviour
                     renderer.material.color = hexa_defColor;
 
                 //트리거 생성
-                GameObject triggerGO = CreateTrigger(TileType.Hexa, triggerSize, j,i);
+                GameObject triggerGO = CreateTrigger(TileType.Hexa, triggerSize, j, i);
                 triggerGO.layer = 6;
                 triggerGO.transform.position = hexa_tilePosList[i, j];
                 triggerGO.transform.parent = hexaTileTriggerContainer.transform;
                 triggerGO.name = $"[{triggerGO.transform.parent.childCount}]Trigger";
+                triggerGO.GetComponent<Tile>().tile = tileGO;
+                //추가할 내용
+                triggerGO.GetComponent<Tile>().triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
+                InvSpawnManager.instance.hexaTiles.Add(triggerGO.GetComponent<Tile>());               
             }
 
         //인벤토리 타일맵 생성
@@ -123,10 +135,13 @@ public class TilemapManager : MonoBehaviour
                 renderer.material.color = inv_defColor;
 
             GameObject triggerGO = CreateTrigger(TileType.Inv, triggerSize, i);
-            triggerGO.layer = 6;
             triggerGO.transform.position = inv_tilePosList[i];
             triggerGO.transform.parent = invTileTriggerContainer.transform;
             triggerGO.name = $"[{triggerGO.transform.parent.childCount}]Trigger";
+            triggerGO.GetComponent<Tile>().tile = tileGO;
+            //추가할 내용
+            triggerGO.GetComponent<Tile>().triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
+            InvSpawnManager.instance.invTiles.Add(triggerGO.GetComponent<Tile>());
         }
     }
 

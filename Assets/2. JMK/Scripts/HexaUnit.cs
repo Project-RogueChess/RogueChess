@@ -1,47 +1,56 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices.WindowsRuntime;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
-public enum HexaUnitAttackType
+public enum HexaUnitActType
 {
-    Melee,
-    Marksman
+    Common,
+    Jumper
 }
 
 public class HexaUnit : MonoBehaviour
 {
     public int team;
     public int range;
-    public HexaUnitAttackType attackType;
+    public HexaUnitActType actType;
     public float atkRate = 0.5f;
     public float moveRate = 0.5f;
 
-    private bool _needUpdate = true;
-    private Vector2Int _gridIndex;
+    private bool _moveDirty = false;
+    private bool _atkDirty = false;
+    private bool _turnDirty = false;
+    private Vector2Int _tileIndex;
     private Vector2Int _preIndex = new Vector2Int(-1,-1);
+    private Vector2Int _lastTargetIndex;
     private HexaUnit _target;
-
-    public bool needUpdate => _needUpdate;
-    public Vector2Int gridIndex => _gridIndex;
+    private Vector3 _deltaPos;
+    private Vector2Int _savedDirIndex;
+    private Quaternion _savedRot;
+    private float _actTimer = 0f;
+    
+    public bool needUpdate => !_moveDirty && !_atkDirty && !_turnDirty;
+    public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
+    public Vector2Int lastTargetIndex => _lastTargetIndex;
+    public float turnRate => moveRate * 0.5f;
+
     public HexaUnit target => _target;
 
-    private void OnDisable()
+    void Update()
     {
-        
+        Act();
     }
-
-    public void SetGridIndex(Vector2Int index, bool isPre = false)
+    
+    public void SetTileIndex(Vector2Int index, bool isPre = false)
     {
         if (isPre)
             _preIndex = index;
         else
-            _gridIndex = index;
+            _tileIndex = index;
     }
 
     public void SetTarget(HexaUnit unit)
@@ -51,43 +60,74 @@ public class HexaUnit : MonoBehaviour
 
     public void Move(Vector2Int next)
     {
-        StartCoroutine(ExcuteMove(next));
+        if(_moveDirty)
+            return;
+        
+        //더티 셋
+        _moveDirty = true;
+        var temp = _tileIndex;
+        _tileIndex = next;
+        _preIndex = temp;
+
+        var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
+        var endPos = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
+
+        _deltaPos = endPos - startPos;
+
+        //터닝이 필요한 경우
+        var lastDirIndex = _savedDirIndex;
+        _savedDirIndex = HexaUnitManager.instance.EvenToAxial(_tileIndex) - HexaUnitManager.instance.EvenToAxial(_preIndex);
+
+        if(_savedDirIndex != lastDirIndex)
+        {
+            _turnDirty = true;
+            _savedRot = transform.rotation;
+        }
     }
 
     public void Attack()
     {
-        var dir = (target.transform.position - transform.position).normalized;
-        transform.forward = dir;
+        _turnDirty = true;
+        _savedRot = transform.rotation;
+
+        _deltaPos = target.transform.position - transform.position;
+        _lastTargetIndex = target.tileIndex;
     }
 
-    IEnumerator ExcuteMove(Vector2Int next)
+    private void Act()
     {
-        _needUpdate = false;
-        //이전의 이동방향 기억하기
+        if(needUpdate)
+            return;
 
-        //회전이 필요한경우 회전먼저
-        var temp = _gridIndex;
-        _gridIndex = next;
-        _preIndex = temp;
-
-        var startPos = TilemapManager.instance.hexa_tilePosList[_preIndex.y, _preIndex.x];
-        var endPos = TilemapManager.instance.hexa_tilePosList[_gridIndex.y, _gridIndex.x];
-
-        var dir = (endPos - startPos).normalized;
-        transform.forward = dir;
-
-        var timer = 0f;
-        while (timer < moveRate)
+        _actTimer += Time.deltaTime;
+        if(_turnDirty)
         {
-            timer += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, endPos, timer / moveRate);
-            yield return null;
+            transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation(_deltaPos.normalized), _actTimer / turnRate);
+            if(_actTimer > turnRate)
+            {
+                _actTimer = 0f;
+                _turnDirty = false;
+            }
+            return;
         }
+        if(_moveDirty)
+        {
+            var currentDeltaPos = Vector3.Lerp(Vector3.zero,_deltaPos
+            ,_actTimer/moveRate);
 
-        //이전의 이동방향이 지금방향과 같았다면 기다림 무시
-        
-        yield return new WaitForSeconds(0.1f);
+            transform.position = TilemapManager.instance.hexa_tilePosList[_preIndex.y, preIndex.x] + currentDeltaPos;
 
-        _needUpdate = true;
+            if (_actTimer > moveRate)
+            {
+                _actTimer = 0f;
+                _moveDirty = false;
+                transform.position = TilemapManager.instance.hexa_tilePosList[_tileIndex.y, _tileIndex.x];
+            }
+            return;
+        }
+        if (_atkDirty)
+        {
+
+        }
     }
 }
