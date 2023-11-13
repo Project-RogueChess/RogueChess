@@ -263,7 +263,8 @@ public class HexaUnitManager : MonoBehaviour
             unit.SetTileIndex(unit.preIndex);
         }
 
-        collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
+        if(unit.tileIndex.y != -1)
+            collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
         unitList.Remove(unit);
     }
 
@@ -541,7 +542,7 @@ public class HexaUnitManager : MonoBehaviour
                 RegisterHexaUnit(unitGO);
             }
 
-            if (Input.GetMouseButton(1))
+            /*if (Input.GetMouseButton(1))
             {
                 var unitGO = new GameObject();
                 foreach (var u in unitList)
@@ -552,7 +553,7 @@ public class HexaUnitManager : MonoBehaviour
 
                 UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
                 Destroy(unitGO.gameObject);
-            }
+            }*/
         }
     }
     void Debug_AutoGenerateUnit()
