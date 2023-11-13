@@ -31,6 +31,7 @@ public class PiecesDB : MonoBehaviour
             
             piece.name = dicList[i]["name"].ToString();
             piece.gold = int.Parse(dicList[i]["gold"].ToString());
+            piece.id = int.Parse(dicList[i]["id"].ToString());
             piece.spieces = dicList[i]["spieces"].ToString();
             piece.classes = dicList[i]["classes"].ToString();
             piece.grade = int.Parse(dicList[i]["grade"].ToString());

@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 public class Main_Map : MonoBehaviour
 {
+    #region InputValue
     [Header("Panel Control")]
     [SerializeField] private GameObject childrenPanelPrefab;
     [SerializeField] private int mapLengthX = 2;
@@ -17,75 +18,81 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private int xCreateResearchLength = 1;
     [SerializeField] private int YMaxCreateResearchLength = 1;
     [SerializeField] private int YMinCreateResearchLength = 1;
-    [SerializeField] private int createTreeCount = 1;
     [SerializeField] private int secondFloorNodeNumber = 3;
+    [SerializeField] private int createTreeCount = 1;
+    [SerializeField] private int createCopyTreeCount = 1;
+    [SerializeField] private float addTreePercent = 15f;
 
     [Header("Line Control")]
-    [SerializeField] private GameObject linePrefab;
+    [SerializeField] private GameObject linePrefabBlack;
+    [SerializeField] private GameObject linePrefabRed;
     [SerializeField] private Transform lineParent;
     [SerializeField] private float lineThickness = 10f;
-    private float lineHeight = 0f;
-    
 
-    [Header("CurrentNodeInfomation")]
-    [SerializeField] private Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
+    [Header("Node Control")]
+    [SerializeField] private float normalMonsterPer = 0f;
+    [SerializeField] private Sprite normalMonsterSprite;
+    [SerializeField] private float eliteMonsterPer = 0f;
+    [SerializeField] private Sprite eliteMonsterSprite;
+    [SerializeField] private float storePer = 0f;
+    [SerializeField] private Sprite storeSprite;
+    [SerializeField] private float treasurePer = 0f;
+    [SerializeField] private Sprite treasureSprite;
+    [SerializeField] private float randomEventPer = 0f;
+    [SerializeField] private Sprite randomEventSprite;
+    [SerializeField] private float shelterPer = 0f;
+    [SerializeField] private Sprite shelterSprite;
+
+    [Header("Optional")]
+    [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
+    [SerializeField] private GameObject motherMapObject;
 
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
     private GameObject endNode;
-    private Map_Node nodeScript;
+    private Map_Node[] nodeScripts;
+    bool isOnMap = false;
+    private int nodeTypeCount;
+    #endregion
 
-    private Map_Node[] mapnodes;
+    #region External Call
+    public void UI_MapOnOff()
+    {
+
+        if (isOnMap == false)
+        {
+            motherMapObject.SetActive(true);
+            isOnMap = true;
+        }
+
+        else if (isOnMap == true)
+        {
+            motherMapObject.SetActive(false);
+            isOnMap = false;
+        }
+    }
+    #endregion
 
     private void Start()
     {
         UI_MapRenderStart();
-        mapnodes = GetComponentsInChildren<Map_Node>();
-        if (mapnodes != null && mapnodes.Length > 0)
-        {
-            foreach (var node in mapnodes)
-            {
-                if (node.prevNordKeysProp.Count > 0)
-                {
-                    foreach (var child in node.prevNordKeysProp)
-                    {
-                        GameObject go = Instantiate(linePrefab);
-                        var lineComponenet = go.GetComponent<LineImage>();
-                        lineComponenet.pointA = node.transform.position;
-                        lineComponenet.pointB = childPanelDictionary[child].transform.position;
-                        go.transform.parent = lineParent;
-                        //Debug.DrawLine(node.transform.position, childPanelDictionary[child].transform.position, Color.red);
-                    }
 
-                }
-            }
-        }
+        nodeScripts = gameObject.GetComponentsInChildren<Map_Node>();
 
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    Debug.Log(i);
-        //    //결과값 0 1 2 3 4
-        //}
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            UI_MapOnOff();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            
-        }
-
+        StartCoroutine(StartMethod());
         
     }
-    /// <summary>
-    /// motherPanelX,Y 는 본인의 너비 높이
-    /// childrenPanelX,Y 는 자식으로 들어갈 cell패널의 크기
-    /// </summary>
+    IEnumerator StartMethod()
+    {
+        yield return new WaitForEndOfFrame();
 
+        LineDrawerLauncher();
+        SettingNodeSystem();
+        DeleteNodeSystem();
+
+        DisableMap();
+    }
+    #region Starting Methods
     private void UI_MapRenderStart()
     {
         float motherPanelX = gameObject.GetComponent<RectTransform>().rect.width;
@@ -113,9 +120,13 @@ public class Main_Map : MonoBehaviour
 
         GameObject startNodePanel = FindPanelToSearchDictionary(startNodeX, 0);
         startNodePanel.AddComponent<Map_Node>();
+        startNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, 0);
+
+        currentNodeXY = new Vector2Int(startNodeX, 0); // this
 
         GameObject endNodePanel = FindPanelToSearchDictionary(startNodeX, (mapLengthY - 1));
         endNodePanel.AddComponent<Map_Node>();
+        endNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, (mapLengthY - 1));
         endNode = endNodePanel;
 
 
@@ -127,25 +138,179 @@ public class Main_Map : MonoBehaviour
         GameObject secoundFloorFirstNode = FindPanelToSearchDictionary(secondFloorFirstNodeX, startNodeHeight);
         secoundFloorFirstNode.AddComponent<Map_Node>();
         secoundFloorFirstNode.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
+        secoundFloorFirstNode.GetComponent<Map_Node>().mykey = new Vector2Int(secondFloorFirstNodeX, startNodeHeight);
         for (int i = 0; i < createTreeCount; i++)
-        CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight));
+            CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), createCopyTreeCount);
 
-        if (FindPanelToSearchDictionary(new Vector2Int(secondFloorFirstNodeX, startNodeHeight)).GetComponent<Map_Node>() != null)
-            LineDrawer(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), new Vector2Int(startNodeX, 0));
 
         for (int i = 1; i < secondFloorNodeNumber; i++)
         {
             GameObject secondNodePanel = FindPanelToSearchDictionary(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight);
             secondNodePanel.AddComponent<Map_Node>();
-
+            secondNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight);
             secondNodePanel.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
 
-        for (int j = 0; j < createTreeCount; j++)
-            CreateRandomNode(new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight));
+            for (int j = 0; j < createTreeCount; j++)
+                CreateRandomNode(new Vector2Int(secondFloorFirstNodeX + (i * secondFloorNodeX), startNodeHeight), createCopyTreeCount);
         }
 
     }
+    private void CreateRandomNode(Vector2Int startNodeKey, int repeatCount)
+    {
+        //if (startNodeKey.y != startNodeHeight) { Debug.LogWarning("Wrong Access"); return; }
 
+        List<Vector2Int> readyNode = new List<Vector2Int>();
+        Vector2Int currentNodeCreate = startNodeKey;
+        Vector2Int treeCreate = startNodeKey;
+        bool repeatWhile = true;
+
+        while (repeatWhile)
+        {
+            for (int nodeY = Mathf.Clamp((currentNodeCreate.y + YMinCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY <= Mathf.Clamp((currentNodeCreate.y + YMaxCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY++)
+            {
+                for (int nodeX = Mathf.Clamp((currentNodeCreate.x + xCreateResearchLength), 0, mapLengthX - 1); nodeX >= Mathf.Clamp((currentNodeCreate.x - xCreateResearchLength), 0, (mapLengthX - 1)); nodeX--)
+                {
+                    readyNode.Add(new Vector2Int(nodeX, nodeY));
+                }
+            }
+            int randomListValue = Random.Range(0, readyNode.Count);
+
+            GameObject createTargetPanel = FindPanelToSearchDictionary(readyNode[randomListValue]);
+
+            float addTreeValue = Random.Range(0, 100);
+            if (addTreePercent > addTreeValue)
+            {
+                treeCreate = readyNode[randomListValue];
+            }
+
+            if (createTargetPanel.GetComponent<Map_Node>() == null)
+            {
+                createTargetPanel.AddComponent<Map_Node>();
+            }
+            createTargetPanel.GetComponent<Map_Node>().AddPrevNodeKey(currentNodeCreate);
+            createTargetPanel.GetComponent<Map_Node>().mykey = readyNode[randomListValue];
+
+            currentNodeCreate = readyNode[randomListValue];
+
+            if (treeCreate != startNodeKey && repeatCount > 0)
+            {
+                CreateRandomNode(treeCreate, repeatCount-1);
+            }
+
+            if (currentNodeCreate.y == (mapLengthY - 2))
+            {
+                repeatWhile = false;
+                endNode.GetComponent<Map_Node>().AddPrevNodeKey(readyNode[randomListValue]);
+            }
+            readyNode.Clear();
+        }
+
+    }
+    private void LineDrawerLauncher()
+    {
+        foreach (var nodeScript in nodeScripts)
+        {
+            if (nodeScript.prevNodeKeysProp != null)
+            {
+                foreach (var prevNodeKey in nodeScript.prevNodeKeysProp)
+                {
+                    LineDrawer(nodeScript.mykey, prevNodeKey, linePrefabBlack);
+                }
+            }
+        }
+    }
+    private void SettingNodeSystem()
+    {
+        foreach(var nodeScript in nodeScripts)
+        {
+            float randomValue = Random.Range(0, normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer);
+
+            if (randomValue < normalMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.NormalMonster;
+                nodeScript.ChangeImageSprite(normalMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.EliteMonster;
+                nodeScript.ChangeImageSprite(eliteMonsterSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Store;
+                nodeScript.ChangeImageSprite(storeSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Treasure;
+                nodeScript.ChangeImageSprite(treasureSprite);
+            }
+
+            else if (randomValue < normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.RandomEvent;
+                nodeScript.ChangeImageSprite(randomEventSprite);
+            }
+
+            else if (randomValue <= normalMonsterPer + eliteMonsterPer + storePer + treasurePer + randomEventPer + shelterPer)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Shelter;
+                nodeScript.ChangeImageSprite(shelterSprite);
+            }
+        }
+    }
+    private void DeleteNodeSystem()
+    {
+        if (gameObject.GetComponent<GridLayoutGroup>() != null)
+        {
+            Destroy(gameObject.GetComponent<GridLayoutGroup>());
+        }
+
+        for (int y = 0; y < mapLengthY; y++)
+        {
+            for (int x = 0; x < mapLengthX; x++)
+            {
+                if (FindPanelToSearchDictionary(x, y) != null)
+                {
+                    GameObject panel = FindPanelToSearchDictionary(x, y);
+                    if (panel.GetComponent<Map_Node>() == null)
+                    {
+                        Destroy(panel);
+                    }
+                }
+            }
+        }
+    }
+    void DisableMap()
+    {
+        motherMapObject.SetActive(false);
+    }
+    #endregion
+
+    #region Click System
+
+    public void ClickedTrueNodeAndMove(Vector2Int trueNode)
+    {
+        Vector2Int prevNodeKey = currentNodeXY;
+        currentNodeXY = trueNode;
+
+        NodeAction();
+
+        LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
+        
+    }
+
+    private void NodeAction()
+    {
+
+    }
+
+    #endregion
+
+    #region DeveloperTools
     private GameObject FindPanelToSearchDictionary(int X, int Y)
     {
         GameObject resultGameObject;
@@ -192,87 +357,49 @@ public class Main_Map : MonoBehaviour
 
         return key;
     }
-
-    private void UI_MapOnOff() // 다 만들어지면 수정 요함 1101
+    private void LineDrawer(Vector2Int targetPanelKey, Vector2Int currentPanelKey, GameObject linePrefab)
     {
-        bool isOnMap = false;
+        Vector3 targetPanelVector = FindPanelToSearchDictionary(targetPanelKey).transform.position;
+        Vector3 currentPanelVector = FindPanelToSearchDictionary(currentPanelKey).transform.position;
+        GameObject targetPanelObject = FindPanelToSearchDictionary(targetPanelKey);
 
-        if (isOnMap == false)
-        {
-            this.enabled = true;
-            isOnMap = true;
-        }
+        Vector3 linePos = Vector3.Lerp(targetPanelVector, currentPanelVector, 0.5f);
+        Vector3 differenceVector = targetPanelVector - currentPanelVector;
 
-        else if (isOnMap == true)
-        {
-            this.enabled = false;
-            isOnMap = false;
-        }
-    }
+        float angleRadian = Mathf.Atan2(differenceVector.y, differenceVector.x);
+        float degrees = angleRadian * Mathf.Rad2Deg;
 
+        //if (targetPanelObject.GetComponentInChildren<RawImage>() != null)
+        //{
+        //    List<GameObject> goLineList = new List<GameObject>();
 
-    private void CreateRandomNode(Vector2Int startNodeKey)
-    {
-        if (startNodeKey.y != startNodeHeight) { Debug.LogWarning("Wrong Access"); return; }
+        //    goLineList.AddRange(targetPanelObject.GetComponentsInChildren<GameObject>());
 
-        List<Vector2Int> readyNode = new List<Vector2Int>();
-        Vector2Int currentNodeCreate = startNodeKey;
-        bool repeatWhile = true;
+        //    foreach (GameObject goLine in goLineList)
+        //    {
+        //        if (goLine.CompareTag("Line"))
+        //        {
+        //            if(goLine.transform.position == linePos)
+        //            Destroy(goLine);
+        //        }
+        //    }
+        //}
 
-        while (repeatWhile)
-        {
-            int randomListValue = 0;
-
-
-            for (int nodeY = Mathf.Clamp((currentNodeCreate.y + YMinCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY <= Mathf.Clamp((currentNodeCreate.y + YMaxCreateResearchLength), startNodeHeight, (mapLengthY - 2)); nodeY++)
-            {
-                for (int nodeX = Mathf.Clamp((currentNodeCreate.x + xCreateResearchLength), 0, mapLengthX - 1); nodeX >= Mathf.Clamp((currentNodeCreate.x - xCreateResearchLength), 0, (mapLengthX - 1)); nodeX--)
-                {
-                    readyNode.Add(new Vector2Int(nodeX, nodeY));
-                    Debug.Log("AddRange");
-                }
-
-            }
-            randomListValue = Random.Range(0, readyNode.Count);
-
-            Debug.Log(readyNode[randomListValue]);
-            GameObject createTargetPanel = FindPanelToSearchDictionary(readyNode[randomListValue]);
-
-            if (createTargetPanel.GetComponent<Map_Node>() == null)
-            {
-                createTargetPanel.AddComponent<Map_Node>();
-            }
-            createTargetPanel.GetComponent<Map_Node>().AddPrevNodeKey(currentNodeCreate);
-            createTargetPanel.GetComponent<Map_Node>().mykey = readyNode[randomListValue];
-
-           
-
-            currentNodeCreate = readyNode[randomListValue];
-
-            if (currentNodeCreate.y == (mapLengthY - 2))
-            {
-                repeatWhile = false;
-                endNode.GetComponent<Map_Node>().AddPrevNodeKey(readyNode[randomListValue]);
-            }
-            readyNode.Clear();
-        }
-
-    }
-
-
-    private void LineDrawer(Vector2Int targetPanelVector, Vector2Int currentPanelVector)
-    {
-        GameObject targetPanel = FindPanelToSearchDictionary(targetPanelVector);
-        GameObject currnetPanel = FindPanelToSearchDictionary(currentPanelVector);
-
-        Vector3 linePos = Vector3.Lerp(targetPanel.transform.position, currnetPanel.transform.position, 0.5f);
-        float lineHeight = (targetPanel.transform.position - currnetPanel.transform.position).magnitude;
-
-        GameObject lineObject = Instantiate(linePrefab, targetPanel.transform);
+        //GameObject lineObject = Instantiate(linePrefab, targetPanelObject.transform);
+        GameObject lineObject = Instantiate(linePrefab, lineParent);
         RectTransform lineRect = lineObject.GetComponent<RectTransform>();
-        lineRect.sizeDelta = new Vector2(lineThickness, lineHeight);
-        lineObject.transform.position = linePos;
-        lineObject.transform.up = targetPanel.transform.position;
+
+        lineObject.GetComponent<RawImage>().uvRect = new Rect(0, 0, differenceVector.magnitude / 20, 1);
+
+        lineRect.sizeDelta = new Vector2(differenceVector.magnitude, lineThickness);
+        lineRect.rotation = Quaternion.Euler(0, 0, degrees);
+        lineRect.position = linePos;
+
     }
+    #endregion
+
+
+
+
 
 }

@@ -139,8 +139,9 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     canvasGroup.alpha = 0f;
                     canvasGroup.blocksRaycasts = false;
                     DataManager.instance.myGold -= pieceInfo.gold;
-
+                    PiecesCountManager.instance.piecesIdCounts[pieceInfo.id]++;
                     CreatePiece();
+
                     UIManager.instance.UIRefresh();
                     return ;
                 }
