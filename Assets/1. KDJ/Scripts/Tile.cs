@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,15 @@ public class Tile : MonoBehaviour
     public GameObject tile;
 
     public TilemapTriggerInfo triggerInfo;
+
+    [HideInInspector]
+    public TileType gridType = 0;
+    [HideInInspector]
+    public int gridPositionX = 0;
+    [HideInInspector]
+    public int gridPositionY = 0;
+    private Vector3 gridTargetPosition;
+
 
     private void OnMouseDown()
     {
@@ -84,4 +94,24 @@ public class Tile : MonoBehaviour
             UIManager.instance.CloseSellText();
         }
     }
+
+
+    public void Reset()
+    {
+        this.piece.SetActive(true);
+
+        //스텟 리셋 추가
+
+        SetWorldPostion();
+        SetWorldRotation();
+    }
+
+    public void SetWorldRotation()
+    {
+         piece.transform.rotation = Quaternion.identity;
+    }
+    public void SetWorldPostion()
+    {        
+        piece.transform.position = this.transform.position;
+    }    
 }

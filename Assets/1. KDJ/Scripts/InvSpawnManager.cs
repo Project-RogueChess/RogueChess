@@ -24,4 +24,17 @@ public class InvSpawnManager : MonoBehaviour
         tile.piece = Instantiate(spawnUnit, tile.transform.position , Quaternion.identity);
     }
 
+    public void ResetChampions()
+    {
+        
+        for (int i = 0; i < hexaTiles.Count; i++)
+        {
+            if (hexaTiles[i].piece != null)
+            {
+                hexaTiles[i].Reset();
+            }
+        }
+    }
+
+
 }   
