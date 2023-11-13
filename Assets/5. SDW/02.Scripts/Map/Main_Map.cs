@@ -42,6 +42,7 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private Sprite randomEventSprite;
     [SerializeField] private float shelterPer = 0f;
     [SerializeField] private Sprite shelterSprite;
+    [SerializeField] private float clickedNodeSize = 20f;
 
     [Header("Optional")]
     [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
@@ -49,10 +50,12 @@ public class Main_Map : MonoBehaviour
 
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
+    private GameObject prevPanel;
     private GameObject endNode;
     private Map_Node[] nodeScripts;
     bool isOnMap = false;
     private int nodeTypeCount;
+    public bool isAccent;
     #endregion
 
     #region External Call
@@ -297,12 +300,32 @@ public class Main_Map : MonoBehaviour
         Vector2Int prevNodeKey = currentNodeXY;
         currentNodeXY = trueNode;
 
+        GameObject currentNodePanel = FindPanelToSearchDictionary(trueNode);
+        currentNodePanel.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
+
         NodeAction();
 
         LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
         
     }
 
+    private void AccentNode(GameObject panelNode)
+    {
+        if (isAccent == false && prevPanel == null)
+        {
+            isAccent = true;
+            prevPanel = panelNode;
+            panelNode.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
+        }
+
+        if (isAccent == true && prevPanel != null)
+        {
+            prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
+            isAccent = false;
+            prevPanel = null;
+        }
+
+    }
     private void NodeAction()
     {
 
