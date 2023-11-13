@@ -264,7 +264,8 @@ public class HexaUnitManager : MonoBehaviour
             unit.SetTileIndex(unit.preIndex);
         }
 
-        collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
+        if(unit.tileIndex.y != -1)
+            collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
         unitList.Remove(unit);
     }
 

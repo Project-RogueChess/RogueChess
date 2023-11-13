@@ -137,14 +137,14 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             if (InvSpawnManager.instance.hexaTiles[i].piece != null)
             {
-                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<BoxCollider>().enabled = true;
+                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<CapsuleCollider>().enabled = true;
             }
         }
         for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
         {
             if (InvSpawnManager.instance.invTiles[i].piece != null)
             {
-                InvSpawnManager.instance.invTiles[i].piece.GetComponent<BoxCollider>().enabled = true;
+                InvSpawnManager.instance.invTiles[i].piece.GetComponent<CapsuleCollider>().enabled = true;
             }
         }
     }
@@ -154,14 +154,14 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             if (InvSpawnManager.instance.hexaTiles[i].piece != null)
             {
-                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<BoxCollider>().enabled = false;
+                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<CapsuleCollider>().enabled = false;
             }
         }
         for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
         {
             if (InvSpawnManager.instance.invTiles[i].piece != null)
             {
-                InvSpawnManager.instance.invTiles[i].piece.GetComponent<BoxCollider>().enabled = false;
+                InvSpawnManager.instance.invTiles[i].piece.GetComponent<CapsuleCollider>().enabled = false;
             }
         }
     }
