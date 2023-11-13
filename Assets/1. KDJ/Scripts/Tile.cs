@@ -10,17 +10,24 @@ public class Tile : MonoBehaviour
 
     public TilemapTriggerInfo triggerInfo;
 
+    public GameObject[] shopManagers;
+
+    //private void Awake()
+    //{
+    //    shopManagers = 
+    //}
     private void OnMouseDown()
     {
         if (piece != null)
         {
+
             TileManager.Instance.isDrag = true;
             TileManager.Instance.prevPiece = piece;
             TileManager.Instance.prevTile = this;
-            
+            UIManager.instance.ShowSellText(piece);
         }
     }
-
+    
     private void OnMouseOver()
     {
 
@@ -61,5 +68,6 @@ public class Tile : MonoBehaviour
                 Debug.Log("ºóÄ­¿¡ ³öµÒ");
             }
         }
+        UIManager.instance.CloseSellText();
     }
 }

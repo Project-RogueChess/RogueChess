@@ -37,9 +37,12 @@ public class Pieces : MonoBehaviour
 
     public int t_objectsNum;
     public ItemsImg itemImage;
+
+    BoxCollider boxCollider;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
+        gold = piece.gold;
         name = piece.name;
         grade = piece.grade;
         maxHp = piece.maxHp;
@@ -76,10 +79,11 @@ public class Pieces : MonoBehaviour
                 return;
             }
         }
-       
+
         //hpbarScript.m_objectList.Add(gameObject.transform);
         //hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
         //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void Update()
@@ -156,8 +160,8 @@ public class Pieces : MonoBehaviour
         } 
     }
 
-    public void GivingItemImage()
+    public void OnBoxCollider()
     {
-
+        boxCollider.enabled = true;
     }
 }
