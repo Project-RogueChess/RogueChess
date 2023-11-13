@@ -37,9 +37,12 @@ public class Pieces : MonoBehaviour
 
     public int t_objectsNum;
     public ItemsImg itemImage;
+
+    BoxCollider boxCollider;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
+        gold = piece.gold;
         name = piece.name;
         grade = piece.grade;
         maxHp = piece.maxHp;
@@ -76,30 +79,11 @@ public class Pieces : MonoBehaviour
                 return;
             }
         }
-       
+
         //hpbarScript.m_objectList.Add(gameObject.transform);
         //hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
         //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GivingItemInfo();
-            Destroy(gameObject);
-            hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
-            hpbarScript.t_objects[t_objectsNum].SetActive(false);
-            for( int i =0; i< 3; i++)
-            {
-                hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
-
-                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().sprite = null;
-                Color color = itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color;
-                color.a = 0;
-                itemImage.transform.GetChild(t_objectsNum * 3+i).gameObject.GetComponent<Image>().color = color;
-            }
-        }
+        boxCollider = GetComponent<BoxCollider>();
     }
 
 
@@ -156,8 +140,26 @@ public class Pieces : MonoBehaviour
         } 
     }
 
-    public void GivingItemImage()
+    public void OnBoxCollider()
     {
+        boxCollider.enabled = true;
+    }
 
+    public void SellPiece()
+    {
+        DataManager.instance.myGold += gold;
+        UIManager.instance.UIRefresh();
+        GivingItemInfo();
+        hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
+        hpbarScript.m_hpBarsList[t_objectsNum].SetActive(false);
+        for (int i = 0; i < 3; i++)
+        {
+            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().sprite = null;
+            Color color = itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color;
+            color.a = 0;
+            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color = color;
+            hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
+        }
+        Destroy(gameObject);
     }
 }

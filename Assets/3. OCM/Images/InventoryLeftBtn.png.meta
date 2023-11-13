@@ -139,19 +139,19 @@ TextureImporter:
       name: InventoryLeftBtn_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 121
-        width: 70
-        height: 70
+        x: 129
+        y: 126
+        width: 65
+        height: 65
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2aa0a8bd3aeac194d86dc1771dfc6e78
-      internalID: -1223405575
+      spriteID: f0e915b0af1e2e44dab5ed625ee65d0d
+      internalID: 1485957716
       vertices: []
       indices: 
       edges: []

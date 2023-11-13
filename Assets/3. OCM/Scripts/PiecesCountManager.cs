@@ -9,6 +9,7 @@ public class PiecesCountManager : MonoBehaviour
  
     public int[] piecesIdCounts;
 
+
     public static PiecesCountManager instance { get; private set; }
     public void Awake()
     {

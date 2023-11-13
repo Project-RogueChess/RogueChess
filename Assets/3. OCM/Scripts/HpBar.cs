@@ -55,15 +55,15 @@ public class HpBar : MonoBehaviour
 
             if (t_objects[i].GetComponent<Pieces>())
             {
-                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.8f));
+                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
             }
             else
             {
-                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.8f));
+                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
             }
             //for (int j = 0; j < 3; j++)
             //{

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,8 +19,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text piecesTxt;
     public TMP_Text goldTxt;
     //±â¹° È®·ü panel
-    public TMP_Text[] percentages = new TMP_Text[5]; 
-    
+    public TMP_Text[] percentages = new TMP_Text[5];
+
 
     public GameObject shopPanel;
     public GameObject rerollButton;
@@ -46,10 +47,14 @@ public class UIManager : MonoBehaviour
     public int itemAddNum;
     public TMP_Text itemAddNumTxt;
     public GameObject itemAddNumImg;
+
+
+    public TMP_Text sellTxt;
+    public GameObject[] shopManagerList;
     private void Awake()
     {
         instance = this;
-        
+
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
         inventoryPanel1 = inventory1.GetComponent<InventoryPanel>();
         inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
@@ -61,7 +66,18 @@ public class UIManager : MonoBehaviour
         itemAddNumImg.SetActive(false);
         shopOnOffBool = true;
 
+        shopManagerList = shopmanagers.Select(shopmanagers => shopmanagers.gameObject).ToArray();
+        //for(int i =0; i< shopmanagers.Length; i++)
+        //{
+        //    shopManagerList[i] = shopmanagers[i].gameObject;
+        //}
+        
+
+        sellTxt.enabled = false;
     }
+
+   
+
 
     private void Update()
     {
@@ -83,7 +99,7 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             InventoryUIDraw();
-            inventoryOnOffBool = !inventoryOnOffBool;
+            
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -187,6 +203,7 @@ public class UIManager : MonoBehaviour
             itemAddNumImg.SetActive(false);
             inventorySwitchBool = true;
         }
+        inventoryOnOffBool = !inventoryOnOffBool;
     }
 
     public void InventoryUISwitch()
@@ -298,5 +315,25 @@ public class UIManager : MonoBehaviour
             itemAddNum++;
             itemAddNumTxt.text = itemAddNum.ToString();
         }
+    }
+
+    public void ShowSellText(GameObject pieces)
+    {
+        for(int i = 0;i< shopManagerList.Length;i++)
+        {
+            shopManagerList[i].SetActive(false);
+        }
+        int gold = pieces.GetComponent<Pieces>().gold;
+        sellTxt.enabled = true;
+        sellTxt.text = "Sell for " + gold.ToString() + "$";
+    }
+
+    public void CloseSellText()
+    {
+        for (int i = 0; i < shopManagerList.Length; i++)
+        {
+            shopManagerList[i].SetActive(true);
+        }
+        sellTxt.enabled = false;
     }
 }
