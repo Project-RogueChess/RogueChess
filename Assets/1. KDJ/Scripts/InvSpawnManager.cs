@@ -45,8 +45,6 @@ public class InvSpawnManager : MonoBehaviour
             if (hexaTiles[i].piece != null)
             {
                 articleCount++;
-
-                Debug.Log(articleCount);
             }
         }
     }

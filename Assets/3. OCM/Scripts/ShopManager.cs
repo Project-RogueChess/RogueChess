@@ -155,7 +155,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                         UpgradeArticle.instance.TryUpgradeArticle(pieceInfo);
                         PiecesCountManager.instance.resetCounts(pieceInfo);
                     }
-
+                    
                     UIManager.instance.UIRefresh();
                     return ;
                 }

@@ -149,22 +149,24 @@ public class Pieces : MonoBehaviour
     public void MergePeice()
     {
         grade++;
-
+        float newsize = 1f;
         if (grade == 2)
         {
-            Debug.Log(2);
+            newsize = 1.2f;
             maxHp = 2 * maxHp;
             hp = 2 * hp;
             attackDamage = 2 * attackDamage;
-            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
+            this.transform.localScale = new Vector3 (newsize, newsize, newsize);
         }
         else if (grade == 3)
         {
-            Debug.Log(3);
+            newsize = 1.4f;
             maxHp += 3 * maxHp;
             hp = 3 * hp;
             attackDamage = 3 * attackDamage;
-            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
+            this.transform.localScale = new Vector3(newsize, newsize, newsize);
         }
     }
 
