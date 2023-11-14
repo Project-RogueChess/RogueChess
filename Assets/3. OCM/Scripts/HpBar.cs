@@ -1,26 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HpBar : MonoBehaviour
 {
     public  GameObject m_goPrefab = null;
 
-    //public List<Transform>m_objectList = new List<Transform>();
+    //public Transform[] m_objectList = new Transform[20];
     //public List<GameObject> m_hpBarsList = new List<GameObject>();
-
-    //Camera camera = null;
-
+    public GameObject[] m_hpBarsList;
+    Camera camera = null;
     public GameObject[] t_objects;
     //public List<GameObject> test;
-
-
     public GameObject t_HpBar;
-    // Start is called before the first frame update
-    //void Start()
-    //{
-        //camera = Camera.main;
-       // t_objects = GameObject.FindGameObjectsWithTag("Player");
+    public GameObject hpBars;
+
+
+    public GameObject[] m_ItemsList;
+
+    public void Awake()
+    {
+        t_objects = new GameObject[20];
+        for (int i = 0; i < t_objects.Length; i++)
+        {
+            t_objects[i] = hpBars;
+        }
+    }
+    void Start()
+    {
+        camera = Camera.main;
+        //t_objects = GameObject.FindGameObjectsWithTag("Player");
 
         //for(int i = 0; i < t_objects.Length; i++)
         //{
@@ -32,14 +42,41 @@ public class HpBar : MonoBehaviour
         //{
         //    m_hpBarsList.Add(t_HpBar);
         //}
-    //}
 
-    // Update is called once per frame
-    //void Update()
-    //{ 
-    //    for(int i = 0; i < test.Count; i++)
-    //    {
-    //        m_hpBarsList[i].transform.position =camera.WorldToScreenPoint(test[i].transform.position + new Vector3(0,1.15f,0.5f));
-    //    }
-    //}
+       
+    }
+    void Update()
+    {
+        for (int i = 0; i < t_objects.Length; i++)
+        {
+            m_hpBarsList[i].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0, 1.15f, 1.0f));
+
+
+
+            if (t_objects[i].GetComponent<Pieces>())
+            {
+                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
+            }
+            else
+            {
+                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
+            }
+            //for (int j = 0; j < 3; j++)
+            //{
+            //    if (t_objects[i].GetComponent<Pieces>())
+            //    {
+            //        m_ItemsList[i * 3 + j].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.5f, 0.9f, 0.8f));
+            //    }
+            //    else
+            //    {
+            //        m_ItemsList[i * 3 + j].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0, 1.15f, 1.0f));
+
+                //    }
+                //}
+        }
+    }
 }

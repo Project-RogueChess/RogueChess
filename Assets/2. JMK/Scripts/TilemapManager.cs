@@ -58,7 +58,6 @@ public class TilemapManager : MonoBehaviour
         CreateTilemaps();
     }
 
-
     public void initTilePosList()
     {
         hexa_tilePosList = new Vector3[hexa_tilemapSizeY, hexa_tilemapSizeX]; 
@@ -92,6 +91,9 @@ public class TilemapManager : MonoBehaviour
         for (int i = 0; i < hexa_tilemapSizeY; i++)
             for (int j = 0; j < hexa_tilemapSizeX; j++)
             {
+                if (i > 3)
+                    continue;
+
                 GameObject tileGO = Instantiate(hexa_tilePrefab);
 
                 tileGO.transform.position = hexa_tilePosList[i, j];

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tile
   - Line
+  - Sell
   layers:
   - Default
   - TransparentFX

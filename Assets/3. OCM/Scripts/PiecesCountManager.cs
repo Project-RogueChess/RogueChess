@@ -9,6 +9,7 @@ public class PiecesCountManager : MonoBehaviour
  
     public int[] piecesIdCounts;
 
+
     public static PiecesCountManager instance { get; private set; }
     public void Awake()
     {
@@ -16,6 +17,4 @@ public class PiecesCountManager : MonoBehaviour
         piecesDB = FindObjectOfType<PiecesDB>();
         piecesIdCounts = new int[piecesDB.pieces.Count];
     }
-
-
 }

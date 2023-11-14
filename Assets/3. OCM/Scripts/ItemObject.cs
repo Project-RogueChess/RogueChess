@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,8 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+
+        OnCollider();
         if (item.itemName != null && item.itemName != string.Empty)
         {
             previousParent = transform.parent;
@@ -111,6 +114,8 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         }
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+
+        OffCollider();
     }
 
     void SwitchImage()
@@ -122,6 +127,42 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         else
         {
             image.sprite = null;
+        }
+    }
+
+
+    public void OnCollider()
+    {
+        for (int i = 0; i < InvSpawnManager.instance.hexaTiles.Count; i++)
+        {
+            if (InvSpawnManager.instance.hexaTiles[i].piece != null)
+            {
+                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<CapsuleCollider>().enabled = true;
+            }
+        }
+        for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
+        {
+            if (InvSpawnManager.instance.invTiles[i].piece != null)
+            {
+                InvSpawnManager.instance.invTiles[i].piece.GetComponent<CapsuleCollider>().enabled = true;
+            }
+        }
+    }
+    public void OffCollider()
+    {
+        for (int i = 0; i < InvSpawnManager.instance.hexaTiles.Count; i++)
+        {
+            if (InvSpawnManager.instance.hexaTiles[i].piece != null)
+            {
+                InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<CapsuleCollider>().enabled = false;
+            }
+        }
+        for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
+        {
+            if (InvSpawnManager.instance.invTiles[i].piece != null)
+            {
+                InvSpawnManager.instance.invTiles[i].piece.GetComponent<CapsuleCollider>().enabled = false;
+            }
         }
     }
 }
