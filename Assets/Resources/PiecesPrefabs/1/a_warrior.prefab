@@ -127,7 +127,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3124258145481844009}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -303,7 +303,7 @@ Transform:
   - {fileID: 1984502188015998608}
   - {fileID: 472665754973789320}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2285013297966414897
 MonoBehaviour:
@@ -319,9 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   range: 0
-  actType: 0
+  moveType: 0
   atkRate: 2
   moveRate: 0.3
+  projectilePrefab: {fileID: 0}
 --- !u!114 &991096595987582100
 MonoBehaviour:
   m_ObjectHideFlags: 0

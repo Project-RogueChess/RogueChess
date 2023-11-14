@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum HexaUnitMoveType
 {
@@ -21,6 +22,7 @@ public class HexaUnit : MonoBehaviour
     public float atkRate = 0.5f;
     public float moveRate = 0.5f;
     public HexaUnitProjectile projectilePrefab;
+    public GameObject attackFX;
 
     //더티 셋
     private bool _moveDirty = false;
@@ -124,6 +126,11 @@ public class HexaUnit : MonoBehaviour
 
     public void StartAttack() => _startAtk = true;
 
+    public void Damaged(int damage)
+    {
+        
+    }
+
     void Act()
     {
         if(needUpdate)
@@ -170,6 +177,11 @@ public class HexaUnit : MonoBehaviour
                 //이미 생성되어 있다면 초기화 세팅
                 _projectile.gameObject.SetActive(true);
                 _projectile.Initialize();
+            }
+            else if (_startAtk)
+            {
+                //공격 이펙트
+                //타겟 attack 이펙트
             }
 
             // [ _actimer / atkRate == 1 ] 일 때 까지 대기

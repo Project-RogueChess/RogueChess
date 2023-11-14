@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Creep
 {
-    public GameObject creepPrefab;
-
     public string name;
     public int id;
     public int maxHp;
@@ -15,6 +9,9 @@ public class Creep
     public int attackRange;
     public float moveSpeed;
 
-    public Avatar avatar;
-    public Animator animator;
+    //public int x;
+    //public int y;
+
+    public string avatarPath; // + .fbx .dae (Collada) .3ds .dxf .obj 
+    public string animatorPath; // + .controller
 }
