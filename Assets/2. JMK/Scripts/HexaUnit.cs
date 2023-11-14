@@ -6,38 +6,50 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public enum HexaUnitActType
+public enum HexaUnitMoveType
 {
     Common,
     Jumper
 }
 
+public enum HexaUnitAtkType
+{
+    Tile,
+    Projectile
+}
+
 public class HexaUnit : MonoBehaviour
 {
+    //기본 정보
     public int team;
     public int range;
-    public HexaUnitActType actType;
+    public HexaUnitMoveType moveType;
+    public HexaUnitAtkType atkType;
     public float atkRate = 0.5f;
     public float moveRate = 0.5f;
-    public Transform ccPivot;
-    public AnimationCurve ccMotion;
 
+    //더티 셋
     private bool _moveDirty = false;
     private bool _atkDirty = false;
-    private bool _turnDirty = false;
+    private bool _hasTurn = false;
+
+    //타겟 정보
+    private HexaUnit _target;
     private Vector2Int _tileIndex;
     private Vector2Int _preIndex = new Vector2Int(-1,-1);
     private Vector2Int _lastTargetIndex;
-    private HexaUnit _target;
 
+    //저장 값
     private Vector3 _startPos;
     private Vector3 _endPos;
-
     private Vector2Int _savedDirIndex;
     private Quaternion _savedRot;
+
+    //내부 타이머
     private float _actTimer = 0f;
 
-    public bool needUpdate => !_moveDirty && !_atkDirty && !_turnDirty;
+    //속성
+    public bool needUpdate => !_moveDirty && !_atkDirty;
     public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
     public Vector2Int lastTargetIndex => _lastTargetIndex;
@@ -84,40 +96,41 @@ public class HexaUnit : MonoBehaviour
 
         if(_savedDirIndex != lastDirIndex || _savedDirIndex == Vector2Int.zero)
         {
-            _turnDirty = true;
+            _hasTurn = true;
             _savedRot = transform.rotation;
         }
     }
 
     public void Attack()
     {
-        
+        _atkDirty = true;
+        _lastTargetIndex = target.tileIndex;
+
+        //터닝이 필요한 경우
         var lastDirIndex = _savedDirIndex;
         _savedDirIndex = HexaUnitManager.instance.EvenToAxial(target.tileIndex) - HexaUnitManager.instance.EvenToAxial(_tileIndex);
         if(lastDirIndex != _savedDirIndex)
         {
-            _turnDirty = true;
+            _hasTurn = true;
             _savedRot = transform.rotation;
         }
-        _startPos = transform.position;
-        _endPos = target.transform.position;
-        _lastTargetIndex = target.tileIndex;
-        _atkDirty = true;
+        _startPos = TilemapManager.instance.hexa_tilePosList[tileIndex.y,tileIndex.x];
+        _endPos = TilemapManager.instance.hexa_tilePosList[target.tileIndex.y,target.tileIndex.x];
     }
 
-    private void Act()
+    void Act()
     {
         if(needUpdate)
             return;
 
         _actTimer += Time.deltaTime;
-        if(_turnDirty)
+        if(_hasTurn)
         {
             transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / turnRate);
             if(_actTimer > turnRate)
             {
                 _actTimer = 0f;
-                _turnDirty = false;
+                _hasTurn = false;
             }
             return;
         }
@@ -135,6 +148,9 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
+            _actTimer = 0f;
+            _atkDirty = false;
+            return;
         }
     }
 }
