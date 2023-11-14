@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -46,7 +47,6 @@ public class PiecesDB : MonoBehaviour
             piece.moveSpeed = float.Parse(dicList[i]["moveSpeed"].ToString());
             piece.pieceImg = Resources.Load<Sprite>("PiecesImages/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
             piece.piecePrefab = Resources.Load<GameObject>("PiecesPrefabs/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
-
 
             piece.avatar = Resources.Load<Avatar>("PiecesAvatar/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());
             piece.animator = Resources.Load<Animator>("PiecesAnimation/" + dicList[i]["gold"].ToString() + "/" + dicList[i]["name"].ToString());

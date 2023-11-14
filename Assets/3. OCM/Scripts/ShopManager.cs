@@ -148,8 +148,11 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     canvasGroup.blocksRaycasts = false;
                     DataManager.instance.myGold -= pieceInfo.gold;
                     PiecesCountManager.instance.piecesIdCounts[pieceInfo.id]++;
+                    if (PiecesCountManager.instance.piecesIdCounts[pieceInfo.id] > 2)
+                    {
+                        PiecesCountManager.instance.resetCounts(pieceInfo);
+                    }
                     CreatePiece();
-
                     UIManager.instance.UIRefresh();
                     return ;
                 }
@@ -171,6 +174,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         var currentPiece = InvSpawnManager.instance.invTiles[index].piece.GetComponent<Pieces>();
 
         currentPiece.Parse(pieceInfo);
+
         //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }
