@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
@@ -30,6 +31,8 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private float lineThickness = 10f;
 
     [Header("Node Control")]
+    [SerializeField] private Sprite startNodeSprite;
+    [SerializeField] private Sprite endNodeSprite;
     [SerializeField] private float normalMonsterPer = 0f;
     [SerializeField] private Sprite normalMonsterSprite;
     [SerializeField] private float eliteMonsterPer = 0f;
@@ -43,10 +46,16 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private float shelterPer = 0f;
     [SerializeField] private Sprite shelterSprite;
     [SerializeField] private float clickedNodeSize = 20f;
+    [SerializeField] private GameObject currentStateMarkerO;
+    [SerializeField] private Sprite currentStateMarkerX;
 
     [Header("Optional")]
     [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
     [SerializeField] private GameObject motherMapObject;
+
+    [Header("Scroll Control")]
+    [SerializeField] private GameObject scroll;
+    [SerializeField] ScrollRect scrollRect;
 
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
@@ -54,13 +63,19 @@ public class Main_Map : MonoBehaviour
     private GameObject endNode;
     private Map_Node[] nodeScripts;
     bool isOnMap = false;
-    private int nodeTypeCount;
-    public bool isAccent;
+    public bool isAccent = false;
+    Vector3 basicScrollRect;
+    Vector3 basicTransform;
+
+    Vector2Int startNodeXY;
+    Vector2Int endNodeXY;
     #endregion
 
     #region External Call
     public void UI_MapOnOff()
     {
+        scrollRect.content.localScale = basicScrollRect;
+        gameObject.transform.position = basicTransform;
 
         if (isOnMap == false)
         {
@@ -82,6 +97,9 @@ public class Main_Map : MonoBehaviour
 
         nodeScripts = gameObject.GetComponentsInChildren<Map_Node>();
 
+        basicScrollRect = scrollRect.content.localScale;
+        basicTransform = gameObject.transform.position;
+
         StartCoroutine(StartMethod());
         
     }
@@ -89,12 +107,54 @@ public class Main_Map : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
+        scroll.transform.SetParent(lineParent.transform);
         LineDrawerLauncher();
         SettingNodeSystem();
         DeleteNodeSystem();
 
         DisableMap();
     }
+    private void Update()
+    {
+        ZoomMap();
+        Debug.Log(prevPanel);
+
+        if(gameObject.transform.position.y < -100)
+        {
+            gameObject.transform.position = new Vector3 (gameObject.transform.position.x,-100,gameObject.transform.position.z);
+        }
+
+        if (gameObject.transform.position.y > 1000)
+        {
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, 1000, gameObject.transform.position.z);
+        }
+
+    }
+
+    
+    float zoomSpeed = 0.05f;
+    float minZoom = 1f;
+    float maxZoom = 2.0f;
+
+    void ZoomMap()
+    {
+        float scrollDelta = Input.mouseScrollDelta.y;
+
+        // 스크롤 입력이 감지되면 확대/축소 수행
+        if (scrollDelta != 0)
+        {
+            // 현재 확대 수준 가져오기
+            float currentZoom = scrollRect.content.localScale.y;
+
+            // 새로운 확대 수준 계산
+            float newZoom = Mathf.Clamp(currentZoom - (-scrollDelta) * zoomSpeed, minZoom, maxZoom);
+
+            // 지도에 새로운 확대 수준 적용
+            scrollRect.content.localScale = new Vector3(newZoom, newZoom, 1.0f);
+
+        }
+    }
+
     #region Starting Methods
     private void UI_MapRenderStart()
     {
@@ -125,13 +185,17 @@ public class Main_Map : MonoBehaviour
         startNodePanel.AddComponent<Map_Node>();
         startNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, 0);
 
+        Instantiate(currentStateMarkerO, startNodePanel.transform);
+
         currentNodeXY = new Vector2Int(startNodeX, 0); // this
+        startNodeXY = new Vector2Int(startNodeX, 0);
 
         GameObject endNodePanel = FindPanelToSearchDictionary(startNodeX, (mapLengthY - 1));
         endNodePanel.AddComponent<Map_Node>();
         endNodePanel.GetComponent<Map_Node>().mykey = new Vector2Int(startNodeX, (mapLengthY - 1));
         endNode = endNodePanel;
 
+        endNodeXY = new Vector2Int(startNodeX, (mapLengthY - 1));
 
         if (secondFloorNodeNumber > mapLengthX) { Debug.LogWarning("secondFloorNodeNumber > mapLengthX"); }
 
@@ -263,6 +327,18 @@ public class Main_Map : MonoBehaviour
                 nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Shelter;
                 nodeScript.ChangeImageSprite(shelterSprite);
             }
+
+            if(nodeScript.mykey == startNodeXY)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.Start;
+                nodeScript.ChangeImageSprite(startNodeSprite);
+            }
+
+            if(nodeScript.mykey == endNodeXY)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.End;
+                nodeScript.ChangeImageSprite(endNodeSprite);
+            }
         }
     }
     private void DeleteNodeSystem()
@@ -298,34 +374,68 @@ public class Main_Map : MonoBehaviour
     public void ClickedTrueNodeAndMove(Vector2Int trueNode)
     {
         Vector2Int prevNodeKey = currentNodeXY;
+
+        FindPanelToSearchDictionary(currentNodeXY).GetComponent<Map_Node>().ChangeStateImage(currentStateMarkerX);
+
         currentNodeXY = trueNode;
 
-        GameObject currentNodePanel = FindPanelToSearchDictionary(trueNode);
-        currentNodePanel.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
+        Instantiate(currentStateMarkerO, FindPanelToSearchDictionary(trueNode).transform);
+
+        //GameObject currentNodePanel = FindPanelToSearchDictionary(trueNode);
+        //currentNodePanel.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
 
         NodeAction();
+
+        UI_MapOnOff();
 
         LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
         
     }
-
-    private void AccentNode(GameObject panelNode)
+    public void AccentNode(GameObject panelNode)
     {
         if (isAccent == false && prevPanel == null)
         {
+            Debug.Log("isAccent F , prevPanel N");
             isAccent = true;
             prevPanel = panelNode;
             panelNode.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
         }
 
-        if (isAccent == true && prevPanel != null)
+        else if (isAccent == true && prevPanel == panelNode)
         {
+            Debug.Log("isAccent T , prevPanel P");
+            ClickedTrueNodeAndMove(panelNode.GetComponent<Map_Node>().mykey);
+            prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
+
+            isAccent = false;
+            prevPanel = null;
+        }
+
+        else if (isAccent == true && prevPanel != panelNode)
+        {
+            Debug.Log("isAccent T , prevPanel !P");
             prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
             isAccent = false;
             prevPanel = null;
         }
 
+        else
+        {
+            Debug.Log(prevPanel + " + " + isAccent + " + " + prevPanel);
+        }
+
     }
+
+    public void FalseAccentNode(GameObject panelNode)
+    {
+        if (prevPanel != null)
+        {
+            prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
+        }
+        isAccent = false;
+        prevPanel = null;
+    }
+
     private void NodeAction()
     {
 
@@ -392,23 +502,6 @@ public class Main_Map : MonoBehaviour
         float angleRadian = Mathf.Atan2(differenceVector.y, differenceVector.x);
         float degrees = angleRadian * Mathf.Rad2Deg;
 
-        //if (targetPanelObject.GetComponentInChildren<RawImage>() != null)
-        //{
-        //    List<GameObject> goLineList = new List<GameObject>();
-
-        //    goLineList.AddRange(targetPanelObject.GetComponentsInChildren<GameObject>());
-
-        //    foreach (GameObject goLine in goLineList)
-        //    {
-        //        if (goLine.CompareTag("Line"))
-        //        {
-        //            if(goLine.transform.position == linePos)
-        //            Destroy(goLine);
-        //        }
-        //    }
-        //}
-
-        //GameObject lineObject = Instantiate(linePrefab, targetPanelObject.transform);
         GameObject lineObject = Instantiate(linePrefab, lineParent);
         RectTransform lineRect = lineObject.GetComponent<RectTransform>();
 
