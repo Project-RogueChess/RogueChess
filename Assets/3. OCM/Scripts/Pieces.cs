@@ -148,6 +148,8 @@ public class Pieces : MonoBehaviour
 
     public void MergePeice()
     {
+        grade++;
+
         if (grade == 2)
         {
             Debug.Log(2);
