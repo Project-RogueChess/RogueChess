@@ -45,11 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50088526cfab8e34193bc362f72ba402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 1
-  range: 0
-  attackType: 0
+  team: 0
+  range: 2
+  moveType: 0
   atkRate: 2
   moveRate: 0.3
+  projectilePrefab: {fileID: 8884746836251305693, guid: 87344a5d09bcb914e913714aba542243,
+    type: 3}
 --- !u!1 &6754217013840560572
 GameObject:
   m_ObjectHideFlags: 0

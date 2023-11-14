@@ -12,21 +12,15 @@ public enum HexaUnitMoveType
     Jumper
 }
 
-public enum HexaUnitAtkType
-{
-    Tile,
-    Projectile
-}
-
 public class HexaUnit : MonoBehaviour
 {
     //기본 정보
     public int team;
     public int range;
     public HexaUnitMoveType moveType;
-    public HexaUnitAtkType atkType;
     public float atkRate = 0.5f;
     public float moveRate = 0.5f;
+    public HexaUnitProjectile projectilePrefab;
 
     //더티 셋
     private bool _moveDirty = false;
@@ -44,6 +38,9 @@ public class HexaUnit : MonoBehaviour
     private Vector3 _endPos;
     private Vector2Int _savedDirIndex;
     private Quaternion _savedRot;
+    private bool _firstMove = true;
+    private bool _startAtk = false;
+    private HexaUnitProjectile _projectile;
 
     //내부 타이머
     private float _actTimer = 0f;
@@ -54,8 +51,9 @@ public class HexaUnit : MonoBehaviour
     public Vector2Int preIndex => _preIndex;
     public Vector2Int lastTargetIndex => _lastTargetIndex;
     public float turnRate => moveRate * 0.5f;
-
+    public bool firstMove => _firstMove;
     public HexaUnit target => _target;
+    public HexaUnitProjectile projectile => _projectile;
 
 
     void Update()
@@ -80,7 +78,10 @@ public class HexaUnit : MonoBehaviour
     {
         if(_moveDirty)
             return;
-        
+
+        if (_firstMove)
+            _firstMove = false;
+
         //더티 셋
         _moveDirty = true;
         var temp = _tileIndex;
@@ -103,6 +104,9 @@ public class HexaUnit : MonoBehaviour
 
     public void Attack()
     {
+        //디버그용 스타트 어택
+        _startAtk = true;
+
         _atkDirty = true;
         _lastTargetIndex = target.tileIndex;
 
@@ -117,6 +121,8 @@ public class HexaUnit : MonoBehaviour
         _startPos = TilemapManager.instance.hexa_tilePosList[tileIndex.y,tileIndex.x];
         _endPos = TilemapManager.instance.hexa_tilePosList[target.tileIndex.y,target.tileIndex.x];
     }
+
+    public void StartAttack() => _startAtk = true;
 
     void Act()
     {
@@ -148,8 +154,48 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
-            _actTimer = 0f;
-            _atkDirty = false;
+            if (projectilePrefab != null && _startAtk)
+            {
+                //투사체 생성
+                if (_projectile == null)
+                {
+                    var projectileParent = new GameObject();
+                    projectileParent.name = "ProjectilePool";
+                    projectileParent.transform.parent = transform;
+
+                    _projectile = Instantiate(projectilePrefab);
+                    _projectile.owner = this;
+                    _projectile.transform.parent = projectileParent.transform;
+                }
+                //이미 생성되어 있다면 초기화 세팅
+                _projectile.gameObject.SetActive(true);
+                _projectile.Initialize();
+            }
+
+            // [ _actimer / atkRate == 1 ] 일 때 까지 대기
+
+            if (projectilePrefab != null)
+            {
+                //투사체 공격일 경우
+                if (_actTimer > atkRate && _projectile.endMovement)
+                {
+                    _actTimer = 0f;
+                    _atkDirty = false;
+                }
+            }
+            else
+            {
+                //타일 공격일 경우
+                if (_actTimer > atkRate)
+                {
+                    _actTimer = 0f;
+                    _atkDirty = false;
+                }
+            }
+
+
+            
+            _startAtk = false;
             return;
         }
     }
