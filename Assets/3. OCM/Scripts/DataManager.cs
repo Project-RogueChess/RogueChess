@@ -12,7 +12,7 @@ public class DataManager : MonoBehaviour
     public int maxHp = 0;
     public int myHp = 0;
     public int myGold = 1;
-    public int maxPieces =0;
+    public int maxPieces = 0;
     public int myPieces = 0;
     public int myLevel = 0;
     public int maxExp = 0;

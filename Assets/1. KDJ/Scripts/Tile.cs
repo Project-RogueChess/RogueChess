@@ -11,15 +11,6 @@ public class Tile : MonoBehaviour
 
     public TilemapTriggerInfo triggerInfo;
 
-    [HideInInspector]
-    public TileType gridType = 0;
-    [HideInInspector]
-    public int gridPositionX = 0;
-    [HideInInspector]
-    public int gridPositionY = 0;
-    private Vector3 gridTargetPosition;
-
-
     private void OnMouseDown()
     {
         if (piece != null)
@@ -92,6 +83,8 @@ public class Tile : MonoBehaviour
             }
 
             UIManager.instance.CloseSellText();
+
+            InvSpawnManager.instance.CountArticle();
         }
     }
 

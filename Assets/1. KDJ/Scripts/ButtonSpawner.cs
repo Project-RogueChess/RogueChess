@@ -18,9 +18,7 @@ public class ButtonSpawner : MonoBehaviour
 
     public void btnClickReset()
     {
-        InvSpawnManager.instance.ResetChampions();
-
-        
+        InvSpawnManager.instance.ResetChampions();        
     }
 
     public int btnClick()

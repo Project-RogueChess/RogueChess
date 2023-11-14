@@ -6,6 +6,7 @@ public class InvSpawnManager : MonoBehaviour
 {
     public static InvSpawnManager instance;
 
+    public int articleCount;
 
     public GameObject spawnUnit;
 
@@ -32,6 +33,20 @@ public class InvSpawnManager : MonoBehaviour
             if (hexaTiles[i].piece != null)
             {
                 hexaTiles[i].Reset();
+            }
+        }
+    }
+    public void CountArticle()
+    {
+        articleCount = 0;
+
+        for (int i = 0; i < hexaTiles.Count; i++)
+        {
+            if (hexaTiles[i].piece != null)
+            {
+                articleCount++;
+
+                Debug.Log(articleCount);
             }
         }
     }
