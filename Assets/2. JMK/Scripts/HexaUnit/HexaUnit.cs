@@ -173,28 +173,13 @@ public class HexaUnit : MonoBehaviour
             }
 
             // [ _actimer / atkRate == 1 ] 일 때 까지 대기
-
-            if (projectilePrefab != null)
+            if (_actTimer > atkRate
+                && projectilePrefab != null ? _projectile.endMovement : true)
             {
-                //투사체 공격일 경우
-                if (_actTimer > atkRate && _projectile.endMovement)
-                {
-                    _actTimer = 0f;
-                    _atkDirty = false;
-                }
-            }
-            else
-            {
-                //타일 공격일 경우
-                if (_actTimer > atkRate)
-                {
-                    _actTimer = 0f;
-                    _atkDirty = false;
-                }
+                _actTimer = 0f;
+                _atkDirty = false;
             }
 
-
-            
             _startAtk = false;
             return;
         }

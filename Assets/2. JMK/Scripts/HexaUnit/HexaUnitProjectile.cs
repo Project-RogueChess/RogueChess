@@ -57,6 +57,8 @@ public class HexaUnitProjectile : MonoBehaviour
 
             if (_owner.target != null)
                 _lastTargetPos = _owner.target.transform.position;
+            else
+                _endMovement = true;
         }
     }
 }
