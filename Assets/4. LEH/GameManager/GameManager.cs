@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (currentPhase != Phase.Map)
-            time = Time.time;
+            time = Time.deltaTime;
         ManagePhase(currentPhase);
 
         Debug.Log($"{ time} : {currentPhase} : {timeDisplay}");
