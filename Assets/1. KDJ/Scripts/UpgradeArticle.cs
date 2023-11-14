@@ -15,10 +15,10 @@ public class UpgradeArticle : MonoBehaviour
 
     public int k = 0;
 
+
     private void Awake()
     {
         instance = this;
-
     }
 
 
@@ -44,7 +44,7 @@ public class UpgradeArticle : MonoBehaviour
                     }
                     else if (findPiece.grade == 2)
                     {
-                        Debug.Log(2);
+                        Debug.Log(1);
                         article_Grade_2.Add(findPiece);
                     }
                 }
@@ -66,7 +66,6 @@ public class UpgradeArticle : MonoBehaviour
                     }
                     else if (findPiece.grade == 2)
                     {
-                        Debug.Log(1);
                         article_Grade_2.Add(findPiece);
                     }
                 }
@@ -75,16 +74,19 @@ public class UpgradeArticle : MonoBehaviour
 
         
 
+
+
         if (article_Grade_1.Count > 2)
         {
-            article_Grade_1[2].MergePeice();
+           
 
             article_Grade_2.Add(article_Grade_1[2]);
+
+
             k = 0;
 
             for (int j = 0; j < 2; j++)
             {
-
                 for (int i = 0; i < 3; i++)
                 {
                     // 파괴 당할 오브젝트들이 아이템 가졌었는지 확인
@@ -102,7 +104,7 @@ public class UpgradeArticle : MonoBehaviour
                                 itemImg.GetComponent<Image>().sprite = article_Grade_1[j].gameObject.GetComponent<Pieces>().items[i].itemSprite;
                                 break;
                             }  //머지할 오브젝트의 아이템 있고 마지막 아이템 있으면 인벤토리에 추가
-                            else if (article_Grade_1[2].gameObject.GetComponent<Pieces>().items[k].itemName != string.Empty && article_Grade_1[2].gameObject.GetComponent<Pieces>().items[2].itemName != string.Empty)
+                            else if (article_Grade_1[2].gameObject.GetComponent<Pieces>().items[2].itemName != string.Empty)
                             {
                                 UIManager.instance.AddTheItem(article_Grade_1[j].gameObject.GetComponent<Pieces>().items[i]);
                                 Debug.Log(2);
@@ -113,19 +115,73 @@ public class UpgradeArticle : MonoBehaviour
                 }
             }
 
+            article_Grade_1[2].MergePeice();
+
             Destroy(article_Grade_1[0].gameObject);
             Destroy(article_Grade_1[1].gameObject);
 
             article_Grade_1.Clear();
 
+            
+
+            
+
+
             if (article_Grade_2.Count > 2)
             {
-                article_Grade_2[0].MergePeice();
+
+                article_Grade_1.Clear();
+                article_Grade_2.Clear();
+
                 k = 0;
 
-                for (int j = 1; j < 3; j++)
-                {
 
+                for (int i = 0; i < InvSpawnManager.instance.invTiles.Count; i++)
+                {
+                    if (InvSpawnManager.instance.invTiles[i].piece != null)
+                    {
+
+                        Pieces findPiece = InvSpawnManager.instance.invTiles[i].piece.GetComponent<Pieces>();
+                        if (findPiece.id == piece.id)
+                        {
+                            if (findPiece.grade == 1)
+                            {
+                                article_Grade_1.Add(findPiece);
+                            }
+                            else if (findPiece.grade == 2)
+                            {
+                                article_Grade_2.Add(findPiece);
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < InvSpawnManager.instance.hexaTiles.Count; i++)
+                {
+                    if (InvSpawnManager.instance.hexaTiles[i].piece != null)
+                    {
+
+                        Pieces findPiece = InvSpawnManager.instance.hexaTiles[i].piece.GetComponent<Pieces>();
+
+                        if (findPiece.id == piece.id)
+                        {
+                            if (findPiece.grade == 1)
+                            {
+                                article_Grade_1.Add(findPiece);
+                            }
+                            else if (findPiece.grade == 2)
+                            {
+                                article_Grade_2.Add(findPiece);
+                            }
+                        }
+                    }
+                }
+
+
+
+
+                for (int j = 0; j < 2; j++)
+                {
                     for (int i = 0; i < 3; i++)
                     {
                         // 파괴 당할 오브젝트들이 아이템 가졌었는지 확인
@@ -135,15 +191,15 @@ public class UpgradeArticle : MonoBehaviour
                             for (int k = 0; k < 3; k++)
                             {
                                 //머지할 오브젝트의 0~2까지 아이템 있는지 확인
-                                if (article_Grade_2[0].gameObject.GetComponent<Pieces>().items[k].itemName == string.Empty)
+                                if (article_Grade_2[2].gameObject.GetComponent<Pieces>().items[k].itemName == string.Empty)
                                 {
-                                    GameObject itemImg = article_Grade_1[0].gameObject.transform.GetChild(0).gameObject.transform.GetChild(k).gameObject;
+                                    GameObject itemImg = article_Grade_2[2].gameObject.transform.GetChild(0).gameObject.transform.GetChild(k).gameObject;
                                     itemImg.SetActive(true);
-                                    article_Grade_2[0].gameObject.GetComponent<Pieces>().items[k] = article_Grade_2[j].gameObject.GetComponent<Pieces>().items[i];
+                                    article_Grade_2[2].gameObject.GetComponent<Pieces>().items[k] = article_Grade_2[j].gameObject.GetComponent<Pieces>().items[i];
                                     itemImg.GetComponent<Image>().sprite = article_Grade_2[j].gameObject.GetComponent<Pieces>().items[i].itemSprite;
                                     break;
                                 }  //머지할 오브젝트의 아이템 있고 마지막 아이템 있으면 인벤토리에 추가
-                                else if (article_Grade_2[0].gameObject.GetComponent<Pieces>().items[k].itemName != string.Empty && article_Grade_2[0].gameObject.GetComponent<Pieces>().items[2].itemName != string.Empty)
+                                else if (article_Grade_2[2].gameObject.GetComponent<Pieces>().items[2].itemName != string.Empty)
                                 {
                                     UIManager.instance.AddTheItem(article_Grade_2[j].gameObject.GetComponent<Pieces>().items[i]);
                                     Debug.Log(2);
@@ -153,9 +209,11 @@ public class UpgradeArticle : MonoBehaviour
                         }
                     }
                 }
-                    
+
+                article_Grade_2[2].MergePeice();
+
+                Destroy(article_Grade_2[0].gameObject);
                 Destroy(article_Grade_2[1].gameObject);
-                Destroy(article_Grade_2[2].gameObject);
 
                 article_Grade_2.Clear();
             }

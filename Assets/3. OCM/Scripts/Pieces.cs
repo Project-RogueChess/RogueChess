@@ -30,6 +30,18 @@ public class Pieces : MonoBehaviour
     public int attackRange;
     public float moveSpeed;
 
+
+    private int originMaxHp;
+    private int originHp;
+    private int originMaxMp;
+    private int originMp;
+    private int originAttackDamage;
+    private float originAttackSpeed;
+    private int originAttackRange;
+    private float originMoveSpeed;
+
+
+
     public Transform pos;
     public Item[] items;
 
@@ -58,6 +70,15 @@ public class Pieces : MonoBehaviour
         attackSpeed = piece.attackSpeed;
         attackRange = piece.attackRange;
         moveSpeed = piece.moveSpeed;
+
+        originMaxHp = maxHp;
+        originHp = hp;
+        originMaxMp = maxMp;
+        originMp = mp;
+        originAttackDamage = attackDamage;
+        originAttackSpeed = attackSpeed;
+        originAttackRange = attackRange;
+        originMoveSpeed = moveSpeed; ;
     }
     private void Awake()
     {
@@ -150,23 +171,58 @@ public class Pieces : MonoBehaviour
     {
         grade++;
         float newsize = 1f;
+
+
+
         if (grade == 2)
         {
             newsize = 1.2f;
-            maxHp = 2 * maxHp;
-            hp = 2 * hp;
-            attackDamage = 2 * attackDamage;
+            maxHp = 2 * originMaxHp;
+            hp = 2 * originHp;
+            attackDamage = 2 * originAttackDamage;
+
+
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
             this.transform.localScale = new Vector3 (newsize, newsize, newsize);
+
+            Debug.Log(items.Length);
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i].itemName != string.Empty)
+                {
+                    Debug.Log(1);
+                    maxHp += items[i].itemHp;
+                    hp += items[i].itemHp;
+                    attackDamage += items[i].itemHp;
+                    attackSpeed += items[i].itemAttackSpeed;
+                    mp += items[i].itemMp;
+                }
+            }
         }
         else if (grade == 3)
         {
             newsize = 1.4f;
-            maxHp += 3 * maxHp;
-            hp = 3 * hp;
-            attackDamage = 3 * attackDamage;
+            maxHp += 3 * originMaxHp;
+            hp = 3 * originHp;
+            attackDamage = 3 * originAttackDamage;
+
+
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
             this.transform.localScale = new Vector3(newsize, newsize, newsize);
+
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i].itemName != string.Empty && items[i].itemName != null)
+                {
+                    maxHp += items[i].itemHp;
+                    hp += items[i].itemHp;
+                    attackDamage += items[i].itemHp;
+                    attackSpeed += items[i].itemAttackSpeed;
+                    mp += items[i].itemMp;
+                }
+            }
+
         }
     }
 
