@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     public bool inventorySwitchBool;
     private InventoryPanel inventoryPanel1;
     private InventoryPanel inventoryPanel2;
+    public TMP_Text inventoryNumTxt;
 
 
     public GameObject mapObject;
@@ -128,6 +129,10 @@ public class UIManager : MonoBehaviour
         {
             percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
         }
+        if(DataManager.instance.myPieces > DataManager.instance.maxPieces)
+        {
+            piecesTxt.color = new(1, 0, 0);
+        }
     }
 
     //상점 UI 열고 닫기
@@ -191,6 +196,7 @@ public class UIManager : MonoBehaviour
             inventoryLeftBtn.SetActive(false);
             inventoryRightBtn.SetActive(false);
             inventorySwitchBool = false;
+            inventoryNumTxt.enabled = false;
         }
         else
         {
@@ -202,6 +208,9 @@ public class UIManager : MonoBehaviour
             itemAddNumTxt.enabled = false;
             itemAddNumImg.SetActive(false);
             inventorySwitchBool = true;
+            inventoryNumTxt.enabled = true ;
+            inventoryNumTxt.text = "1/2";
+            UIRefresh();
         }
         inventoryOnOffBool = !inventoryOnOffBool;
     }
@@ -212,11 +221,15 @@ public class UIManager : MonoBehaviour
         {
             inventory2.SetActive(true);
             inventory1.SetActive(false);
+            inventoryNumTxt.text = "2/2";
+            UIRefresh();
         }
         else
         {
             inventory1.SetActive(true);
             inventory2.SetActive(false);
+            inventoryNumTxt.text = "1/2";
+            UIRefresh();
         }
         inventorySwitchBool = !inventorySwitchBool;
     }

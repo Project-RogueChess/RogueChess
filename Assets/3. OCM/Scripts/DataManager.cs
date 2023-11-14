@@ -69,6 +69,7 @@ public class DataManager : MonoBehaviour
         myExp -= maxExp;
         myLevel += 1;
         maxExp = 4 * myLevel;
+        maxPieces += 1;
     }
 
     public void DataReset()
