@@ -19,10 +19,9 @@ public class HexaUnit : MonoBehaviour
     public int team;
     public int range;
     public HexaUnitMoveType moveType;
-    public float atkRate = 0.5f;
-    public float moveRate = 0.5f;
     public HexaUnitProjectile projectilePrefab;
     public GameObject attackFX;
+    public Article article;
 
     //더티 셋
     private bool _moveDirty = false;
@@ -52,6 +51,8 @@ public class HexaUnit : MonoBehaviour
     public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
     public Vector2Int lastTargetIndex => _lastTargetIndex;
+    public float moveRate => article.moveSpeed;
+    public float atkRate => article.attackSpeed;
     public float turnRate => moveRate * 0.5f;
     public bool firstMove => _firstMove;
     public HexaUnit target => _target;
@@ -62,7 +63,7 @@ public class HexaUnit : MonoBehaviour
     {
         Act();
     }
-    
+
     public void SetTileIndex(Vector2Int index, bool isPre = false)
     {
         if (isPre)
@@ -128,7 +129,7 @@ public class HexaUnit : MonoBehaviour
 
     public void Damaged(int damage)
     {
-        
+
     }
 
     void Act()

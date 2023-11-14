@@ -2503,7 +2503,6 @@ MonoBehaviour:
   piece: {fileID: 0}
   tile: {fileID: 0}
   triggerInfo: {fileID: 0}
-  shopManagers: []
 --- !u!1 &208403781
 GameObject:
   m_ObjectHideFlags: 0
@@ -8768,6 +8767,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527063582}
   m_CullTransparentMesh: 1
+--- !u!1 &540099130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 540099132}
+  - component: {fileID: 540099131}
+  m_Layer: 0
+  m_Name: HexaUnitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &540099131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540099130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b889c41fe8e3a40818b64834e772bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitList: []
+  mainCam: {fileID: 1594907216}
+  excuteUnitControll: 0
+  debugUnit01: {fileID: 8791028202132986315, guid: 755a401951582a34b9b230b1cd18b397,
+    type: 3}
+  debugUnit02: {fileID: 8791028202132986315, guid: f82a2be906e5824409631bb08756d008,
+    type: 3}
+  selectStart: 0
+  selectEnd: 0
+  selectStartIndex: {x: 0, y: 0}
+  selectEndIndex: {x: 0, y: 0}
+  loadPath: []
+  loadTiles: {fileID: 0}
+  range: 0
+  axialDirVec:
+  - {x: 1, y: 0}
+  - {x: 1, y: -1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 0, y: 1}
+--- !u!4 &540099132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540099130}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.16, y: 0.41999996, z: -6.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &564801568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28097,7 +28161,6 @@ MonoBehaviour:
   piece: {fileID: 0}
   tile: {fileID: 1834298064}
   triggerInfo: {fileID: 0}
-  shopManagers: []
 --- !u!1 &1837910066
 GameObject:
   m_ObjectHideFlags: 0

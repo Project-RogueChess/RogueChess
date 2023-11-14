@@ -65,13 +65,13 @@ public class CreepSpawnManager : MonoBehaviour
             {
                 var creep = InjectCreepData(creepPool[0], stageData.creepID).GetComponent<CreepComponent>();
                 var unit = creep.GetComponent<HexaUnit>();
+                unit.article = creep;
                 unit.team = 1;
-                unit.atkRate = (int)creep.attackSpeed;
-                unit.moveRate = (int)creep.moveSpeed;
                 unit.range = creep.attackRange;
                 if(unit.range > 0)
                     unit.projectilePrefab = ((GameObject)Resources.Load("UnitPrefab/ProjectileSample")).GetComponent<HexaUnitProjectile>();
                 unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
+                unit.transform.forward = Vector3.back;
                 unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
                 creep.gameObject.SetActive(true);
                 HexaUnitManager.instance.RegisterHexaUnit(unit);
@@ -155,7 +155,7 @@ public class CreepSpawnManager : MonoBehaviour
         creep.moveSpeed = creepClassDict[creepId].moveSpeed;
 
         creep.avatar = (Avatar)Resources.Load(creepClassDict[creepId].avatarPath);
-        creep.animator = (Animator)Resources.Load(creepClassDict[creepId].animatorPath);
+        creep.animator = (RuntimeAnimatorController)Resources.Load(creepClassDict[creepId].animatorPath);
 
         return go;
     }
