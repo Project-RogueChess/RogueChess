@@ -48,7 +48,8 @@ public class HexaUnitProjectile : MonoBehaviour
             transform.rotation = Quaternion.LookRotation((currentTarget - _owner.transform.position).normalized);
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
             
-            if (Vector3.Distance(owner.transform.position, transform.position) > _maxDist)
+            if (Vector3.Distance(owner.transform.position, transform.position) > _maxDist
+                || _owner.target == null)
             {
                 //충돌 이펙트 재생
                 _endMovement = true;
@@ -57,8 +58,6 @@ public class HexaUnitProjectile : MonoBehaviour
 
             if (_owner.target != null)
                 _lastTargetPos = _owner.target.transform.position;
-            else
-                _endMovement = true;
         }
     }
 }
