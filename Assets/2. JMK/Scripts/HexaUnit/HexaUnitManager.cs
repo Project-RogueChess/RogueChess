@@ -105,7 +105,7 @@ public class HexaUnitManager : MonoBehaviour
             //위의 조건이 만족하지 않는다면 계속 공격해도 됨. 공격실행
             //조건을 만족했다면 타겟을 변경해야함 -> 타겟을 NULL로 바꾸고 패스파인딩
 
-            if (u.target != null && u.lastTargetIndex == u.target.tileIndex)
+            if (u.target != null && u.target.gameObject.activeSelf && u.lastTargetIndex == u.target.tileIndex)
             {
                 u.Attack();
                 continue;

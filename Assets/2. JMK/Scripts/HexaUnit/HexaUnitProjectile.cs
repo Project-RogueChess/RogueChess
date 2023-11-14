@@ -28,7 +28,9 @@ public class HexaUnitProjectile : MonoBehaviour
         }
     }
 
-    public Vector3 currentTarget => _owner.target != null ? _owner.target.transform.position : _lastTargetPos;
+    public Vector3 currentTarget => (_owner.target != null || !_owner.target.gameObject.activeSelf) 
+        ? _owner.target.transform.position 
+        : _lastTargetPos;
 
     public void Initialize()
     {
@@ -48,15 +50,14 @@ public class HexaUnitProjectile : MonoBehaviour
             transform.rotation = Quaternion.LookRotation((currentTarget - _owner.transform.position).normalized);
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
             
-            if (Vector3.Distance(owner.transform.position, transform.position) > _maxDist
-                || _owner.target == null)
+            if (Vector3.Distance(owner.transform.position, transform.position) > _maxDist)
             {
                 //충돌 이펙트 재생
                 _endMovement = true;
                 gameObject.SetActive(false);
             }
 
-            if (_owner.target != null)
+            if (_owner.target != null || !_owner.target.gameObject.activeSelf)
                 _lastTargetPos = _owner.target.transform.position;
         }
     }

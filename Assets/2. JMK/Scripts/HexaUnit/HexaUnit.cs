@@ -25,7 +25,7 @@ public class HexaUnit : MonoBehaviour
 
     //더티 셋
     private bool _moveDirty = false;
-    private bool _atkDirty = false;
+    [SerializeField] private bool _atkDirty = false;
     private bool _hasTurn = false;
 
     //타겟 정보
@@ -53,7 +53,7 @@ public class HexaUnit : MonoBehaviour
     public Vector2Int lastTargetIndex => _lastTargetIndex;
     public float moveRate => article.moveSpeed;
     public float atkRate => article.attackSpeed;
-    public float turnRate => moveRate * 0.5f;
+    public float turnRate => moveRate * 0.4f;
     public bool firstMove => _firstMove;
     public HexaUnit target => _target;
     public HexaUnitProjectile projectile => _projectile;
@@ -129,7 +129,21 @@ public class HexaUnit : MonoBehaviour
 
     public void Damaged(int damage)
     {
+        article.hp -= damage;
+        if (article.hp < 0)
+            Die();
+    }
+    public void Die()
+    {
+        HexaUnitManager.instance.UnRegisterHexaUnit(this);
+        //부모전환 해결방법 찾기
 
+        if(team == 1)
+        {
+            CreepSpawnManager.instance.ReturnCreep(gameObject);
+            return;
+        }
+        gameObject.SetActive(false);
     }
 
     void Act()
@@ -151,7 +165,7 @@ public class HexaUnit : MonoBehaviour
         if(_moveDirty)
         {
             var dist = Vector3.Distance(_startPos,_endPos);
-            var distF = 1 / (dist / (moveRate * 4f));
+            var distF = 1 / (dist / (moveRate * 2f));
             _actTimer += distF * Time.deltaTime;
             transform.position = Vector3.Lerp(_startPos, _endPos, _actTimer);
 
@@ -187,6 +201,8 @@ public class HexaUnit : MonoBehaviour
             
             if (_startAtk)
             {
+                if (_target != null && _target.gameObject.activeSelf)
+                    _target.Damaged(article.attackDamage);
                 //공격 이펙트
                 //타겟 attack 이펙트
                 _startAtk = false;
@@ -199,6 +215,9 @@ public class HexaUnit : MonoBehaviour
                 //투사체 공격일 경우
                 if (_actTimer > 1 && _projectile.endMovement)
                 {
+                    if (_target != null && _target.gameObject.activeSelf)
+                        _target.Damaged(article.attackDamage);
+
                     _actTimer = 0f;
                     _atkDirty = false;
                 }
