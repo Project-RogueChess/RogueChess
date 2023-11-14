@@ -252,7 +252,10 @@ public class HexaUnitManager : MonoBehaviour
 
     public void RegisterHexaUnit(HexaUnit unit)
     {
-        collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
+        if (unit.tileIndex.y != -1)
+            collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
+        else
+            return;
         unitList.Add(unit);
     }
 
