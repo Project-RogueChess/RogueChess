@@ -136,9 +136,9 @@ public class HexaUnit : MonoBehaviour
         if(needUpdate)
             return;
 
-        _actTimer += Time.deltaTime;
         if(_hasTurn)
         {
+            _actTimer += Time.deltaTime;
             transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / turnRate);
             if(_actTimer > turnRate)
             {
@@ -149,9 +149,12 @@ public class HexaUnit : MonoBehaviour
         }
         if(_moveDirty)
         {
-            transform.position = Vector3.Lerp(_startPos, _endPos, _actTimer / moveRate);
+            var dist = Vector3.Distance(_startPos,_endPos);
+            var distF = 1 / (dist / (moveRate * 4f));
+            _actTimer += distF * Time.deltaTime;
+            transform.position = Vector3.Lerp(_startPos, _endPos, _actTimer);
 
-            if (_actTimer > moveRate)
+            if (_actTimer > 1)
             {
                 _actTimer = 0f;
                 _moveDirty = false;
@@ -161,6 +164,8 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
+            var atkF = 1 / (1 / atkRate);
+            _actTimer += atkF * Time.deltaTime;
             if (projectilePrefab != null && _startAtk)
             {
                 //투사체 생성
@@ -178,10 +183,12 @@ public class HexaUnit : MonoBehaviour
                 _projectile.gameObject.SetActive(true);
                 _projectile.Initialize();
             }
-            else if (_startAtk)
+            
+            if (_startAtk)
             {
                 //공격 이펙트
                 //타겟 attack 이펙트
+                _startAtk = false;
             }
 
             // [ _actimer / atkRate == 1 ] 일 때 까지 대기
@@ -189,7 +196,7 @@ public class HexaUnit : MonoBehaviour
             if (projectilePrefab != null)
             {
                 //투사체 공격일 경우
-                if (_actTimer > atkRate && _projectile.endMovement)
+                if (_actTimer > 1 && _projectile.endMovement)
                 {
                     _actTimer = 0f;
                     _atkDirty = false;
@@ -198,14 +205,12 @@ public class HexaUnit : MonoBehaviour
             else
             {
                 //타일 공격일 경우
-                if (_actTimer > atkRate)
+                if (_actTimer > 1)
                 {
                     _actTimer = 0f;
                     _atkDirty = false;
                 }
             }
-
-            _startAtk = false;
             return;
         }
     }
