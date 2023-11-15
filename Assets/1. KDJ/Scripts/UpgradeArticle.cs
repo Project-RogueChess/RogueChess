@@ -117,8 +117,9 @@ public class UpgradeArticle : MonoBehaviour
 
             article_Grade_1[2].MergePeice();
 
-            Destroy(article_Grade_1[0].gameObject);
-            Destroy(article_Grade_1[1].gameObject);
+
+            DestroyImmediate(article_Grade_1[0].gameObject);
+            DestroyImmediate(article_Grade_1[1].gameObject);
 
             article_Grade_1.Clear();
 
@@ -212,11 +213,16 @@ public class UpgradeArticle : MonoBehaviour
 
                 article_Grade_2[2].MergePeice();
 
-                Destroy(article_Grade_2[0].gameObject);
-                Destroy(article_Grade_2[1].gameObject);
+
+                DestroyImmediate(article_Grade_2[0].gameObject);
+                DestroyImmediate(article_Grade_2[1].gameObject);
+
 
                 article_Grade_2.Clear();
+
+                
             }
         }
     }
+
 }

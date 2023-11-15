@@ -85,6 +85,10 @@ public class Tile : MonoBehaviour
             UIManager.instance.CloseSellText();
 
             InvSpawnManager.instance.CountArticle();
+            //InvSpawnManager.instance.SearchingIdsArrayBool();
+            InvSpawnManager.instance.SearchEveryTileForSynergyData();
+            InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
+
         }
     }
 

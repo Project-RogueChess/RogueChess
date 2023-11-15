@@ -18545,6 +18545,16 @@ MonoBehaviour:
     type: 3}
   hexaTiles: []
   invTiles: []
+  synergySpieces:
+  - 
+  - 
+  synergyClasses:
+  - 
+  - 
+  synergyPiecesDB: {fileID: 906477197}
+  synergySpiecesNum: 
+  synergyClassesNum: 
+  ids: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18630,8 +18640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b52dd2e78b6b324d9345536228adb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  article_Grade_1: []
-  article_Grade_2: []
+  k: 0
 --- !u!1 &1858743926
 GameObject:
   m_ObjectHideFlags: 0

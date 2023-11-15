@@ -151,13 +151,14 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     CreatePiece();
                     if (PiecesCountManager.instance.piecesIdCounts[pieceInfo.id] > 2)
                     {
-                        
+
                         UpgradeArticle.instance.TryUpgradeArticle(pieceInfo);
                         PiecesCountManager.instance.resetCounts(pieceInfo);
                     }
-                    
                     UIManager.instance.UIRefresh();
-                    return ;
+                    InvSpawnManager.instance.CountArticle();
+                    //InvSpawnManager.instance.SearchingIdsArrayBool();
+                    break;
                 }
             }
 

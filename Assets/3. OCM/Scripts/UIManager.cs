@@ -129,9 +129,14 @@ public class UIManager : MonoBehaviour
         {
             percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
         }
+
         if(DataManager.instance.myPieces > DataManager.instance.maxPieces)
         {
             piecesTxt.color = new(1, 0, 0);
+        }
+        else
+        {
+            piecesTxt.color = new(1, 1, 1);
         }
     }
 
@@ -278,7 +283,8 @@ public class UIManager : MonoBehaviour
             }
             for (int j = 0; j < 9; j++)
             {
-                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty)
+                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                 {
                     inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[k];
                     inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
