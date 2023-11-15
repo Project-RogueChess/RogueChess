@@ -3,66 +3,67 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
-public enum Phase { Map, Deployment, Combat, Recruitment }
+public enum Phase { SelectMapNode, Deployment, Combat, Recruitment }
 public class GameManager : MonoBehaviour
 {
-    private float time = 0;
-    private int timeDisplay = 0;
-    public int _timeDisplay { get; private set; }
+    public static GameManager instance;
+
+    private float _time = 0;
+    public int timeDisplay => Mathf.RoundToInt(_time);
 
     [SerializeField] private float deployTime = 99;
     [SerializeField] private float combatTime = 99;
     [SerializeField] private float recruitTime = 99;
 
-    private Phase currentPhase;
+    public UnityEvent OnSelectMapNode;
+    public UnityEvent OnDeployment;
+    public UnityEvent OnCombat;
+    public UnityEvent OnRecruitment;
+
+    private Phase currentPhase = Phase.SelectMapNode;
 
     private void Start()
     {
-        StartPhase();
+        RunPhase();
     }
 
 
     private void Update()
     {
-        if (currentPhase != Phase.Map)
-            time = Time.deltaTime;
-        ManagePhase(currentPhase);
-
-        Debug.Log($"{ time} : {currentPhase} : {timeDisplay}");
+        ManagePhase();
     }
-    private void StartPhase() => currentPhase = Phase.Deployment;
 
-    private void ManagePhase(Phase state)
+    public void RunPhase() => currentPhase = Phase.Deployment;
+    public void StopPhase() => currentPhase = Phase.SelectMapNode;
+
+    private void ManagePhase()
     {
-        float setTime = 0f;
-        Phase setPhase = Phase.Map;
 
-        if (state == Phase.Map)
+    }
+
+    private void ChangePhase(Phase changePhase)
+    {
+        if (currentPhase == changePhase)
             return;
 
-        switch (state)
+        currentPhase = changePhase;
+
+        switch (changePhase)
         {
+            case Phase.SelectMapNode:
+                OnSelectMapNode.Invoke();
+                break;
             case Phase.Deployment:
-                setTime = deployTime;
-                setPhase = Phase.Combat;
+                OnDeployment.Invoke();
                 break;
             case Phase.Combat:
-                setTime = combatTime;
-                setPhase = Phase.Recruitment;
+                OnCombat.Invoke();
                 break;
             case Phase.Recruitment:
-                setTime = recruitTime;
-                setPhase = Phase.Map;
+                OnRecruitment.Invoke();
                 break;
-        }
-
-        timeDisplay = (int)(setTime - time);
-
-        if (time > setTime)
-        {
-            currentPhase = setPhase;
-            time = 0;
         }
     }
 }

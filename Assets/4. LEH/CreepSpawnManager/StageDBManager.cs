@@ -24,13 +24,8 @@ public class StageDBManager : MonoBehaviour
 
             stageDB.stage = (int)stageData[i]["stage"];
             stageDB.id = (int)stageData[i]["creep"];
-<<<<<<< HEAD
-            stageDB.x = (float)stageData[i]["x"];
-            stageDB.y = (float)stageData[i]["y"];
-=======
             stageDB.x = (int)stageData[i]["x"];
             stageDB.y = (int)stageData[i]["y"];
->>>>>>> ddb6a9d63217bfcce53cb6fe2757965760d11437
 
             list.Add(stageDB);
         }
