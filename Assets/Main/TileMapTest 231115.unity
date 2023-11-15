@@ -5085,6 +5085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecesDB: {fileID: 0}
   piecesIdCounts: 
+  piecesGradeImg: []
 --- !u!4 &320332118
 Transform:
   m_ObjectHideFlags: 0
@@ -23351,6 +23352,7 @@ MonoBehaviour:
   inventoryRightBtn: {fileID: 1652925471}
   inventoryOnOffBool: 0
   inventorySwitchBool: 0
+  inventoryNumTxt: {fileID: 0}
   mapObject: {fileID: 0}
   itemAddNum: 0
   itemAddNumTxt: {fileID: 1837910067}
@@ -28623,6 +28625,7 @@ GameObject:
   - component: {fileID: 1857887561}
   - component: {fileID: 1857887560}
   - component: {fileID: 1857887559}
+  - component: {fileID: 1857887564}
   m_Layer: 0
   m_Name: TilemapManager
   m_TagString: Untagged
@@ -28655,10 +28658,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a7c529f363f0e45901d4bbee6bd78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  articleCount: 0
   spawnUnit: {fileID: 4698882718803087615, guid: 9b9053fd329297e44874939d8c8557d8,
     type: 3}
   hexaTiles: []
   invTiles: []
+  synergySpieces:
+  - 
+  - 
+  synergyClasses:
+  - 
+  - 
+  synergyPiecesDB: {fileID: 0}
+  synergySpiecesNum: 
+  synergyClassesNum: 
+  ids: 
+  idList: 
+  idsArray: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28732,6 +28748,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1857887564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857887558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b52dd2e78b6b324d9345536228adb94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  k: 0
 --- !u!1 &1858743926
 GameObject:
   m_ObjectHideFlags: 0

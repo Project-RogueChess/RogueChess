@@ -3294,10 +3294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecesDB: {fileID: 0}
   piecesIdCounts: 
-  piecesGradeImg:
-  - {fileID: 21300000, guid: e0e877a9ac7c67f46a6735054119b248, type: 3}
-  - {fileID: 21300000, guid: f0029cec943b7a348b105f3a8f6d4ec5, type: 3}
-  - {fileID: 21300000, guid: 277dd0fbdda37fe42a86ec2d06633376, type: 3}
+  piecesGradeImg: []
 --- !u!4 &320332118
 Transform:
   m_ObjectHideFlags: 0
@@ -11696,6 +11693,8 @@ MonoBehaviour:
     type: 3}
   lineParent: {fileID: 1579593458}
   lineThickness: 10
+  startNodeSprite: {fileID: 0}
+  endNodeSprite: {fileID: 0}
   normalMonsterPer: 60
   normalMonsterSprite: {fileID: 21300000, guid: cdfaba35bca3b8241a9ca6db0d661623,
     type: 3}
@@ -11709,8 +11708,14 @@ MonoBehaviour:
   randomEventSprite: {fileID: 21300000, guid: 60a2d63dcbb846a40ab122482e16a85f, type: 3}
   shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: b5001ebca9a1d814f95c01c626630fd9, type: 3}
+  clickedNodeSize: 20
+  currentStateMarkerO: {fileID: 0}
+  currentStateMarkerX: {fileID: 0}
   currentNodeXY: {x: 0, y: 0}
   motherMapObject: {fileID: 1199019958}
+  scroll: {fileID: 0}
+  scrollRect: {fileID: 0}
+  isAccent: 0
 --- !u!114 &1280159648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14056,7 +14061,7 @@ MonoBehaviour:
   inventoryRightBtn: {fileID: 1652925471}
   inventoryOnOffBool: 0
   inventorySwitchBool: 0
-  inventoryNumTxt: {fileID: 1678393346}
+  inventoryNumTxt: {fileID: 0}
   mapObject: {fileID: 1280159644}
   itemAddNum: 0
   itemAddNumTxt: {fileID: 1837910067}
@@ -18555,6 +18560,8 @@ MonoBehaviour:
   synergySpiecesNum: 
   synergyClassesNum: 
   ids: 
+  idList: 
+  idsArray: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
