@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using static Map_Node;
 using Random = UnityEngine.Random;
 
 public class Main_Map : MonoBehaviour
@@ -49,6 +50,9 @@ public class Main_Map : MonoBehaviour
     [SerializeField] private GameObject currentStateMarkerO;
     [SerializeField] private Sprite currentStateMarkerX;
 
+    [Header("Node Setting")]
+    [SerializeField] private GameObject randomEventUI;
+
     [Header("Optional")]
     [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
     [SerializeField] private GameObject motherMapObject;
@@ -91,7 +95,7 @@ public class Main_Map : MonoBehaviour
     }
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         UI_MapRenderStart();
 
@@ -117,7 +121,6 @@ public class Main_Map : MonoBehaviour
     private void Update()
     {
         ZoomMap();
-        Debug.Log(prevPanel);
 
         if(gameObject.transform.position.y < -100)
         {
@@ -438,7 +441,28 @@ public class Main_Map : MonoBehaviour
 
     private void NodeAction()
     {
-
+        switch (FindPanelToSearchDictionary(currentNodeXY).GetComponent<Map_Node>().myNodeType)
+        {
+            case currentNodeTypeEnum.Start:
+                break;
+            case currentNodeTypeEnum.End:
+                break;
+            case currentNodeTypeEnum.NormalMonster:
+                break;
+            case currentNodeTypeEnum.EliteMonster:
+                break;
+            case currentNodeTypeEnum.RandomEvent:
+                randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();
+                break;
+            case currentNodeTypeEnum.Shelter:
+                break;
+            case currentNodeTypeEnum.Store:
+                break;
+            case currentNodeTypeEnum.Treasure:
+                break;
+            case currentNodeTypeEnum.None:
+                break;
+        }
     }
 
     #endregion
