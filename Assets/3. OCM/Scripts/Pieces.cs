@@ -12,7 +12,7 @@ using static UnityEditor.Progress;
 
 //일단 상점 구현 할 때 써야할 필요 기물 정보
 
-public class Pieces : MonoBehaviour
+public class Pieces : Article
 {
     public Sprite pieceImg;
     public new string name;
@@ -21,14 +21,8 @@ public class Pieces : MonoBehaviour
     public string spieces;
     public string classes;
     public int grade;
-    public int maxHp;
-    public int hp;
     public int maxMp;
     public int mp;
-    public int attackDamage;
-    public float attackSpeed;
-    public int attackRange;
-    public float moveSpeed;
 
 
     public int originMaxHp;
