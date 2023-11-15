@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,6 +83,32 @@ public class Tile : MonoBehaviour
             }
 
             UIManager.instance.CloseSellText();
+
+            InvSpawnManager.instance.CountArticle();
+            //InvSpawnManager.instance.SearchingIdsArrayBool();
+            InvSpawnManager.instance.SearchEveryTileForSynergyData();
+            InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
+
         }
     }
+
+
+    public void Reset()
+    {
+        this.piece.SetActive(true);
+
+        //스텟 리셋 추가
+
+        SetWorldPostion();
+        SetWorldRotation();
+    }
+
+    public void SetWorldRotation()
+    {
+         piece.transform.rotation = Quaternion.identity;
+    }
+    public void SetWorldPostion()
+    {        
+        piece.transform.position = this.transform.position;
+    }    
 }

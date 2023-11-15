@@ -16,8 +16,15 @@ public class ButtonSpawner : MonoBehaviour
         instance = this;
     }
 
+    public void btnClickReset()
+    {
+        InvSpawnManager.instance.ResetChampions();        
+    }
+
     public int btnClick()
     {
+
+        
         int index = -1;
         Tile testTile = FindTile(out index);
 
@@ -31,8 +38,10 @@ public class ButtonSpawner : MonoBehaviour
         {
             Debug.Log("ÀÎº¥²ËÂü");
         }
+        
 
         return index;
+        
     }
 
     Tile FindTile(out int index)

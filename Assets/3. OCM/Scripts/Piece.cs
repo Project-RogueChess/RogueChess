@@ -25,6 +25,7 @@ public class Piece
     public int attackRange;
     public float moveSpeed;
 
+    public Sprite gradeImg;
 
     public Avatar avatar;
     public Animator animator;
@@ -45,6 +46,7 @@ public class Piece
         this.attackSpeed = attackSpeed;
         this.attackRange = attackRange;
         this.moveSpeed = moveSpeed;
+
     }
 
     public Piece()

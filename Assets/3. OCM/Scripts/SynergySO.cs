@@ -1,0 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "SE_", menuName = "SynergyData/SynergyEnhance")]
+public class SynergySO : ScriptableObject
+{
+    public string spieces;
+
+    public Piece injectData;
+
+    public void Execute(List<Pieces> pieces, int term)
+    {
+        foreach (Pieces piece in pieces) 
+        {
+            if(piece.spieces == spieces)
+            {
+                piece.maxHp = piece.originMaxHp +injectData.maxHp  * (term + 1);
+                piece.hp = piece.maxHp;
+                piece.attackDamage = piece.originAttackDamage + injectData.attackDamage * (term + 1);
+            }
+        }
+    }
+}

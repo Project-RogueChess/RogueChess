@@ -7,6 +7,7 @@ TagManager:
   - Tile
   - Marker
   - Line
+  - Sell
   layers:
   - Default
   - TransparentFX
