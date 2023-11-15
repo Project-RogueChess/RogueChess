@@ -179,7 +179,7 @@ public class Pieces : Article
             attackDamage = 2 * originAttackDamage;
             mp += 2*originMp;
 
-            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
             this.transform.localScale = new Vector3 (newsize, newsize, newsize);
 
 
@@ -203,7 +203,7 @@ public class Pieces : Article
             attackDamage = 3 * originAttackDamage;
             mp += 3 * originMp;
 
-            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
             this.transform.localScale = new Vector3(newsize, newsize, newsize);
 
 

@@ -129,7 +129,6 @@ public class UIManager : MonoBehaviour
         {
             percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
         }
-
         if(DataManager.instance.myPieces > DataManager.instance.maxPieces)
         {
             piecesTxt.color = new(1, 0, 0);

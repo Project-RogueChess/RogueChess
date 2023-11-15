@@ -5085,7 +5085,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecesDB: {fileID: 0}
   piecesIdCounts: 
-  piecesGradeImg: []
+  piecesGradeImg:
+  - {fileID: 21300000, guid: e0e877a9ac7c67f46a6735054119b248, type: 3}
+  - {fileID: 21300000, guid: 277dd0fbdda37fe42a86ec2d06633376, type: 3}
+  - {fileID: 21300000, guid: f0029cec943b7a348b105f3a8f6d4ec5, type: 3}
 --- !u!4 &320332118
 Transform:
   m_ObjectHideFlags: 0
