@@ -25,7 +25,7 @@ public class HexaUnit : MonoBehaviour
 
     //더티 셋
     private bool _moveDirty = false;
-    [SerializeField] private bool _atkDirty = false;
+    private bool _atkDirty = false;
     private bool _hasTurn = false;
 
     //타겟 정보
@@ -143,9 +143,14 @@ public class HexaUnit : MonoBehaviour
             CreepSpawnManager.instance.ReturnCreep(gameObject);
             return;
         }
+        //죽는 애니메이션
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 행동 수행, 더티셋에 따라 분기행동
+    /// 단 회전이 있다면 회전을 제일 먼저 수행
+    /// </summary>
     void Act()
     {
         if(needUpdate)
@@ -181,55 +186,42 @@ public class HexaUnit : MonoBehaviour
         {
             var atkF = 1 / (1 / atkRate);
             _actTimer += atkF * Time.deltaTime;
-            if (projectilePrefab != null && _startAtk)
-            {
-                //투사체 생성
-                if (_projectile == null)
-                {
-                    var projectileParent = new GameObject();
-                    projectileParent.name = "ProjectilePool";
-                    projectileParent.transform.parent = transform;
 
-                    _projectile = Instantiate(projectilePrefab);
-                    _projectile.owner = this;
-                    _projectile.transform.parent = projectileParent.transform;
-                }
-                //이미 생성되어 있다면 초기화 세팅
-                _projectile.gameObject.SetActive(true);
-                _projectile.Initialize();
-            }
-            
             if (_startAtk)
             {
-                if (_target != null && _target.gameObject.activeSelf)
-                    _target.Damaged(article.attackDamage);
-                //공격 이펙트
-                //타겟 attack 이펙트
-                _startAtk = false;
-            }
+                if(projectilePrefab != null)
+                {
+                    //투사체 생성
+                    if (_projectile == null)
+                    {
+                        var projectileParent = new GameObject();
+                        projectileParent.name = "ProjectilePool";
+                        projectileParent.transform.parent = transform;
 
-            // [ _actimer / atkRate == 1 ] 일 때 까지 대기
-
-            if (projectilePrefab != null)
-            {
-                //투사체 공격일 경우
-                if (_actTimer > 1 && _projectile.endMovement)
+                        _projectile = Instantiate(projectilePrefab);
+                        _projectile.owner = this;
+                        _projectile.transform.parent = projectileParent.transform;
+                    }
+                    //이미 생성되어 있다면 초기화 세팅
+                    _projectile.gameObject.SetActive(true);
+                    _projectile.Initialize();
+                }
+                else
                 {
                     if (_target != null && _target.gameObject.activeSelf)
                         _target.Damaged(article.attackDamage);
+                    //공격 이펙트
+                    //타겟 attack 이펙트
+                }
 
-                    _actTimer = 0f;
-                    _atkDirty = false;
-                }
+                _startAtk = false;
             }
-            else
+
+            //행동 타이머가 끝났는 지 + 투사체 공격일 시 투사체 공격이 닿았는 지 확인 후 공격행동 종료
+            if(_actTimer > 1 && (projectilePrefab != null ? _projectile.endMovement : true))
             {
-                //타일 공격일 경우
-                if (_actTimer > 1)
-                {
-                    _actTimer = 0f;
-                    _atkDirty = false;
-                }
+                _actTimer = 0f;
+                _atkDirty = false;
             }
             return;
         }

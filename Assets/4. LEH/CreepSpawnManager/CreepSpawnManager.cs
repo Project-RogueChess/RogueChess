@@ -42,42 +42,56 @@ public class CreepSpawnManager : MonoBehaviour
         stageList = ReadStageData(CreepStageDB_CSV_Path);
         creepPool = PoolingCreeps();
     }
-    private void Start()
+
+    public GameObject GetCreep()
     {
-        
+        if (creepPool.Count > 0)
+        {
+            var creep = creepPool[0];
+            creep.transform.parent = null;
+            creep.SetActive(true);
+            creepPool.RemoveAt(0);
+            return creep;
+        }
+        else
+        {
+            var newCreep = Instantiate(shellOfCreep);
+            return newCreep;
+        }
+    }
+
+    public void ReturnCreep(GameObject creep)
+    {
+        creepPool.Add(creep);
+        creep.transform.parent = creepPoolParent;
+        creep.SetActive(false);
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            LoadCreep(3);
+            LoadCreepToField(3);
         }
     }
 
-    public void LoadCreep(int stageID)
+    public void LoadCreepToField(int stageID)
     {
         List<StageData> currentStage = SearchStageWithID(stageID, stageList);
 
         foreach(var stageData in currentStage)
         {
-            if(creepPool.Count > 0)
-            {
-                var creep = InjectCreepData(creepPool[0], stageData.creepID).GetComponent<CreepComponent>();
-                var unit = creep.GetComponent<HexaUnit>();
-                unit.article = creep;
-                unit.team = 1;
-                unit.range = creep.attackRange;
-                if(unit.range > 0)
-                    unit.projectilePrefab = ((GameObject)Resources.Load("UnitPrefab/ProjectileSample")).GetComponent<HexaUnitProjectile>();
-                unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
-                unit.transform.forward = Vector3.back;
-                unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
-                creep.gameObject.SetActive(true);
-                HexaUnitManager.instance.RegisterHexaUnit(unit);
-
-                creepPool.RemoveAt(0);
-            }
+            var creep = InjectCreepData(GetCreep(), stageData.creepID).GetComponent<CreepComponent>();
+            var unit = creep.GetComponent<HexaUnit>();
+            unit.article = creep;
+            unit.team = 1;
+            unit.range = creep.attackRange;
+            if (unit.range > 0)
+                unit.projectilePrefab = ((GameObject)Resources.Load("UnitPrefab/ProjectileSample")).GetComponent<HexaUnitProjectile>();
+            unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
+            unit.transform.forward = Vector3.back;
+            unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
+            HexaUnitManager.instance.RegisterHexaUnit(unit);
         }
     }
 

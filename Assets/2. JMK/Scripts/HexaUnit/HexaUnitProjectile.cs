@@ -4,6 +4,8 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.TestTools;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.ParticleSystem;
 
 public class HexaUnitProjectile : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class HexaUnitProjectile : MonoBehaviour
     private Vector3 _lastTargetPos;
 
     public bool endMovement => _endMovement;
+    public float finalSpeed => moveSpeed * _owner.atkRate;
+    public int attackDamage => _owner.article.attackDamage;
 
     public HexaUnit owner
     {
@@ -48,11 +52,14 @@ public class HexaUnitProjectile : MonoBehaviour
         {
             _maxDist = Vector3.Distance(currentTarget, owner.transform.position);
             transform.rotation = Quaternion.LookRotation((currentTarget - _owner.transform.position).normalized);
-            transform.position += transform.forward * moveSpeed * Time.deltaTime;
+            transform.position += transform.forward * finalSpeed * Time.deltaTime;
             
             if (Vector3.Distance(owner.transform.position, transform.position) > _maxDist)
             {
                 //충돌 이펙트 재생
+                if (_owner.target != null && _owner.target.gameObject.activeSelf)
+                    _owner.target.Damaged(attackDamage);
+
                 _endMovement = true;
                 gameObject.SetActive(false);
             }
