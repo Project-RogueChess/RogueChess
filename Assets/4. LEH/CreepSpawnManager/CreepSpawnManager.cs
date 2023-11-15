@@ -69,8 +69,9 @@ public class CreepSpawnManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("!");
             LoadCreepToField(3);
         }
     }
