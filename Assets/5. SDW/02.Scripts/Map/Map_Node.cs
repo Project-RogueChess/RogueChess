@@ -16,7 +16,15 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
 
     private Main_Map main_map;
 
+    private RectTransform panelRectTransform;
+
+    private float panelRectSizePercent;
+    private Vector2 basicPanelSize;
+    
+
     RectTransform panelRect;
+    private bool isAccentNode;
+
     public enum currentNodeTypeEnum
     {
         None,
@@ -25,7 +33,10 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
         Store,
         Treasure,
         RandomEvent,
-        Shelter
+        Shelter,
+
+        Start,
+        End
     }
 
 
@@ -42,14 +53,42 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         myNodeType = currentNodeTypeEnum.None;
-        gameObject.GetComponent<Image>().color = new Color(160, 0, 0, 100f);
         panelRect = gameObject.GetComponent<RectTransform>();
         main_map = gameObject.GetComponentInParent<Main_Map>();
+        panelRectTransform = gameObject.GetComponent<RectTransform>();
     }
 
     public void ChangeImageSprite(Sprite sprite)
     {
         gameObject.GetComponent<Image>().sprite = sprite;
+        gameObject.GetComponent<Image>().color = new Color(224, 195, 138, 255);
+        basicPanelSize = panelRectTransform.sizeDelta;
+    }
+
+    public void ChangeStateImage(Sprite sprite)
+    {
+       // gameObject.GetComponentInChildren<Image>().sprite = sprite;
+
+        Image[] images = gameObject.GetComponentsInChildren<Image>();
+
+        foreach (Image image in images)
+        {
+            if (image.gameObject.tag == "Marker")
+            {
+                image.sprite = sprite;
+                image.gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 1);
+            }
+        }
+    }
+
+    public void ChangeNodeRectSizeUp(float panelSize)
+    {
+        panelRectTransform.sizeDelta = new Vector2(panelRectTransform.sizeDelta.x + (panelRectTransform.sizeDelta.x/100* panelSize), panelRectTransform.sizeDelta.y + (panelRectTransform.sizeDelta.y / 100 * panelSize));
+    }
+    public void ChangeNodeRectSizeDown()
+    {
+        Debug.Log(basicPanelSize);
+        panelRectTransform.sizeDelta = basicPanelSize;
     }
 
     public bool IsContainPrevNode(Vector2Int key)
@@ -74,19 +113,18 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log("OnClick");
-            Debug.Log(mykey);
-
             bool isCanMove;
+
             isCanMove = IsContainPrevNode(main_map.currentNodeXY);
 
             if (isCanMove == true)
             {
-                main_map.ClickedTrueNodeAndMove(mykey);
+                Debug.Log(gameObject);
+                main_map.AccentNode(gameObject);
             }
             else
             {
-
+                main_map.FalseAccentNode(gameObject);
             }
         }
     }
