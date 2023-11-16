@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -395,59 +396,6 @@ public class Main_Map : MonoBehaviour
         
     }
 
-    public bool TryAccentNode(GameObject panelNode, out int index)
-    {
-        index = -1;
-
-        if (isAccent == false && prevPanel == null)
-        {
-            Debug.Log("isAccent F , prevPanel N");
-            isAccent = true;
-            prevPanel = panelNode;
-            panelNode.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
-            return false;
-        }
-
-        else if (isAccent == true && prevPanel == panelNode)
-        {
-            Debug.Log("isAccent T , prevPanel P");
-            var nodeInfo = panelNode.GetComponent<Map_Node>();
-            ClickedTrueNodeAndMove(nodeInfo.mykey);
-            prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
-
-            isAccent = false;
-            prevPanel = null;
-
-            switch (nodeInfo.myNodeType)
-            {
-                default:
-                    return false;
-                case Map_Node.currentNodeTypeEnum.EliteMonster:
-                    index = Random.Range(8, 16);
-                    return true;
-                case Map_Node.currentNodeTypeEnum.NormalMonster:
-                    index = Random.Range(1, 8);
-                    return true;
-            }
-        }
-
-        else if (isAccent == true && prevPanel != panelNode)
-        {
-            Debug.Log("isAccent T , prevPanel !P");
-            prevPanel.GetComponent<Map_Node>().ChangeNodeRectSizeDown();
-            isAccent = false;
-            prevPanel = null;
-            return false;
-        }
-
-        else
-        {
-            Debug.Log(prevPanel + " + " + isAccent + " + " + prevPanel);
-            return false;
-        }
-
-    }
-
     public void AccentNode(GameObject panelNode)
     {
         if (isAccent == false && prevPanel == null)
@@ -502,8 +450,10 @@ public class Main_Map : MonoBehaviour
             case currentNodeTypeEnum.End:
                 break;
             case currentNodeTypeEnum.NormalMonster:
+                CreepSpawnManager.instance.LoadCreepToField(Random.Range(1, 8));
                 break;
             case currentNodeTypeEnum.EliteMonster:
+                CreepSpawnManager.instance.LoadCreepToField(Random.Range(8, 16));
                 break;
             case currentNodeTypeEnum.RandomEvent:
                 randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();
