@@ -190,7 +190,7 @@ public class HexaUnit : MonoBehaviour
             {
                 if (_actTimer == 0f)
                 {
-                    article.animator?.Play("Move");
+                    article.animator?.Play("Move",-1,0f);
                     article.animator.Update(0f);
                 }
                     
