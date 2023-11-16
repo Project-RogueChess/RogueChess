@@ -96,11 +96,13 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
     {
         if (prevNodeKeys.Contains(key) == false)
         {
+            Debug.Log("FALSE");
             return false;
         }
 
         else if(prevNodeKeys.Contains(key) == true)
         {
+            Debug.Log("TRUE");
             return true;
         }
 
@@ -122,6 +124,7 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
                 if (main_map.TryAccentNode(gameObject, out int stageIndex))
                 {
                     CreepSpawnManager.instance.LoadCreepToField(stageIndex);
+                    GameManager.instance.RunPhase();
                 }
                 //main_map.AccentNode(gameObject);
             }

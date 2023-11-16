@@ -20,23 +20,25 @@ public class HexaUnitManager : MonoBehaviour
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public Camera mainCam;
-
     public bool excuteUnitControll = false;
+
+    public void OnUnitControll()
+    {
+        excuteUnitControll = true;
+    }
+
+    public void OffUnitControll()
+    {
+        excuteUnitControll = false;
+    }
+
+    public int[] teamCount => _teamCount;
 
     private const int MAX_MAP_X = 8;
     private const int MAX_MAP_Y = 8;
+
+    private int[] _teamCount = new int[10];
     //private List<Vector2Int> _calcPath = new List<Vector2Int>(64);
-
-    [SerializeField] HexaUnit debugUnit01;
-    [SerializeField] HexaUnit debugUnit02;
-    [SerializeField] private bool selectStart;
-    [SerializeField] private bool selectEnd;
-    [SerializeField] private Vector2Int selectStartIndex;
-    [SerializeField] private Vector2Int selectEndIndex;
-
-    [SerializeField] GameObject[] loadPath;
-    [SerializeField] GameObject loadTiles;
-    [SerializeField] int range;
 
     void Awake()
     {
@@ -72,14 +74,7 @@ public class HexaUnitManager : MonoBehaviour
             if (u.needUpdate)
                 updateUnitList.Add(u);
         }
-
         HexaUnitUpdate(updateUnitList);
-    }
-
-    private void Update()
-    {
-        Debug_HexatileTool();
-        Debug_UnitControll();
     }
 
     public void HexaUnitUpdate(List<HexaUnit> units)
@@ -247,6 +242,7 @@ public class HexaUnitManager : MonoBehaviour
 
             u.SetTarget(null);
         }
+
     }
 
 
@@ -254,6 +250,7 @@ public class HexaUnitManager : MonoBehaviour
     {
         if (unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
+        _teamCount[unit.team]++;
         unitList.Add(unit);
     }
 
@@ -267,6 +264,8 @@ public class HexaUnitManager : MonoBehaviour
 
         if(unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
+
+        _teamCount[unit.team]--;
         unitList.Remove(unit);
     }
 
@@ -436,7 +435,7 @@ public class HexaUnitManager : MonoBehaviour
         return result;
     }
 
-    void Debug_GenerateUnit(Vector2Int tileIndex)
+    /*void Debug_GenerateUnit(Vector2Int tileIndex)
     {
         var indexList = new List<Vector2Int>();
         foreach (var item in unitList)
@@ -544,7 +543,7 @@ public class HexaUnitManager : MonoBehaviour
                 RegisterHexaUnit(unitGO);
             }
 
-            /*if (Input.GetMouseButton(1))
+            *//*if (Input.GetMouseButton(1))
             {
                 var unitGO = new GameObject();
                 foreach (var u in unitList)
@@ -555,7 +554,7 @@ public class HexaUnitManager : MonoBehaviour
 
                 UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
                 Destroy(unitGO.gameObject);
-            }*/
+            }*//*
         }
     }
     void Debug_AutoGenerateUnit()
@@ -677,7 +676,7 @@ public class HexaUnitManager : MonoBehaviour
                 addCount++;
             }
         }
-    }
+    }*/
 }
 
 
