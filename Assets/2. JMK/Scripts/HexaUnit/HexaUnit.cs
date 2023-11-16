@@ -150,10 +150,11 @@ public class HexaUnit : MonoBehaviour
 
         if(team == 1)
         {
-            CreepSpawnManager.instance.ReturnCreep(gameObject);
+            CreepSpawnManager.instance.ReturnCreep(GetComponent<CreepComponent>());
             return;
         }
         //죽는 애니메이션
+        ForceStop();
         gameObject.SetActive(false);
     }
 

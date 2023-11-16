@@ -19,7 +19,6 @@ public class HexaUnitManager : MonoBehaviour
 
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
-    public Camera mainCam;
     public bool excuteUnitControll = false;
 
     public void OnUnitControll()
@@ -38,7 +37,6 @@ public class HexaUnitManager : MonoBehaviour
     private const int MAX_MAP_Y = 8;
 
     private int[] _teamCount = new int[10];
-    //private List<Vector2Int> _calcPath = new List<Vector2Int>(64);
 
     void Awake()
     {
@@ -56,12 +54,6 @@ public class HexaUnitManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-
-        mainCam = Camera.main;
-    }
-
     private void FixedUpdate()
     {
         if (!excuteUnitControll)
@@ -76,6 +68,8 @@ public class HexaUnitManager : MonoBehaviour
         }
         HexaUnitUpdate(updateUnitList);
     }
+
+    #region 유닛 관리
 
     public void HexaUnitUpdate(List<HexaUnit> units)
     {
@@ -268,6 +262,9 @@ public class HexaUnitManager : MonoBehaviour
         _teamCount[unit.team]--;
         unitList.Remove(unit);
     }
+    #endregion
+
+    #region 길찾기용 함수
 
     public List<Vector2Int> PathFinding(Vector2Int start, Vector2Int end)
     {
@@ -357,6 +354,10 @@ public class HexaUnitManager : MonoBehaviour
         return AxialDistance(axialA, axialB);
     }
 
+    #endregion
+
+    #region 육각 타일용 함수
+
     public List<Vector2Int> RangeOfHexaGridIndex(Vector2Int center, int radius)
     {
         center = EvenToAxial(center);
@@ -434,249 +435,252 @@ public class HexaUnitManager : MonoBehaviour
 
         return result;
     }
+    #endregion
 
+    #region 디버깅 코드
     /*void Debug_GenerateUnit(Vector2Int tileIndex)
-    {
-        var indexList = new List<Vector2Int>();
-        foreach (var item in unitList)
-            indexList.Add(item.tileIndex);
-
-        if (indexList.Count >= 32)
-            return;
-
-        if (indexList.Contains(tileIndex))
         {
-            return;
-        }
-        var unitGO = Instantiate(debugUnit02);
-        unitGO.SetTileIndex(tileIndex);
-        unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
-        unitGO.transform.forward = Vector3.back;
-        collisionMap[tileIndex.y, tileIndex.x] = true;
-        RegisterHexaUnit(unitGO);
-    }
+            var indexList = new List<Vector2Int>();
+            foreach (var item in unitList)
+                indexList.Add(item.tileIndex);
 
-    void Debug_UnitControll()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            excuteUnitControll = !excuteUnitControll;
-            TilemapManager.instance.hexa_tilemapPivot.gameObject.SetActive(!excuteUnitControll);
-            TilemapManager.instance.inv_tilemapPivot.gameObject.SetActive(!excuteUnitControll);
-        }
-            
+            if (indexList.Count >= 32)
+                return;
 
-        if (Input.GetKeyDown(KeyCode.Y))
-            Debug_AutoGenerateUnit();
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug_GenerateUnit(new Vector2Int(6, 4));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            var deleteList = new List<HexaUnit>();
-
-            foreach(var u in unitList)
+            if (indexList.Contains(tileIndex))
             {
-                if (u.team == 1)
+                return;
+            }
+            var unitGO = Instantiate(debugUnit02);
+            unitGO.SetTileIndex(tileIndex);
+            unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+            unitGO.transform.forward = Vector3.back;
+            collisionMap[tileIndex.y, tileIndex.x] = true;
+            RegisterHexaUnit(unitGO);
+        }
+
+        void Debug_UnitControll()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                excuteUnitControll = !excuteUnitControll;
+                TilemapManager.instance.hexa_tilemapPivot.gameObject.SetActive(!excuteUnitControll);
+                TilemapManager.instance.inv_tilemapPivot.gameObject.SetActive(!excuteUnitControll);
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Y))
+                Debug_AutoGenerateUnit();
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                Debug_GenerateUnit(new Vector2Int(6, 4));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                var deleteList = new List<HexaUnit>();
+
+                foreach(var u in unitList)
                 {
-                    deleteList.Add(u);
-                    break;
+                    if (u.team == 1)
+                    {
+                        deleteList.Add(u);
+                        break;
+                    }
+                }
+
+                collisionMap[deleteList[0].tileIndex.y, deleteList[0].tileIndex.x] = false;
+                if (deleteList[0].preIndex.x != -1)
+                    collisionMap[deleteList[0].preIndex.y, deleteList[0].preIndex.x] = false;
+
+                unitList.Remove(deleteList[0]);
+
+                Destroy(deleteList[0].gameObject);
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                var GOArray = new GameObject[unitList.Count];
+                var idx = 0;
+                foreach (var r in unitList)
+                {
+                    GOArray[idx++] = r.gameObject;
+                    collisionMap[r.tileIndex.y, r.tileIndex.x] = false;
+                    if (r.preIndex.x != -1)
+                        collisionMap[r.preIndex.y, r.preIndex.x] = false;
+                }
+
+
+                for (int i = 0; i < GOArray.Length; i++)
+                    Destroy(GOArray[i]);
+
+                unitList.Clear();
+            }
+
+            if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore)
+                && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
+            {
+                var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
+
+                var indexList = new List<Vector2Int>();
+                foreach (var item in unitList)
+                    indexList.Add(item.tileIndex);
+
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    if (indexList.Contains(tileIndex))
+                        return;
+                    var unitGO = Instantiate(debugUnit01);
+                    unitGO.SetTileIndex(tileIndex);
+                    unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+                    RegisterHexaUnit(unitGO);
+                }
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    if (indexList.Contains(tileIndex))
+                        return;
+                    var unitGO = Instantiate(debugUnit02);
+                    unitGO.SetTileIndex(tileIndex);
+                    unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+                    RegisterHexaUnit(unitGO);
+                }
+
+                if (Input.GetMouseButton(1))
+                {
+                    var unitGO = new GameObject();
+                    foreach (var u in unitList)
+                    {
+                        if (u.tileIndex == tileIndex)
+                            unitGO = u.gameObject;
+                    }
+
+                    UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
+                    Destroy(unitGO.gameObject);
                 }
             }
-
-            collisionMap[deleteList[0].tileIndex.y, deleteList[0].tileIndex.x] = false;
-            if (deleteList[0].preIndex.x != -1)
-                collisionMap[deleteList[0].preIndex.y, deleteList[0].preIndex.x] = false;
-
-            unitList.Remove(deleteList[0]);
-
-            Destroy(deleteList[0].gameObject);
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
+        void Debug_AutoGenerateUnit()
         {
-            var GOArray = new GameObject[unitList.Count];
-            var idx = 0;
-            foreach (var r in unitList)
-            {
-                GOArray[idx++] = r.gameObject;
-                collisionMap[r.tileIndex.y, r.tileIndex.x] = false;
-                if (r.preIndex.x != -1)
-                    collisionMap[r.preIndex.y, r.preIndex.x] = false;
-            }
-
-
-            for (int i = 0; i < GOArray.Length; i++)
-                Destroy(GOArray[i]);
-
-            unitList.Clear();
-        }
-
-        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore)
-            && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
-        {
-            var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
+            var tileIndex = new Vector2Int(UnityEngine.Random.Range(0,MAX_MAP_X), UnityEngine.Random.Range(4, MAX_MAP_Y));
 
             var indexList = new List<Vector2Int>();
             foreach (var item in unitList)
                 indexList.Add(item.tileIndex);
 
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                if (indexList.Contains(tileIndex))
-                    return;
-                var unitGO = Instantiate(debugUnit01);
-                unitGO.SetTileIndex(tileIndex);
-                unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
-                RegisterHexaUnit(unitGO);
-            }
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                if (indexList.Contains(tileIndex))
-                    return;
-                var unitGO = Instantiate(debugUnit02);
-                unitGO.SetTileIndex(tileIndex);
-                unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
-                RegisterHexaUnit(unitGO);
-            }
-
-            *//*if (Input.GetMouseButton(1))
-            {
-                var unitGO = new GameObject();
-                foreach (var u in unitList)
-                {
-                    if (u.tileIndex == tileIndex)
-                        unitGO = u.gameObject;
-                }
-
-                UnRegisterHexaUnit(unitGO.GetComponent<HexaUnit>());
-                Destroy(unitGO.gameObject);
-            }*//*
-        }
-    }
-    void Debug_AutoGenerateUnit()
-    {
-        var tileIndex = new Vector2Int(UnityEngine.Random.Range(0,MAX_MAP_X), UnityEngine.Random.Range(4, MAX_MAP_Y));
-
-        var indexList = new List<Vector2Int>();
-        foreach (var item in unitList)
-            indexList.Add(item.tileIndex);
-
-        if (indexList.Count >= 32)
-            return;
-
-        if (indexList.Contains(tileIndex))
-        {
-            Debug_AutoGenerateUnit();
-            return;
-        }
-
-        var unitGO = Instantiate(debugUnit02);
-        unitGO.SetTileIndex(tileIndex);
-        unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
-        unitGO.transform.forward = Vector3.back;
-        collisionMap[tileIndex.y, tileIndex.x] = true;
-        RegisterHexaUnit(unitGO);
-    }
-
-    void Debug_HexatileTool()
-    {
-        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore)
-            && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
-        {
-            var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
-
-            //시작 지점 지정
-            if (Input.GetKeyDown(KeyCode.Z) && !selectStart)
-            {
-                selectStart = true;
-                selectStartIndex = tileIndex;
-            }
-
-            //끝 지점 지정
-            if (Input.GetKeyDown(KeyCode.X) && !selectEnd)
-            {
-                selectEnd = true;
-                selectEndIndex = tileIndex;
-            }
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                if (loadPath != null)
-                {
-                    foreach (var obj in loadPath)
-                        Destroy(obj);
-                    loadPath = null;
-                }
-
-                var currentList = RangeOfHexaGridIndex(tileIndex, range);
-
-                loadPath = new GameObject[currentList.Count];
-
-                for (int i = 0; i < loadPath.Length; i++)
-                {
-                    loadPath[i] = Instantiate(loadTiles);
-                    loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                if (loadPath != null)
-                {
-                    foreach (var obj in loadPath)
-                        Destroy(obj);
-                    loadPath = null;
-                }
-
-                var currentList = RingOfHexaGridIndex(tileIndex, range + 1);
-
-                loadPath = new GameObject[currentList.Count];
-
-                for (int i = 0; i < loadPath.Length; i++)
-                {
-                    loadPath[i] = Instantiate(loadTiles);
-                    loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
-                }
-            }
-        }
-
-        if (selectStart && selectEnd)
-        {
-            //트리거 리셋
-            selectStart = false;
-            selectEnd = false;
-
-            //이전 길 표시는 삭제
-            if (loadPath != null)
-            {
-                foreach (var obj in loadPath)
-                    Destroy(obj);
-                loadPath = null;
-            }
-
-            //길 찾기
-            var pathlist = PathFinding(selectStartIndex, selectEndIndex);
-
-            //못 찾았음 리턴
-            if (pathlist.Count == 0)
+            if (indexList.Count >= 32)
                 return;
 
-            //길 표시 오브젝트 생성
-            loadPath = new GameObject[pathlist.Count];
-            int addCount = 0;
-
-            foreach (var path in pathlist)
+            if (indexList.Contains(tileIndex))
             {
-                loadPath[addCount] = Instantiate(loadTiles);
-                loadPath[addCount].transform.position = positionMap[path.y, path.x];
-                addCount++;
+                Debug_AutoGenerateUnit();
+                return;
             }
+
+            var unitGO = Instantiate(debugUnit02);
+            unitGO.SetTileIndex(tileIndex);
+            unitGO.transform.position = positionMap[tileIndex.y, tileIndex.x];
+            unitGO.transform.forward = Vector3.back;
+            collisionMap[tileIndex.y, tileIndex.x] = true;
+            RegisterHexaUnit(unitGO);
         }
-    }*/
+
+        void Debug_HexatileTool()
+        {
+            if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hitInfo, Mathf.Infinity, -1, QueryTriggerInteraction.Ignore)
+                && hitInfo.transform.TryGetComponent(out TilemapTriggerInfo tInfo))
+            {
+                var tileIndex = new Vector2Int(tInfo.x, tInfo.y);
+
+                //시작 지점 지정
+                if (Input.GetKeyDown(KeyCode.Z) && !selectStart)
+                {
+                    selectStart = true;
+                    selectStartIndex = tileIndex;
+                }
+
+                //끝 지점 지정
+                if (Input.GetKeyDown(KeyCode.X) && !selectEnd)
+                {
+                    selectEnd = true;
+                    selectEndIndex = tileIndex;
+                }
+
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    if (loadPath != null)
+                    {
+                        foreach (var obj in loadPath)
+                            Destroy(obj);
+                        loadPath = null;
+                    }
+
+                    var currentList = RangeOfHexaGridIndex(tileIndex, range);
+
+                    loadPath = new GameObject[currentList.Count];
+
+                    for (int i = 0; i < loadPath.Length; i++)
+                    {
+                        loadPath[i] = Instantiate(loadTiles);
+                        loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    if (loadPath != null)
+                    {
+                        foreach (var obj in loadPath)
+                            Destroy(obj);
+                        loadPath = null;
+                    }
+
+                    var currentList = RingOfHexaGridIndex(tileIndex, range + 1);
+
+                    loadPath = new GameObject[currentList.Count];
+
+                    for (int i = 0; i < loadPath.Length; i++)
+                    {
+                        loadPath[i] = Instantiate(loadTiles);
+                        loadPath[i].transform.position = positionMap[currentList[i].y, currentList[i].x];
+                    }
+                }
+            }
+
+            if (selectStart && selectEnd)
+            {
+                //트리거 리셋
+                selectStart = false;
+                selectEnd = false;
+
+                //이전 길 표시는 삭제
+                if (loadPath != null)
+                {
+                    foreach (var obj in loadPath)
+                        Destroy(obj);
+                    loadPath = null;
+                }
+
+                //길 찾기
+                var pathlist = PathFinding(selectStartIndex, selectEndIndex);
+
+                //못 찾았음 리턴
+                if (pathlist.Count == 0)
+                    return;
+
+                //길 표시 오브젝트 생성
+                loadPath = new GameObject[pathlist.Count];
+                int addCount = 0;
+
+                foreach (var path in pathlist)
+                {
+                    loadPath[addCount] = Instantiate(loadTiles);
+                    loadPath[addCount].transform.position = positionMap[path.y, path.x];
+                    addCount++;
+                }
+            }
+        }*/
+    #endregion
 }
 
 
