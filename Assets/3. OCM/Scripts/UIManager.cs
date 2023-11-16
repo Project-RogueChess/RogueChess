@@ -79,15 +79,18 @@ public class UIManager : MonoBehaviour
     }
 
 
-
+    private void Start()
+    {
+        ShopUIDraw(false);
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-
-            ShopUIDraw();
             shopOnOffBool = !shopOnOffBool;
+            ShopUIDraw(shopOnOffBool);
+            
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -127,6 +130,16 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void ShowShop()
+    {
+        ShopUIDraw(true);
+    }
+
+    public void HideShop()
+    {
+        ShopUIDraw(false);
+    }
+
     //UI 보여주는 것
     public void UIRefresh()
     {
@@ -150,23 +163,13 @@ public class UIManager : MonoBehaviour
     }
 
     //상점 UI 열고 닫기
-    public void ShopUIDraw()
+    public void ShopUIDraw(bool showing)
     {
-        if (shopOnOffBool == true)
-        {
-            shopPanel.SetActive(false);
-            rerollButton.SetActive(false);
-            percentagePanel.SetActive(false);
-            rerollLockButton.SetActive(false);
-        }
-        else
-        {
-            shopPanel.SetActive(true);
-            rerollButton.SetActive(true);
-            percentagePanel.SetActive(true);
-            rerollLockButton.SetActive(true);
-        }
-
+        
+        shopPanel.SetActive(showing);
+        rerollButton.SetActive(showing);
+        percentagePanel.SetActive(showing);
+        rerollLockButton.SetActive(showing);
     }
 
     public void ReRoolForBtn()
