@@ -134,11 +134,11 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         {
             if (InvSpawnManager.instance.invTiles[i].piece == null)
             {
-                if (DataManager.instance.myGold >= pieceInfo.gold)
+                if (DataManager.instance.WhatMyGold() >= pieceInfo.gold)
                 {
                     canvasGroup.alpha = 0f;
                     canvasGroup.blocksRaycasts = false;
-                    DataManager.instance.myGold -= pieceInfo.gold;
+                    DataManager.instance.LostGold(pieceInfo.gold);
                     PiecesCountManager.instance.piecesIdCounts[pieceInfo.id]++;
                     CreatePiece();
 

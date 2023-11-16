@@ -15,28 +15,34 @@ public class RdmEvt_Main : MonoBehaviour
     private Image main_text;
     private Image[] main_choice;
 
-    [Header("Event_01")]
+    [Header("ScriptManager")]
+    [SerializeField] private GameObject dataManagerObject;
+
+    [Header("Event_00")]
     [SerializeField] private Sprite evt01Title;
     [SerializeField] private Sprite evt01Image;
     [SerializeField] private Sprite evt01Text;
     [SerializeField] private List<Sprite> evt01Choices;
 
-    [Header("Event_02")]
+    [Header("Event_01")]
     [SerializeField] private Sprite evt02Title;
     [SerializeField] private Sprite evt02Image;
     [SerializeField] private Sprite evt02Text;
     [SerializeField] private List<Sprite> evt02Choices;
 
-    [Header("Event_03")]
+    [Header("Event_02")]
     [SerializeField] private Sprite evt03Title;
     [SerializeField] private Sprite evt03Image;
     [SerializeField] private Sprite evt03Text;
     [SerializeField] private List<Sprite> evt03Choices;
 
     private int eventStage;
+    private DataManager dataManagerScript;
 
     private void Start()
     {
+        dataManagerScript = dataManagerObject.GetComponent<DataManager>();
+
         main_title = MAIN_TITLE.GetComponent<Image>();
         main_image = MAIN_IMAGE.GetComponent<Image>();
         main_text = MAIN_TEXT.GetComponent<Image>();
@@ -48,6 +54,7 @@ public class RdmEvt_Main : MonoBehaviour
             main_choice[i] = MAIN_CHOICE[i].GetComponent<Image>();
         }
         
+        gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2 (0, 0);
         gameObject.SetActive(false);
     }
     private void Update()
@@ -117,7 +124,7 @@ public class RdmEvt_Main : MonoBehaviour
 
         switch (eventStage)
         {
-            case 1:
+            case 0:
                 if (randomValue < 40)
                 {
                     // get item
@@ -131,22 +138,25 @@ public class RdmEvt_Main : MonoBehaviour
                 else if (randomValue <= 100)
                 {
                     // lost hp
+                    dataManagerScript.LostHp(1);
                 }
                 break;
 
-            case 2:
+            case 1:
                 if (randomValue < 50)
                 {
                     // get hp
+                    dataManagerScript.GetHp(1);
                 }
 
                 else if (randomValue <= 100)
                 {
                     // lost hp
+                    dataManagerScript.LostHp(1);
                 }
                 break;
 
-            case 3:
+            case 2:
                 //lost piece
                 break;
 
@@ -160,12 +170,18 @@ public class RdmEvt_Main : MonoBehaviour
     {
         switch (eventStage)
         {
-            case 1:
+            case 0:
                 // nothing
                 break;
 
-            case 2:
+            case 1:
                 //lost hp
+                dataManagerScript.LostHp(1);
+                break;
+
+            case 2:
+                //lost gold
+                dataManagerScript.LostGold(4);
                 break;
 
             default:
@@ -180,10 +196,11 @@ public class RdmEvt_Main : MonoBehaviour
 
         switch (eventStage)
         {
-            case 3:
+            case 2:
                 if (randomValue < 5)
                 {
                     //lost item + gold
+                    dataManagerScript.LostGold(5);
                 }
                 else if (randomValue < 15)
                 {
@@ -192,10 +209,12 @@ public class RdmEvt_Main : MonoBehaviour
                 else if (randomValue < 45)
                 {
                     //lost gold
+                    dataManagerScript.LostGold(5);
                 }
                 else if (randomValue < 80)
                 {
                     //lost hp
+                    dataManagerScript.LostHp(1);
                 }
                 else if (randomValue <= 100)
                 {

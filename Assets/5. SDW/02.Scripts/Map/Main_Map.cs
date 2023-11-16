@@ -52,6 +52,7 @@ public class Main_Map : MonoBehaviour
 
     [Header("Node Setting")]
     [SerializeField] private GameObject randomEventUI;
+    [SerializeField] private GameObject ShelterUI;
 
     [Header("Optional")]
     [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
@@ -95,7 +96,7 @@ public class Main_Map : MonoBehaviour
     }
     #endregion
 
-    private void Awake()
+    private void Start()
     {
         UI_MapRenderStart();
 
@@ -384,8 +385,6 @@ public class Main_Map : MonoBehaviour
 
         Instantiate(currentStateMarkerO, FindPanelToSearchDictionary(trueNode).transform);
 
-        //GameObject currentNodePanel = FindPanelToSearchDictionary(trueNode);
-        //currentNodePanel.GetComponent<Map_Node>().ChangeNodeRectSizeUp(clickedNodeSize);
 
         NodeAction();
 
@@ -455,6 +454,7 @@ public class Main_Map : MonoBehaviour
                 randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();
                 break;
             case currentNodeTypeEnum.Shelter:
+                ShelterUI.gameObject.SetActive(true);
                 break;
             case currentNodeTypeEnum.Store:
                 break;

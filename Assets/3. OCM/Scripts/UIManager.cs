@@ -103,11 +103,11 @@ public class UIManager : MonoBehaviour
     //UI 보여주는 것
     public void UIRefresh()
     {
-        levelTxt.text = "Level: " + DataManager.instance.myLevel.ToString();
-        expTxt.text = DataManager.instance.myExp.ToString() + "/" + DataManager.instance.maxExp.ToString();
-        hpTxt.text = DataManager.instance.myHp.ToString() + "/ 15";
-        piecesTxt.text = DataManager.instance.myPieces.ToString() + "/" + DataManager.instance.maxPieces.ToString();
-        goldTxt.text = "$" + DataManager.instance.myGold.ToString();
+        levelTxt.text = "Level: " + DataManager.instance.WhatMyLevel().ToString();
+        expTxt.text = DataManager.instance.WhatMyEXP().ToString() + "/" + DataManager.instance.WhatMyMAXEXP().ToString();
+        hpTxt.text = DataManager.instance.WhatMyHp().ToString() + "/ 15";
+        piecesTxt.text = DataManager.instance.WhatMyPieces().ToString() + "/" + DataManager.instance.WhatMyMAXPieces().ToString();
+        goldTxt.text = "$" + DataManager.instance.WhatMyGold().ToString();
         for (int i = 0; i< DataManager.instance.wholePercentage.Length;i++)
         {
             percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
@@ -142,9 +142,9 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            if (DataManager.instance.myGold >= 2)
+            if (DataManager.instance.WhatMyGold() >= 2)
             {
-                DataManager.instance.myGold -= 2;
+                DataManager.instance.LostGold(2);
                 foreach (ShopManager shopManager in shopmanagers)
                 {
                     shopManager.ReRoll(DataManager.instance.reroolLock);
