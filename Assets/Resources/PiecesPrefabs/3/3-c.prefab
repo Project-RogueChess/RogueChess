@@ -566,7 +566,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 0
   range: 0
-  moveType: 0
   projectilePrefab: {fileID: 0}
   attackFX: {fileID: 0}
   article: {fileID: 3064627639171980790}
@@ -588,7 +587,6 @@ MonoBehaviour:
   attackSpeed: 1.5
   attackRange: 2
   moveSpeed: 1.5
-  avatar: {fileID: 0}
   animator: {fileID: 0}
   pieceImg: {fileID: 21300000, guid: 826a03657a236784d990488dae189dfa, type: 3}
   name: 1-d
