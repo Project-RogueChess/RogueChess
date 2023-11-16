@@ -53,6 +53,7 @@ public class Main_Map : MonoBehaviour
     [Header("Node Setting")]
     [SerializeField] private GameObject randomEventUI;
     [SerializeField] private GameObject ShelterUI;
+    [SerializeField] private GameObject StoreUI;
 
     [Header("Optional")]
     [SerializeField] public Vector2Int currentNodeXY; // 현재 노드가 뭔지 갱신 하죠
@@ -508,9 +509,10 @@ public class Main_Map : MonoBehaviour
                 randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();
                 break;
             case currentNodeTypeEnum.Shelter:
-                ShelterUI.gameObject.SetActive(true);
+                ShelterUI.SetActive(true);
                 break;
             case currentNodeTypeEnum.Store:
+                StoreUI.GetComponent<Store_Main>().StoreNodeStart();
                 break;
             case currentNodeTypeEnum.Treasure:
                 break;
