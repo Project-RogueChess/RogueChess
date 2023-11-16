@@ -9,11 +9,17 @@ public class PiecesCountManager : MonoBehaviour
  
     public int[] piecesIdCounts;
 
+    public Sprite[] piecesGradeImg;
     public static PiecesCountManager instance { get; private set; }
     public void Awake()
     {
         instance = this;
         piecesDB = FindObjectOfType<PiecesDB>();
         piecesIdCounts = new int[piecesDB.pieces.Count];
+    }
+
+    public void resetCounts(Piece piece)
+    {
+        piecesIdCounts[piece.id] = 0;
     }
 }

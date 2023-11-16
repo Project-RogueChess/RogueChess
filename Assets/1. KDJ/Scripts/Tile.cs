@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Tile : MonoBehaviour
 {
@@ -14,10 +16,14 @@ public class Tile : MonoBehaviour
     {
         if (piece != null)
         {
+            UIManager.instance.ShowSellText(piece);
             TileManager.Instance.isDrag = true;
             TileManager.Instance.prevPiece = piece;
             TileManager.Instance.prevTile = this;
-            
+
+            HexaUnit unit = piece.GetComponent<HexaUnit>();
+            if (HexaUnitManager.instance.unitList.Contains(unit))
+                HexaUnitManager.instance.UnRegisterHexaUnit(unit);
         }
     }
 
@@ -46,20 +52,80 @@ public class Tile : MonoBehaviour
             TileManager.Instance.isDrag = false;
             if (TileManager.Instance.nextTile != null)
             {
+                if (TileManager.Instance.nextTile.tag == "Sell")
+                {
+                    piece.GetComponent<Pieces>().SellPiece();
+                }
                 GameObject tempGO = TileManager.Instance.nextPiece;
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
                 TileManager.Instance.prevTile.piece = tempGO;
+                
+                if (TileManager.Instance.nextTile.tag != "Sell"
+                    && TileManager.Instance.nextTile.triggerInfo.type == TileType.Hexa)
+                {
+                    HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
+                    unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
+                    HexaUnitManager.instance.RegisterHexaUnit(unit);
+                }
+               
+
                 if (tempGO != null)
                 {
+                    HexaUnit otherUnit = TileManager.Instance.nextPiece.GetComponent<HexaUnit>();
+                    otherUnit.SetTileIndex(new Vector2Int(TileManager.Instance.prevTile.triggerInfo.x, TileManager.Instance.prevTile.triggerInfo.y));
+                    if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Inv)
+                    {
+                        HexaUnitManager.instance.UnRegisterHexaUnit(otherUnit);
+                    }
+                    
+
                     TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
                 }
+                
             }
             else
             {
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
                 Debug.Log("ºóÄ­¿¡ ³öµÒ");
             }
+
+            UIManager.instance.CloseSellText();
+
+            InvSpawnManager.instance.CountArticle();
+
+            if (DataManager.instance.WhatMyPieces()> DataManager.instance.WhatMyMAXPieces())
+            {
+                TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
+                TileManager.Instance.prevTile.piece = TileManager.Instance.nextTile.piece;
+                TileManager.Instance.nextTile.piece = null;
+                InvSpawnManager.instance.CountArticle();
+            }
+
+
+            //InvSpawnManager.instance.SearchingIdsArrayBool();
+            InvSpawnManager.instance.SearchEveryTileForSynergyData();
+            InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
         }
     }
+
+
+    public void Reset()
+    {
+        this.piece.SetActive(true);
+
+        //½ºÅÝ ¸®¼Â Ãß°¡
+
+        SetWorldPostion();
+        SetWorldRotation();
+    }
+
+    public void SetWorldRotation()
+    {
+         piece.transform.rotation = Quaternion.identity;
+    }
+    public void SetWorldPostion()
+    {        
+        piece.transform.position = this.transform.position;
+    }    
 }

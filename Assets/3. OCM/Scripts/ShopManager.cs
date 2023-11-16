@@ -27,7 +27,8 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
     //상점에서 보여줄 정보
     public TMP_Text nameTxt;
-    public TMP_Text synergysTxt;
+    public TMP_Text spiecesTxt;
+    public TMP_Text classTxt;
     public TMP_Text goldTxt;
 
     public int[] percentages = new int[5];
@@ -75,35 +76,40 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
             }
 
             rangeNum = Random.Range(0, 101);
-            if (rangeNum <= 101)
+            if (rangeNum <= percentages[0])
             {
                 num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold1list;
                 pieceInfo = pieceInfos[num];
+                nameTxt.color = new Color(0.62f, 0.62f, 0.62f);
             }
             else if (rangeNum <= percentages[0] + percentages[1])
             {
                 num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold2list;
                 pieceInfo = pieceInfos[num];
+                nameTxt.color = Color.green;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
             {
                 num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold3list;
                 pieceInfo = pieceInfos[num];
+                nameTxt.color = Color.blue;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
             {
                 num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold4list;
                 pieceInfo = pieceInfos[num];
+                nameTxt.color = new Color(1f,0,0.86f);
             }
             else
             {
                 num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold5list;
                 pieceInfo = pieceInfos[num];
+                nameTxt.color = new Color(1f, 0.5f, 0f);
             }
             ShowShopPieces();
         } 
@@ -120,7 +126,9 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
         pieceImage = piecesShopImage.sprite;
         nameTxt.text = pieceName;
-        synergysTxt.text = pieceSpieces + ", " + pieceClass;
+
+        spiecesTxt.text = pieceSpieces;
+        classTxt.text = pieceClass;
         goldTxt.text = "$" + pieceGold;
 
         canvasGroup.alpha = 1f;
@@ -141,9 +149,15 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     DataManager.instance.LostGold(pieceInfo.gold);
                     PiecesCountManager.instance.piecesIdCounts[pieceInfo.id]++;
                     CreatePiece();
-
+                    if (PiecesCountManager.instance.piecesIdCounts[pieceInfo.id] > 2)
+                    {
+                        UpgradeArticle.instance.TryUpgradeArticle(pieceInfo);
+                        PiecesCountManager.instance.resetCounts(pieceInfo);
+                    }
                     UIManager.instance.UIRefresh();
-                    return ;
+                    InvSpawnManager.instance.CountArticle();
+                    //InvSpawnManager.instance.SearchingIdsArrayBool();
+                    break;
                 }
             }
 
@@ -163,6 +177,7 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         var currentPiece = InvSpawnManager.instance.invTiles[index].piece.GetComponent<Pieces>();
 
         currentPiece.Parse(pieceInfo);
+
         //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }

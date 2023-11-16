@@ -47,36 +47,24 @@ public class HpBar : MonoBehaviour
     }
     void Update()
     {
-        for (int i = 0; i < t_objects.Length; i++)
-        {
-            m_hpBarsList[i].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0, 1.15f, 1.0f));
+        //for (int i = 0; i < t_objects.Length; i++)
+        //{
+        //    m_hpBarsList[i].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0, 1.15f, 1.0f));
 
 
 
-            if (t_objects[i].GetComponent<Pieces>())
-            {
-                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.8f));
-            }
-            else
-            {
-                m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.8f));
-                m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.8f));
-            }
-            //for (int j = 0; j < 3; j++)
-            //{
-            //    if (t_objects[i].GetComponent<Pieces>())
-            //    {
-            //        m_ItemsList[i * 3 + j].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.5f, 0.9f, 0.8f));
-            //    }
-            //    else
-            //    {
-            //        m_ItemsList[i * 3 + j].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0, 1.15f, 1.0f));
-
-                //    }
-                //}
-        }
+        //    if (t_objects[i].GetComponent<Pieces>())
+        //    {
+        //        m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+        //        m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+        //        m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
+        //    }
+        //    else
+        //    {
+        //        m_ItemsList[i * 3 + 0].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(-0.4f, 0.9f, 0.7f));
+        //        m_ItemsList[i * 3 + 1].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0f, 0.9f, 0.7f));
+        //        m_ItemsList[i * 3 + 2].transform.position = camera.WorldToScreenPoint(t_objects[i].transform.position + new Vector3(0.4f, 0.9f, 0.7f));
+        //    }
+        //}
     }
 }

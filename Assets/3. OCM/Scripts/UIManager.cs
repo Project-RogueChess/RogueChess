@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,8 +20,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text piecesTxt;
     public TMP_Text goldTxt;
     //±â¹° È®·ü panel
-    public TMP_Text[] percentages = new TMP_Text[5]; 
-    
+    public TMP_Text[] percentages = new TMP_Text[5];
+
 
     public GameObject shopPanel;
     public GameObject rerollButton;
@@ -39,6 +41,7 @@ public class UIManager : MonoBehaviour
     public bool inventorySwitchBool;
     private InventoryPanel inventoryPanel1;
     private InventoryPanel inventoryPanel2;
+    public TMP_Text inventoryNumTxt;
 
 
     public GameObject mapObject;
@@ -46,10 +49,14 @@ public class UIManager : MonoBehaviour
     public int itemAddNum;
     public TMP_Text itemAddNumTxt;
     public GameObject itemAddNumImg;
+
+
+    public TMP_Text sellTxt;
+    public GameObject[] shopManagerList;
     private void Awake()
     {
         instance = this;
-        
+
         shopmanagers = shopPanel.GetComponentsInChildren<ShopManager>();
         inventoryPanel1 = inventory1.GetComponent<InventoryPanel>();
         inventoryPanel2 = inventory2.GetComponent<InventoryPanel>();
@@ -61,7 +68,18 @@ public class UIManager : MonoBehaviour
         itemAddNumImg.SetActive(false);
         shopOnOffBool = true;
 
+        shopManagerList = shopmanagers.Select(shopmanagers => shopmanagers.gameObject).ToArray();
+        //for(int i =0; i< shopmanagers.Length; i++)
+        //{
+        //    shopManagerList[i] = shopmanagers[i].gameObject;
+        //}
+        
+
+        sellTxt.enabled = false;
     }
+
+   
+
 
     private void Update()
     {
@@ -83,7 +101,7 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             InventoryUIDraw();
-            inventoryOnOffBool = !inventoryOnOffBool;
+            
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -96,6 +114,10 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             mapObject.GetComponent<Main_Map>().UI_MapOnOff();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            InvSpawnManager.instance.AddRandomPiece(3);
         }
         
     }
@@ -110,7 +132,15 @@ public class UIManager : MonoBehaviour
         goldTxt.text = "$" + DataManager.instance.WhatMyGold().ToString();
         for (int i = 0; i< DataManager.instance.wholePercentage.Length;i++)
         {
-            percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
+            percentages[i].text = DataManager.instance.wholePercentage[i].ToString() + "%";
+        }
+        if(DataManager.instance.WhatMyPieces() > DataManager.instance.WhatMyMAXPieces())
+        {
+            piecesTxt.color = new(1, 0, 0);
+        }
+        else
+        {
+            piecesTxt.color = new(1, 1, 1);
         }
     }
 
@@ -175,6 +205,7 @@ public class UIManager : MonoBehaviour
             inventoryLeftBtn.SetActive(false);
             inventoryRightBtn.SetActive(false);
             inventorySwitchBool = false;
+            inventoryNumTxt.enabled = false;
         }
         else
         {
@@ -186,7 +217,11 @@ public class UIManager : MonoBehaviour
             itemAddNumTxt.enabled = false;
             itemAddNumImg.SetActive(false);
             inventorySwitchBool = true;
+            inventoryNumTxt.enabled = true ;
+            inventoryNumTxt.text = "1/2";
+            UIRefresh();
         }
+        inventoryOnOffBool = !inventoryOnOffBool;
     }
 
     public void InventoryUISwitch()
@@ -195,11 +230,15 @@ public class UIManager : MonoBehaviour
         {
             inventory2.SetActive(true);
             inventory1.SetActive(false);
+            inventoryNumTxt.text = "2/2";
+            UIRefresh();
         }
         else
         {
             inventory1.SetActive(true);
             inventory2.SetActive(false);
+            inventoryNumTxt.text = "1/2";
+            UIRefresh();
         }
         inventorySwitchBool = !inventorySwitchBool;
     }
@@ -248,7 +287,8 @@ public class UIManager : MonoBehaviour
             }
             for (int j = 0; j < 9; j++)
             {
-                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty)
+                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                 {
                     inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[k];
                     inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
@@ -265,8 +305,7 @@ public class UIManager : MonoBehaviour
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
-                       inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+                    if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                     {
                         inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel1.itemsDB.items[i];
                         inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
@@ -276,14 +315,64 @@ public class UIManager : MonoBehaviour
                 }
                 for (int j = 0; j < 9; j++)
                 {
-                    if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
-                       inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+                    if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                     {
                         inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[i];
                         inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
                         ShowAddItemNum();
                         return;
                     }
+                }
+            }
+        }
+    }
+
+    public void DeleteRandomItem()
+    {
+        List<Item> items = new List<Item>();
+        
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != string.Empty &&
+                inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != null)
+            {
+                items.Add(inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item);
+            }
+        }
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != string.Empty &&
+                inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != null)
+            {
+                items.Add(inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item);
+            }
+        }
+        int k = Random.Range(0, items.Count);
+        Debug.Log(items.Count);
+        Debug.Log(k);
+
+        if (items.Count>=1)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item == items[k])
+                {
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = new Item();
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = true;
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemSprite = null;
+
+                    return;
+                }
+            }
+            for (int j = 0; j < 9; j++)
+            {
+                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item == items[k])
+                {
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = new Item();
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = true;
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemSprite = null;
+
+                    return;
                 }
             }
         }
@@ -298,5 +387,25 @@ public class UIManager : MonoBehaviour
             itemAddNum++;
             itemAddNumTxt.text = itemAddNum.ToString();
         }
+    }
+
+    public void ShowSellText(GameObject pieces)
+    {
+        for(int i = 0;i< shopManagerList.Length;i++)
+        {
+            shopManagerList[i].SetActive(false);
+        }
+        int gold = pieces.GetComponent<Pieces>().gold;
+        sellTxt.enabled = true;
+        sellTxt.text = "Sell for " + gold.ToString() + "$";
+    }
+
+    public void CloseSellText()
+    {
+        for (int i = 0; i < shopManagerList.Length; i++)
+        {
+            shopManagerList[i].SetActive(true);
+        }
+        sellTxt.enabled = false;
     }
 }

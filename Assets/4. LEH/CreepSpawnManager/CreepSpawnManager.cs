@@ -1,18 +1,210 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+
+
 
 public class CreepSpawnManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static CreepSpawnManager instance;
+
+    [SerializeField] private GameObject shellOfCreep;
+    [SerializeField] private List<GameObject> creepPool;
+    [SerializeField] private Transform creepPoolParent;
+
+    [SerializeField] private int CreepPoolSize = 10;
+
+    [SerializeField] string CreepDB_CSV_Path = "CreepDB";
+    [SerializeField] string CreepStageDB_CSV_Path = "CreepStageDB";
+
+    private Dictionary<int, Creep> creepClassDict = new Dictionary<int, Creep>();// CSV reader로 생성된 creep
+    private List<StageData> stageList;
+
+    private void Awake()
     {
-        
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            if (instance != this)
+                DestroyImmediate(this);
+        }
+
+        ReadCreepData(CreepDB_CSV_Path, creepClassDict);
+        stageList = ReadStageData(CreepStageDB_CSV_Path);
+        creepPool = PoolingCreeps();
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject GetCreep()
     {
+        if (creepPool.Count > 0)
+        {
+            var creep = creepPool[0];
+            creep.transform.parent = null;
+            creep.SetActive(true);
+            creepPool.RemoveAt(0);
+            return creep;
+        }
+        else
+        {
+            var newCreep = Instantiate(shellOfCreep);
+            return newCreep;
+        }
+    }
+
+    public void ReturnCreep(GameObject creep)
+    {
+        creepPool.Add(creep);
+        creep.transform.parent = creepPoolParent;
+        creep.SetActive(false);
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("!");
+            LoadCreepToField(3);
+        }
+    }
+
+    public void LoadCreepToField(int stageID)
+    {
+        List<StageData> currentStage = SearchStageWithID(stageID, stageList);
+
+        foreach(var stageData in currentStage)
+        {
+            var creep = InjectCreepData(GetCreep(), stageData.creepID).GetComponent<CreepComponent>();
+
+            if (creep.rootTransform.childCount > 0)
+                DestroyImmediate(creep.rootTransform.GetChild(0));
+            //모델 생성
+            Debug.Log(creep.modelPrefab);
+            Instantiate(creep.modelPrefab, creep.rootTransform);
+
+            creep.animator = creep.rootTransform.GetChild(0).GetComponent<Animator>();
+
+            var unit = creep.GetComponent<HexaUnit>();
+            unit.article = creep;
+            unit.team = 1;
+            unit.range = creep.attackRange;
+            if (creep.projectile != null)
+                unit.projectilePrefab = (creep.projectile).GetComponent<HexaUnitProjectile>();
+            unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
+            unit.transform.forward = Vector3.back;
+            unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
+            HexaUnitManager.instance.RegisterHexaUnit(unit);
+        }
+    }
+
+    public List<StageData> SearchStageWithID(int id, List<StageData> stageSource)
+    {
+        List<StageData> currentStage = new List<StageData>();
+
+        foreach(var stage in stageSource)
+        {
+            if (stage.stageID == id)
+                currentStage.Add(stage);
+        }
+
+        return currentStage;
+    }
+
+    public List<StageData> ReadStageData(string filename)
+    {
+        List<Dictionary<string, object>> dictionaryData = CSVReader.Read(filename);
+        List<StageData> stageList = new List<StageData>();
         
+
+        foreach(var data in dictionaryData)
+        {
+            StageData stage = new StageData();
+
+            stage.stageID = (int)data["stage"];
+            stage.creepID = (int)data["creep"];
+            stage.x = (int)data["x"];
+            stage.y = (int)data["y"];
+
+            stageList.Add(stage);
+        }
+
+        return stageList;
+    }
+
+    private void ReadCreepData(string filename, Dictionary<int, Creep> creepDict)
+    {
+        List<Dictionary<string, object>> dictionaryOfCreepData = new List<Dictionary<string, object>>(); // 왜 리스트<사전<>> ?
+
+        dictionaryOfCreepData = CSVReader.Read(filename);
+
+        for (int i = 0; i < dictionaryOfCreepData.Count; i++)
+        {
+            Creep creepObject = new Creep();
+
+            creepObject.name = dictionaryOfCreepData[i]["name"].ToString();
+            creepObject.id = (int)dictionaryOfCreepData[i]["id"];
+            creepObject.maxHp = (int)dictionaryOfCreepData[i]["maxHp"];
+            creepObject.hp = (int)dictionaryOfCreepData[i]["hp"];
+            creepObject.attackDamage = (int)dictionaryOfCreepData[i]["attackDamage"];
+            creepObject.attackSpeed = (float)dictionaryOfCreepData[i]["attackSpeed"];
+            creepObject.attackRange = (int)dictionaryOfCreepData[i]["attackRange"];
+            creepObject.moveSpeed = (float)dictionaryOfCreepData[i]["moveSpeed"];
+
+            creepObject.modelPrefab = (string)dictionaryOfCreepData[i]["modelPrefab"];
+            creepObject.projectile = (string)dictionaryOfCreepData[i]["projectile"];
+
+            creepDict.Add(creepObject.id, creepObject);
+        }
+    }
+
+    //"CreepPrefabs/CreepProjectiles" +
+    public GameObject InjectCreepData(GameObject go, int creepId)
+    {
+        var creep = go.GetComponent<CreepComponent>();
+
+        creep.id = creepId;
+        creep.creepName = creepClassDict[creepId].name;
+        creep.maxHp = creepClassDict[creepId].maxHp;
+        creep.hp = creepClassDict[creepId].hp;
+        creep.attackDamage = creepClassDict[creepId].attackDamage;
+        creep.attackSpeed = creepClassDict[creepId].attackSpeed;
+        creep.attackRange = creepClassDict[creepId].attackRange;
+        creep.moveSpeed = creepClassDict[creepId].moveSpeed;
+
+        creep.modelPrefab = (GameObject)Resources.Load("CreepPrefabs/" + creepClassDict[creepId].modelPrefab);
+        creep.projectile = creepClassDict[creepId].projectile != null ? (GameObject)Resources.Load("CreepPrefabs/CreepProjectiles/" + creepClassDict[creepId].projectile) : null;
+
+        return go;
+    }
+
+    private List<GameObject> PoolingCreeps()
+    {
+        List<GameObject> poolOfCreeps = new List<GameObject>();
+
+        for (int i = 0; i < CreepPoolSize; i++)
+        {
+            GameObject realCreep = Instantiate(shellOfCreep, creepPoolParent);
+            realCreep.SetActive(false);
+            poolOfCreeps.Add(realCreep);
+        }
+
+        return poolOfCreeps;
     }
 }
+
+public class StageData
+{
+    public int stageID;
+    public int creepID;
+    public int x, y;
+}
+
+
