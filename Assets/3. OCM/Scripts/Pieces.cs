@@ -12,7 +12,7 @@ using static UnityEditor.Progress;
 
 //일단 상점 구현 할 때 써야할 필요 기물 정보
 
-public class Pieces : MonoBehaviour
+public class Pieces : Article
 {
     public Sprite pieceImg;
     public new string name;
@@ -21,14 +21,20 @@ public class Pieces : MonoBehaviour
     public string spieces;
     public string classes;
     public int grade;
-    public int maxHp;
-    public int hp;
     public int maxMp;
     public int mp;
-    public int attackDamage;
-    public float attackSpeed;
-    public int attackRange;
-    public float moveSpeed;
+
+
+    public int originMaxHp;
+    public int originHp;
+    public int originMaxMp;
+    public int originMp;
+    public int originAttackDamage;
+    public float originAttackSpeed;
+    public int originAttackRange;
+    public float originMoveSpeed;
+
+
 
     public Transform pos;
     public Item[] items;
@@ -58,6 +64,18 @@ public class Pieces : MonoBehaviour
         attackSpeed = piece.attackSpeed;
         attackRange = piece.attackRange;
         moveSpeed = piece.moveSpeed;
+
+        originMaxHp = maxHp;
+        originHp = hp;
+        originMaxMp = maxMp;
+        originMp = mp;
+        originAttackDamage = attackDamage;
+        originAttackSpeed = attackSpeed;
+        originAttackRange = attackRange;
+        originMoveSpeed = moveSpeed;
+
+        spieces = piece.spieces;
+        classes = piece.classes;
     }
     private void Awake()
     {
@@ -126,7 +144,7 @@ public class Pieces : MonoBehaviour
 
     public void SellPiece()
     {
-        DataManager.instance.myGold += CalculateGold();
+        DataManager.instance.GetGold(CalculateGold());
         UIManager.instance.UIRefresh();
         GivingItemInfo();
        
@@ -149,22 +167,58 @@ public class Pieces : MonoBehaviour
     public void MergePeice()
     {
         grade++;
+        float newsize = 1f;
+
+
 
         if (grade == 2)
         {
-            Debug.Log(2);
-            maxHp = 2 * maxHp;
-            hp = 2 * hp;
-            attackDamage = 2 * attackDamage;
+            newsize = 1.2f;
+            maxHp = 2 * originMaxHp;
+            hp = 2 * originHp;
+            attackDamage = 2 * originAttackDamage;
+            mp += 2*originMp;
+
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
+            this.transform.localScale = new Vector3 (newsize, newsize, newsize);
+
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i].itemName != string.Empty || items[i].itemName != null)
+                {
+                    maxHp += items[i].itemHp;
+                    hp += items[i].itemHp;
+                    attackDamage += items[i].itemAttackDamage;
+                    attackSpeed += items[i].itemAttackSpeed;
+                    mp += items[i].itemMp;
+                }
+            }
         }
         else if (grade == 3)
         {
-            Debug.Log(3);
-            maxHp += 3 * maxHp;
-            hp = 3 * hp;
-            attackDamage = 3 * attackDamage;
+            newsize = 1.4f;
+            maxHp += 3 * originMaxHp;
+            hp = 3 * originHp;
+            attackDamage = 3 * originAttackDamage;
+            mp += 3 * originMp;
+
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
+            this.transform.localScale = new Vector3(newsize, newsize, newsize);
+
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i].itemName != string.Empty && items[i].itemName != null)
+                {
+                    maxHp += items[i].itemHp;
+                    hp += items[i].itemHp;
+                    attackDamage += items[i].itemAttackDamage;
+                    attackSpeed += items[i].itemAttackSpeed;
+                    mp += items[i].itemMp;
+                }
+            }
+
         }
     }
 

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Creep
 {
     public string name;
@@ -16,6 +12,6 @@ public class Creep
     //public int x;
     //public int y;
 
-    public Avatar avatarPath; // + fbx .dae (Collada) .3ds, .dxf .obj 
-    public Animator animatorPath; // + .controller
+    public string modelPrefab; // + .fbx .dae (Collada) .3ds .dxf .obj 
+    public string projectile; // + .controller
 }

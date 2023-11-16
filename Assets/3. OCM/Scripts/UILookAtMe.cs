@@ -8,10 +8,11 @@ public class UILookAtMe : MonoBehaviour
 
     private void Awake()
     {
-        camera = FindObjectOfType<Camera>();
+        camera = Camera.main;
     }
     void Update()
     {
-        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+        transform.forward = camera.transform.forward;
+        //transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
     }
 }

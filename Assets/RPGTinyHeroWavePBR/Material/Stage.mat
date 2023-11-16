@@ -30,7 +30,11 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
+<<<<<<< HEAD
   m_CustomRenderQueue: -1
+=======
+  m_CustomRenderQueue: 2000
+>>>>>>> 4d98bb6c22026270ea83918fbeae5da5caf0b013
   stringTagMap:
     RenderType: Opaque
   disabledShaderPasses: []
@@ -97,9 +101,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
+<<<<<<< HEAD
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+=======
+    - _Blend: 0
+>>>>>>> 4d98bb6c22026270ea83918fbeae5da5caf0b013
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -108,7 +116,10 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+<<<<<<< HEAD
     - _DstBlendAlpha: 0
+=======
+>>>>>>> 4d98bb6c22026270ea83918fbeae5da5caf0b013
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -123,14 +134,38 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+<<<<<<< HEAD
     - _SrcBlendAlpha: 1
+=======
+>>>>>>> 4d98bb6c22026270ea83918fbeae5da5caf0b013
     - _Surface: 0
     - _UVSec: 0
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
+<<<<<<< HEAD
     - _BaseColor: {r: 0.1614008, g: 0.1880754, b: 0.29245278, a: 1}
     - _Color: {r: 0.16140077, g: 0.18807536, b: 0.29245275, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_BuildTextureStacks: []
+=======
+    - _BaseColor: {r: 0.22284266, g: 0.49056602, b: 0.030081892, a: 1}
+    - _Color: {r: 0.22284263, g: 0.49056596, b: 0.030081894, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
+--- !u!114 &7922894299182065444
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
+>>>>>>> 4d98bb6c22026270ea83918fbeae5da5caf0b013

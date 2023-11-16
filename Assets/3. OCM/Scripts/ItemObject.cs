@@ -91,8 +91,9 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (Physics.Raycast(ray, out hitInfo))
         {
             // 조건에 맞는 오브젝트인지 확인
-            
+           
             Pieces equipableItem = hitInfo.transform.GetComponent<Pieces>();
+
             if (equipableItem != null)
             {
                 if (equipableItem.items[2].itemName != string.Empty)

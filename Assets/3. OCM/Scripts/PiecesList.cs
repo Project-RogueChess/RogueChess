@@ -16,6 +16,4 @@ public class PiecesList : MonoBehaviour
     //public GameObject[] gold3Pieces = new GameObject[5];
     //public GameObject[] gold4Pieces = new GameObject[5];
     //public GameObject[] gold5Pieces = new GameObject[5];
-    
-
 }
