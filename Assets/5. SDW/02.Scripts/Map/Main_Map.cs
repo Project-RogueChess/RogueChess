@@ -420,10 +420,10 @@ public class Main_Map : MonoBehaviour
                 default:
                     return false;
                 case Map_Node.currentNodeTypeEnum.EliteMonster:
-                    index = Random.Range(5, 12);
+                    index = Random.Range(8, 16);
                     return true;
                 case Map_Node.currentNodeTypeEnum.NormalMonster:
-                    index = Random.Range(0, 4);
+                    index = Random.Range(1, 8);
                     return true;
             }
         }

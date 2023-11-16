@@ -7,18 +7,11 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum HexaUnitMoveType
-{
-    Common,
-    Jumper
-}
-
 public class HexaUnit : MonoBehaviour
 {
     //기본 정보
     public int team;
     public int range;
-    public HexaUnitMoveType moveType;
     public HexaUnitProjectile projectilePrefab;
     public GameObject attackFX;
     public Article article;
@@ -54,6 +47,7 @@ public class HexaUnit : MonoBehaviour
     public float moveRate => article.moveSpeed;
     public float atkRate => article.attackSpeed;
     public float turnRate => moveRate * 0.4f;
+    public float currentAnimLength => article.animator != null ? article.animator.GetCurrentAnimatorClipInfo(0)[0].clip.length : 1f;
     public bool firstMove => _firstMove;
     public HexaUnit target => _target;
     public HexaUnitProjectile projectile => _projectile;
@@ -154,7 +148,13 @@ public class HexaUnit : MonoBehaviour
     void Act()
     {
         if(needUpdate)
+        {
+            //Idle 재생
+            if (article.animator != null)
+                article.animator.Play("Idle");
             return;
+        }
+            
 
         if(_hasTurn)
         {
@@ -169,6 +169,13 @@ public class HexaUnit : MonoBehaviour
         }
         if(_moveDirty)
         {
+            if (article.animator != null)
+            {
+                if (_actTimer == 0f)
+                    article.animator?.Play("Move");
+                article.animator?.SetFloat("MoveSpeed", moveRate);
+            }
+                
             var dist = Vector3.Distance(_startPos,_endPos);
             var distF = 1 / (dist / (moveRate * 2f));
             _actTimer += distF * Time.deltaTime;
@@ -184,7 +191,14 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
-            var atkF = 1 / (1 / atkRate);
+            if (article.animator != null )
+            {
+                if(_actTimer == 0f)
+                    article.animator?.Play("Attack");
+                article.animator?.SetFloat("AttackSpeed", atkRate);
+            }
+            
+            var atkF = 1 / (currentAnimLength / atkRate);
             _actTimer += atkF * Time.deltaTime;
 
             if (_startAtk)

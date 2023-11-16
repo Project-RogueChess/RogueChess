@@ -11,7 +11,5 @@ public class Article : MonoBehaviour
     public int attackRange;
     public float moveSpeed;
 
-    public Avatar avatar; // + .fbx .dae (Collada) .3ds .dxf .obj 
     public Animator animator;
-    public RuntimeAnimatorController animController; // + .controller
 }

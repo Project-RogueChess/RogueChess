@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CreepComponent : Article
 {
+    public Transform rootTransform;
+    public GameObject modelPrefab;
+    public GameObject projectile;
     public string creepName;
     public int id;
 }

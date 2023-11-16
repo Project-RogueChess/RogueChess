@@ -83,12 +83,21 @@ public class CreepSpawnManager : MonoBehaviour
         foreach(var stageData in currentStage)
         {
             var creep = InjectCreepData(GetCreep(), stageData.creepID).GetComponent<CreepComponent>();
+
+            if (creep.rootTransform.childCount > 0)
+                DestroyImmediate(creep.rootTransform.GetChild(0));
+            //¸ðµ¨ »ý¼º
+            Debug.Log(creep.modelPrefab);
+            Instantiate(creep.modelPrefab, creep.rootTransform);
+
+            creep.animator = creep.rootTransform.GetChild(0).GetComponent<Animator>();
+
             var unit = creep.GetComponent<HexaUnit>();
             unit.article = creep;
             unit.team = 1;
             unit.range = creep.attackRange;
-            if (unit.range > 0)
-                unit.projectilePrefab = ((GameObject)Resources.Load("UnitPrefab/ProjectileSample")).GetComponent<HexaUnitProjectile>();
+            if (creep.projectile != null)
+                unit.projectilePrefab = (creep.projectile).GetComponent<HexaUnitProjectile>();
             unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
             unit.transform.forward = Vector3.back;
             unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
@@ -149,13 +158,14 @@ public class CreepSpawnManager : MonoBehaviour
             creepObject.attackRange = (int)dictionaryOfCreepData[i]["attackRange"];
             creepObject.moveSpeed = (float)dictionaryOfCreepData[i]["moveSpeed"];
 
-            creepObject.avatarPath = "CreepsAvatar/" + dictionaryOfCreepData[i]["avatarPath"];
-            creepObject.animatorPath = "CreepsAvatar/" + dictionaryOfCreepData[i]["animatorPath"];
+            creepObject.modelPrefab = (string)dictionaryOfCreepData[i]["modelPrefab"];
+            creepObject.projectile = (string)dictionaryOfCreepData[i]["projectile"];
 
             creepDict.Add(creepObject.id, creepObject);
         }
     }
 
+    //"CreepPrefabs/CreepProjectiles" +
     public GameObject InjectCreepData(GameObject go, int creepId)
     {
         var creep = go.GetComponent<CreepComponent>();
@@ -169,8 +179,8 @@ public class CreepSpawnManager : MonoBehaviour
         creep.attackRange = creepClassDict[creepId].attackRange;
         creep.moveSpeed = creepClassDict[creepId].moveSpeed;
 
-        creep.avatar = (Avatar)Resources.Load(creepClassDict[creepId].avatarPath);
-        creep.animController = (RuntimeAnimatorController)Resources.Load(creepClassDict[creepId].animatorPath);
+        creep.modelPrefab = (GameObject)Resources.Load("CreepPrefabs/" + creepClassDict[creepId].modelPrefab);
+        creep.projectile = creepClassDict[creepId].projectile != null ? (GameObject)Resources.Load("CreepPrefabs/CreepProjectiles/" + creepClassDict[creepId].projectile) : null;
 
         return go;
     }
