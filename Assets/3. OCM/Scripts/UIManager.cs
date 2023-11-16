@@ -114,7 +114,13 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             mapObject.GetComponent<Main_Map>().UI_MapOnOff();
+            //if (GameManager.Instance.currentPhase == Phase.SelectMapNode)
+            //{
+            //    mapObject.GetComponent<Main_Map>().UI_MapOnOff();
+            //}
+
         }
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             InvSpawnManager.instance.AddRandomPiece(3);

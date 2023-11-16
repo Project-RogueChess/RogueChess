@@ -47,9 +47,9 @@ public class InvSpawnManager : MonoBehaviour
         for (int i = 0; i < synergySpieces.Length; i++)
         {
             synergySpieces[i] = synergyPiecesDB.pieces[i].spieces;
-            
+
         }
-        for(int i =0;i < synergyClasses.Length; i++)
+        for (int i = 0; i < synergyClasses.Length; i++)
         {
             synergyClasses[i] = synergyPiecesDB.pieces[i].classes;
         }
@@ -66,28 +66,28 @@ public class InvSpawnManager : MonoBehaviour
 
         synergysArray = new string[synergyArraySo.synergyArray.Length];
         synergysNum = new int[synergyArraySo.synergyArray.Length];
-        for (int i = 0; i< synergyArraySo.synergyArray.Length; i++)
+        for (int i = 0; i < synergyArraySo.synergyArray.Length; i++)
         {
             synergysArray[i] = synergyArraySo.synergyArray[i];
         }
-        for(int i=0;i< synergyArraySo.synergyArray.Length; i++)
+        for (int i = 0; i < synergyArraySo.synergyArray.Length; i++)
         {
             synergysNum[i] = 0;
         }
-       
+
     }
 
     public void SpawnUnit(Tile tile)
     {
-        if(TileType.Inv == tile.triggerInfo.type)
-        tile.piece = Instantiate(spawnUnit, tile.transform.position , Quaternion.identity);
+        if (TileType.Inv == tile.triggerInfo.type)
+            tile.piece = Instantiate(spawnUnit, tile.transform.position, Quaternion.identity);
 
-        
+
     }
 
     public void ResetChampions()
     {
-        
+
         for (int i = 0; i < hexaTiles.Count; i++)
         {
             if (hexaTiles[i].piece != null)
@@ -120,8 +120,8 @@ public class InvSpawnManager : MonoBehaviour
 
         foreach (var hex in hexaTiles)
         {
-            
-            if (hex.piece != null) 
+
+            if (hex.piece != null)
             {
                 var currentPiece = hex.piece.GetComponent<Pieces>();
 
@@ -142,7 +142,7 @@ public class InvSpawnManager : MonoBehaviour
                 //        synergyData.green++;
                 //        break;
                 //}
-                for (int i=0;i<synergysArray.Length;i++)
+                for (int i = 0; i < synergysArray.Length; i++)
                 {
                     if (currentPiece.spieces == synergyData.synergysArray[i])
                     {
@@ -151,7 +151,7 @@ public class InvSpawnManager : MonoBehaviour
                 }
                 idList[currentPiece.id] = true;
             }
-                
+
         }
     }
 
@@ -161,7 +161,7 @@ public class InvSpawnManager : MonoBehaviour
 
         foreach (var hex in hexaTiles)
         {
-            if(hex.piece != null && hex.piece.TryGetComponent(out Pieces current))
+            if (hex.piece != null && hex.piece.TryGetComponent(out Pieces current))
             {
                 pieces.Add(current);
             }
@@ -207,7 +207,7 @@ public class InvSpawnManager : MonoBehaviour
         //SynergyDB.Add("red", new int[] { 2,4,6});
         //SynergyDB.Add("green", new int[] { 1,3,5});
         //SynergyDB.Add("blue", new int[] { 1,2,3});
-        for(int i = 0; i < synergysArray.Length; i++)
+        for (int i = 0; i < synergysArray.Length; i++)
         {
             var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
             SynergyDB.Add(synergysArray[i], currentSO.terms);
@@ -215,7 +215,7 @@ public class InvSpawnManager : MonoBehaviour
 
 
         //SynergyData termsData = new SynergyData(-1,-1,-1);
-        int[] termsData = new int[] {-1,-1,-1 };
+        int[] termsData = new int[] { -1, -1, -1, -1 };
 
 
 
@@ -234,21 +234,25 @@ public class InvSpawnManager : MonoBehaviour
         //        }
         //    }
         //}
-        
-        
-        //foreach (var db in SynergyDB.Keys)
-        //{
-        //    for (int i = SynergyDB[db].Length - 1; i >= 0; i--)
-        //    {
-        //        Debug.Log(SynergyDB[db][i]);
-        //        Debug.Log(synergysNum[SynergyDB]);
-        //        if (SynergyDB[db][i] <= synergysNum[j])
-        //        {
-        //            termsData[j] = i;
-        //            break;
-        //        }
-        //    }
-        //}
+
+        int j = -1;
+        foreach (var db in SynergyDB.Keys)
+        {
+            j++;
+
+            Debug.Log(j);
+            for (int i = SynergyDB[db].Length - 1; i >= 0; i--)
+            {
+                Debug.Log(SynergyDB[db][i]);
+                Debug.Log(synergysNum[j]);
+                if (SynergyDB[db][i] <= synergysNum[j])
+                {
+                    termsData[j] = i;
+                    break;
+                }
+            }
+
+        }
 
 
         Debug.Log(termsData[0]);
@@ -307,7 +311,7 @@ public class InvSpawnManager : MonoBehaviour
         //warrior marksman ()()
     }
 
-    
+
     public void DeleteRandomPiece()
     {
         List<GameObject> pieces = new List<GameObject>();
@@ -332,13 +336,13 @@ public class InvSpawnManager : MonoBehaviour
             }
         }
     }
-    
+
     public void AddRandomPiece(int pieceCost)
     {
 
         Piece piece = new Piece();
 
-        
+
         switch (pieceCost)
         {
             case 1:
@@ -410,7 +414,7 @@ public struct SynergyData
     //public int red;
     //public int green;
     //public int blue;
-    public string [] synergysArray;
+    public string[] synergysArray;
 
 
 
@@ -441,7 +445,7 @@ public struct SynergyData
     //            return blue;
     //    }
     //}
-    
+
     //public void InjectValue(string text, int value)
     //{
     //    switch (text)
@@ -459,9 +463,5 @@ public struct SynergyData
     //            break;
     //    }
     //}
-
-
-
-
-    
 }
+
