@@ -254,8 +254,6 @@ public class HexaUnitManager : MonoBehaviour
     {
         if (unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
-        else
-            return;
         unitList.Add(unit);
     }
 

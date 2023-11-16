@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Tile : MonoBehaviour
 {
@@ -60,7 +61,8 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
                 TileManager.Instance.prevTile.piece = tempGO;
                 
-                if (TileManager.Instance.nextTile.tag != "Sell")
+                if (TileManager.Instance.nextTile.tag != "Sell"
+                    && TileManager.Instance.nextTile.triggerInfo.type == TileType.Hexa)
                 {
                     HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
                     unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
@@ -72,6 +74,12 @@ public class Tile : MonoBehaviour
                 {
                     HexaUnit otherUnit = TileManager.Instance.nextPiece.GetComponent<HexaUnit>();
                     otherUnit.SetTileIndex(new Vector2Int(TileManager.Instance.prevTile.triggerInfo.x, TileManager.Instance.prevTile.triggerInfo.y));
+                    if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Inv)
+                    {
+                        HexaUnitManager.instance.UnRegisterHexaUnit(otherUnit);
+                    }
+                    
+
                     TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
                 }
                 

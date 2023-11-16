@@ -170,7 +170,7 @@ public class CreepSpawnManager : MonoBehaviour
         creep.moveSpeed = creepClassDict[creepId].moveSpeed;
 
         creep.avatar = (Avatar)Resources.Load(creepClassDict[creepId].avatarPath);
-        creep.animator = (RuntimeAnimatorController)Resources.Load(creepClassDict[creepId].animatorPath);
+        creep.animController = (RuntimeAnimatorController)Resources.Load(creepClassDict[creepId].animatorPath);
 
         return go;
     }
