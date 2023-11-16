@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/1. KDJ/Sprites/frost icon 1.png.meta
-guid: 79405f92e2f3c6349b1628ff555c6112
-========
-guid: 9573056c1bd49e44ba94614fc63b6506
->>>>>>>> b378be00f0fefe3cb2eaccf416c6ae8fb40577d8:Assets/5. SDW/05.Sprite/RandomEvent/Event00/EventBackground.png.meta
+guid: d9648e23319b8cd47ba02bdaf5a2b5d5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -108,7 +104,6 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
-<<<<<<<< HEAD:Assets/1. KDJ/Sprites/frost icon 1.png.meta
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -135,8 +130,6 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
-========
->>>>>>>> b378be00f0fefe3cb2eaccf416c6ae8fb40577d8:Assets/5. SDW/05.Sprite/RandomEvent/Event00/EventBackground.png.meta
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
