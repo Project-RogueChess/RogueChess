@@ -189,7 +189,11 @@ public class HexaUnit : MonoBehaviour
             if (article.animator != null)
             {
                 if (_actTimer == 0f)
+                {
                     article.animator?.Play("Move");
+                    article.animator.Update(0f);
+                }
+                    
                 article.animator?.SetFloat("MoveSpeed", moveRate);
             }
                 
@@ -211,7 +215,11 @@ public class HexaUnit : MonoBehaviour
             if (article.animator != null )
             {
                 if(_actTimer == 0f)
+                {
                     article.animator?.Play("Attack");
+                    article.animator.Update(0f);
+                }
+                   
                 article.animator?.SetFloat("AttackSpeed", atkRate);
             }
             
