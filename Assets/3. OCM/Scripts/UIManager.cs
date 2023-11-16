@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class UIManager : MonoBehaviour
 {
@@ -114,22 +115,26 @@ public class UIManager : MonoBehaviour
         {
             mapObject.GetComponent<Main_Map>().UI_MapOnOff();
         }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            InvSpawnManager.instance.AddRandomPiece(3);
+        }
         
     }
 
     //UI 보여주는 것
     public void UIRefresh()
     {
-        levelTxt.text = "Level: " + DataManager.instance.myLevel.ToString();
-        expTxt.text = DataManager.instance.myExp.ToString() + "/" + DataManager.instance.maxExp.ToString();
-        hpTxt.text = DataManager.instance.myHp.ToString() + "/ 15";
-        piecesTxt.text = DataManager.instance.myPieces.ToString() + "/" + DataManager.instance.maxPieces.ToString();
-        goldTxt.text = "$" + DataManager.instance.myGold.ToString();
+        levelTxt.text = "Level: " + DataManager.instance.WhatMyLevel().ToString();
+        expTxt.text = DataManager.instance.WhatMyEXP().ToString() + "/" + DataManager.instance.WhatMyMAXEXP().ToString();
+        hpTxt.text = DataManager.instance.WhatMyHp().ToString() + "/ 15";
+        piecesTxt.text = DataManager.instance.WhatMyPieces().ToString() + "/" + DataManager.instance.WhatMyMAXPieces().ToString();
+        goldTxt.text = "$" + DataManager.instance.WhatMyGold().ToString();
         for (int i = 0; i< DataManager.instance.wholePercentage.Length;i++)
         {
-            percentages[i].text = DataManager.instance.wholePercentage[i].ToString();
+            percentages[i].text = DataManager.instance.wholePercentage[i].ToString() + "%";
         }
-        if(DataManager.instance.myPieces > DataManager.instance.maxPieces)
+        if(DataManager.instance.WhatMyPieces() > DataManager.instance.WhatMyMAXPieces())
         {
             piecesTxt.color = new(1, 0, 0);
         }
@@ -167,9 +172,9 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            if (DataManager.instance.myGold >= 2)
+            if (DataManager.instance.WhatMyGold() >= 2)
             {
-                DataManager.instance.myGold -= 2;
+                DataManager.instance.LostGold(2);
                 foreach (ShopManager shopManager in shopmanagers)
                 {
                     shopManager.ReRoll(DataManager.instance.reroolLock);
@@ -300,8 +305,7 @@ public class UIManager : MonoBehaviour
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
-                       inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+                    if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                     {
                         inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel1.itemsDB.items[i];
                         inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
@@ -311,14 +315,64 @@ public class UIManager : MonoBehaviour
                 }
                 for (int j = 0; j < 9; j++)
                 {
-                    if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
-                       inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+                    if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
                     {
                         inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[i];
                         inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
                         ShowAddItemNum();
                         return;
                     }
+                }
+            }
+        }
+    }
+
+    public void DeleteRandomItem()
+    {
+        List<Item> items = new List<Item>();
+        
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != string.Empty &&
+                inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != null)
+            {
+                items.Add(inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item);
+            }
+        }
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != string.Empty &&
+                inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName != null)
+            {
+                items.Add(inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item);
+            }
+        }
+        int k = Random.Range(0, items.Count);
+        Debug.Log(items.Count);
+        Debug.Log(k);
+
+        if (items.Count>=1)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item == items[k])
+                {
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = new Item();
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = true;
+                    inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemSprite = null;
+
+                    return;
+                }
+            }
+            for (int j = 0; j < 9; j++)
+            {
+                if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item == items[k])
+                {
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = new Item();
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = true;
+                    inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemSprite = null;
+
+                    return;
                 }
             }
         }

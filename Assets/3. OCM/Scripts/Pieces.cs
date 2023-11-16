@@ -144,7 +144,7 @@ public class Pieces : Article
 
     public void SellPiece()
     {
-        DataManager.instance.myGold += CalculateGold();
+        DataManager.instance.GetGold(CalculateGold());
         UIManager.instance.UIRefresh();
         GivingItemInfo();
        
