@@ -17,6 +17,7 @@ public class RdmEvt_Main : MonoBehaviour
 
     [Header("ScriptManager")]
     [SerializeField] private GameObject dataManagerObject;
+    [SerializeField] private GameObject questButton;
 
     [Header("Event_00")]
     [SerializeField] private Sprite evt01Title;
@@ -277,6 +278,8 @@ public class RdmEvt_Main : MonoBehaviour
 
     public void ExitButtonClick()
     {
+        questButton.SetActive(true);
+        questButton.GetComponent<QuestUI>().SetObject(gameObject);
         gameObject.SetActive (false);
         //창이 닫힌 뒤 아이콘 클릭하면 다시 열려야 함
     }

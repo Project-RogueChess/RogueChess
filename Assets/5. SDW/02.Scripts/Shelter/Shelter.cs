@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shelter : MonoBehaviour
 {
     //[SerializeField] private GameObject centerPos;
+    [SerializeField] private GameObject questButton;
     private void Start()
     {
         gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
@@ -12,6 +13,8 @@ public class Shelter : MonoBehaviour
     }
     public void ClickedExitButton()
     {
+        questButton.SetActive(true);
+        questButton.GetComponent<QuestUI>().SetObject(gameObject);
         gameObject.SetActive(false);
     }
 
