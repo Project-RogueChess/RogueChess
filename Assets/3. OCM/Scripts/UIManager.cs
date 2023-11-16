@@ -120,10 +120,9 @@ public class UIManager : MonoBehaviour
             //}
 
         }
-
         if (Input.GetKeyDown(KeyCode.D))
         {
-            InvSpawnManager.instance.AddRandomPiece(3);
+            AddNumItem(3);
         }
         
     }
@@ -414,4 +413,35 @@ public class UIManager : MonoBehaviour
         }
         sellTxt.enabled = false;
     }
+
+
+
+    public void AddNumItem(int itemnum)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+            {
+                inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel1.itemsDB.items[itemnum];
+                inventoryPanel1.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
+                ShowAddItemNum();
+                return;
+            }
+        }
+        for (int j = 0; j < 9; j++)
+        {
+            if (inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == string.Empty ||
+                inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item.itemName == null)
+            {
+                inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().itemGO.GetComponent<ItemObject>()._item = inventoryPanel2.itemsDB.items[itemnum];
+                inventoryPanel2.inventorySlots[j].GetComponent<InventorySlot>().isSlotEmpty = false;
+                ShowAddItemNum();
+                return;
+            }
+        }
+    }
+
+
+
 }
