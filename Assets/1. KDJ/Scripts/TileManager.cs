@@ -89,21 +89,29 @@ public class TileManager : MonoBehaviour
     {
         if (isDrag)
         {
-            if (nextTile != null && nextPiece == null
-                && nextTile.tag != "Sell" && nextTile.triggerInfo.type == TileType.Hexa)
+            if (DataManager.instance.WhatMyPieces() == DataManager.instance.WhatMyMAXPieces())
             {
-                GameObject tempGO = nextPiece;
-                prevPiece.transform.position = nextTile.transform.position;
-                nextTile.piece = prevPiece;
-                prevTile.piece = tempGO;
-                HexaUnit unit = prevPiece.GetComponent<HexaUnit>();
-                unit.SetTileIndex(new Vector2Int(nextTile.triggerInfo.x, nextTile.triggerInfo.y));
-                HexaUnitManager.instance.RegisterHexaUnit(unit);
+                prevPiece.transform.position = prevTile.transform.position;
             }
             else
             {
-                RandomSelectTile();
+                if (nextTile != null && nextPiece == null
+                && nextTile.tag != "Sell" && nextTile.triggerInfo.type == TileType.Hexa)
+                {
+                    GameObject tempGO = nextPiece;
+                    prevPiece.transform.position = nextTile.transform.position;
+                    nextTile.piece = prevPiece;
+                    prevTile.piece = tempGO;
+                    HexaUnit unit = prevPiece.GetComponent<HexaUnit>();
+                    unit.SetTileIndex(new Vector2Int(nextTile.triggerInfo.x, nextTile.triggerInfo.y));
+                    HexaUnitManager.instance.RegisterHexaUnit(unit);
+                }
+                else
+                {
+                    RandomSelectTile();
+                }
             }
+            InvSpawnManager.instance.CountArticle();
             isDrag = false;
         }
     }
@@ -113,14 +121,7 @@ public class TileManager : MonoBehaviour
         var tileIndex = new Vector2Int(Random.Range(0, 8), Random.Range(0, 4));
 
         if (HexaUnitManager.instance.unitList.Count > 32)
-            return;
-
-        if (DataManager.instance.WhatMyPieces() > DataManager.instance.WhatMyMAXPieces())
-        {
-            prevPiece.transform.position = prevTile.transform.position;
-            return;
-        }
-            
+            return;    
 
         if (HexaUnitManager.instance.collisionMap[tileIndex.y, tileIndex.x])
         {
