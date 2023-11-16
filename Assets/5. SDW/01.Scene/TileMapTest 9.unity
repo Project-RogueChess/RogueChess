@@ -1367,7 +1367,7 @@ MonoBehaviour:
   treasureSprite: {fileID: 21300000, guid: c46486a1e2648f349bb3a6d554fc8140, type: 3}
   randomEventPer: 20
   randomEventSprite: {fileID: 21300000, guid: 4800731ef4eae344c85a8e9b24fb7278, type: 3}
-  shelterPer: 200
+  shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: 72ab64089a5d479418dd109d905e40de, type: 3}
   clickedNodeSize: 20
   currentStateMarkerO: {fileID: 6701329596762664010, guid: 8688531c7fb1c4846804ec6cfa0b02b8,

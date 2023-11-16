@@ -120,44 +120,83 @@ public class RdmEvt_Main : MonoBehaviour
     #region Button Click
     public void ChoiceButtonClick1()
     {
-        float randomValue = Random.Range(0, 100);
+        float randomEventValue = Random.Range(0, 100);
 
         switch (eventStage)
         {
             case 0:
-                if (randomValue < 40)
+                if (randomEventValue < 40)
                 {
                     // get item
+                    UIManager.instance.AddRandomItem();
+                    Debug.Log("AddItem");
                 }
 
-                else if (randomValue < 80)
+                else if (randomEventValue < 80)
                 {
                     // get piece
+                    float randomValuepieces = Random.Range(0, 100);
+
+                    if (randomValuepieces < 5)
+                    {
+                        InvSpawnManager.instance.AddRandomPiece(5);
+                        Debug.Log("AddPieces5");
+                    }
+
+                    else if (randomValuepieces < 15)
+                    {
+                        InvSpawnManager.instance.AddRandomPiece(4);
+                        Debug.Log("AddPieces4");
+                    }
+
+                    else if (randomValuepieces < 35)
+                    {
+                        InvSpawnManager.instance.AddRandomPiece(3);
+                        Debug.Log("AddPieces3");
+                    }
+
+                    else if (randomValuepieces < 60)
+                    {
+                        InvSpawnManager.instance.AddRandomPiece(2);
+                        Debug.Log("AddPieces2");
+                    }
+
+                    else if (randomValuepieces <= 100)
+                    {
+                        InvSpawnManager.instance.AddRandomPiece(1);
+                        Debug.Log("AddPieces1");
+                    }
+                    
                 }
 
-                else if (randomValue <= 100)
+                else if (randomEventValue <= 100)
                 {
                     // lost hp
                     dataManagerScript.LostHp(1);
+                    Debug.Log("LostHp1");
                 }
                 break;
 
             case 1:
-                if (randomValue < 50)
+                if (randomEventValue < 50)
                 {
                     // get hp
                     dataManagerScript.GetHp(1);
+                    Debug.Log("GetHp1");
                 }
 
-                else if (randomValue <= 100)
+                else if (randomEventValue <= 100)
                 {
                     // lost hp
                     dataManagerScript.LostHp(1);
+                    Debug.Log("LostHp1");
                 }
                 break;
 
             case 2:
                 //lost piece
+                InvSpawnManager.instance.DeleteRandomPiece();
+                Debug.Log("LostPieces");
                 break;
 
             default:
@@ -177,11 +216,13 @@ public class RdmEvt_Main : MonoBehaviour
             case 1:
                 //lost hp
                 dataManagerScript.LostHp(1);
+                Debug.Log("LostHp1");
                 break;
 
             case 2:
                 //lost gold
                 dataManagerScript.LostGold(4);
+                Debug.Log("LostGold4");
                 break;
 
             default:
@@ -200,21 +241,27 @@ public class RdmEvt_Main : MonoBehaviour
                 if (randomValue < 5)
                 {
                     //lost item + gold
+                    UIManager.instance.DeleteRandomItem();
                     dataManagerScript.LostGold(5);
+                    Debug.Log("DelItem + LostGold5");
                 }
                 else if (randomValue < 15)
                 {
                     //lost item
+                    UIManager.instance.DeleteRandomItem();
+                    Debug.Log("DelItem");
                 }
                 else if (randomValue < 45)
                 {
                     //lost gold
                     dataManagerScript.LostGold(5);
+                    Debug.Log("LostGold5");
                 }
                 else if (randomValue < 80)
                 {
                     //lost hp
                     dataManagerScript.LostHp(1);
+                    Debug.Log("LostHp1");
                 }
                 else if (randomValue <= 100)
                 {

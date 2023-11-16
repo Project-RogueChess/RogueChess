@@ -4899,6 +4899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecesDB: {fileID: 0}
   piecesIdCounts: 
+  piecesGradeImg: []
 --- !u!4 &320332118
 Transform:
   m_ObjectHideFlags: 0
@@ -6910,7 +6911,6 @@ RectTransform:
   - {fileID: 428928220}
   - {fileID: 1115462598}
   - {fileID: 1197007878}
-  - {fileID: 834042539}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11879,42 +11879,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 829418456}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &834042538
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 834042539}
-  m_Layer: 5
-  m_Name: Pos_UI_Center
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &834042539
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 834042538}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 444746851}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &834168996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13150,6 +13114,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ecae550140e07741b78277dbce27e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  createpieceLocation: []
+  gold1Pieces:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &906477197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23985,10 +23956,13 @@ MonoBehaviour:
   inventoryRightBtn: {fileID: 1652925471}
   inventoryOnOffBool: 0
   inventorySwitchBool: 0
+  inventoryNumTxt: {fileID: 0}
   mapObject: {fileID: 1280159644}
   itemAddNum: 0
   itemAddNumTxt: {fileID: 1837910067}
   itemAddNumImg: {fileID: 140853435}
+  sellTxt: {fileID: 0}
+  shopManagerList: []
 --- !u!4 &1518990296
 Transform:
   m_ObjectHideFlags: 0
@@ -29373,10 +29347,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a7c529f363f0e45901d4bbee6bd78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  articleCount: 0
   spawnUnit: {fileID: 4698882718803087615, guid: 9b9053fd329297e44874939d8c8557d8,
     type: 3}
   hexaTiles: []
   invTiles: []
+  synergySpieces:
+  - 
+  - 
+  synergyClasses:
+  - 
+  - 
+  synergyPiecesDB: {fileID: 0}
+  synergySpiecesNum: 
+  synergyClassesNum: 
+  ids: 
+  idList: 
+  idsArray: 
+  synergyArraySo: {fileID: 0}
+  synergysArray: []
+  synergysNum: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
