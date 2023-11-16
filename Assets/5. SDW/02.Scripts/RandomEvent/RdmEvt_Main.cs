@@ -72,7 +72,6 @@ public class RdmEvt_Main : MonoBehaviour
 
         int randomvalue = Random.Range(0, eventCount);
         eventStage = randomvalue;
-        Debug.Log(randomvalue + " !! ");
 
         EventMachine(randomvalue);
     }
