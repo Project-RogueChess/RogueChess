@@ -12,6 +12,8 @@ using static UnityEditor.Progress;
 
 //일단 상점 구현 할 때 써야할 필요 기물 정보
 
+
+
 public class Pieces : Article
 {
     public Sprite pieceImg;
@@ -21,20 +23,6 @@ public class Pieces : Article
     public string spieces;
     public string classes;
     public int grade;
-    public int maxMp;
-    public int mp;
-
-
-    public int originMaxHp;
-    public int originHp;
-    public int originMaxMp;
-    public int originMp;
-    public int originAttackDamage;
-    public float originAttackSpeed;
-    public int originAttackRange;
-    public float originMoveSpeed;
-
-
 
     public Transform pos;
     public Item[] items;
@@ -56,23 +44,16 @@ public class Pieces : Article
         gold = piece.gold;
         name = piece.name;
         grade = piece.grade;
-        maxHp = piece.maxHp;
-        hp = piece.hp;
-        maxMp = piece.maxMp;
-        mp = piece.mp;
-        attackDamage = piece.attackDamage;
-        attackSpeed = piece.attackSpeed;
-        attackRange = piece.attackRange;
-        moveSpeed = piece.moveSpeed;
 
-        originMaxHp = maxHp;
-        originHp = hp;
-        originMaxMp = maxMp;
-        originMp = mp;
-        originAttackDamage = attackDamage;
-        originAttackSpeed = attackSpeed;
-        originAttackRange = attackRange;
-        originMoveSpeed = moveSpeed;
+        hp = piece.hp;
+        mp = piece.mp;
+        originMaxHp = piece.maxHp;
+        originMaxMp = piece.maxMp;
+      
+        originAttackDamage = piece.attackDamage;
+        originAttackSpeed = piece.attackSpeed;
+        originAttackRange = piece.attackRange;
+        originMoveSpeed = piece.moveSpeed;
 
         spieces = piece.spieces;
         classes = piece.classes;
@@ -103,11 +84,11 @@ public class Pieces : Article
             if (items[i].itemName == string.Empty || items[i].itemName == null)
             {
                 items[i] = item._item;
-                maxHp += item._item.itemHp;
-                hp += item._item.itemHp;
-                attackDamage += item._item.itemAttackDamage;
-                attackSpeed += item._item.itemAttackSpeed;
-                mp += item._item.itemMp;
+                buffData[0].maxHp += item._item.itemHp;
+                hp = Mathf.Clamp(hp + item._item.itemHp, 0, maxHp);
+                buffData[0].attackDamage += item._item.itemAttackDamage;
+                buffData[0].attackSpeed += item._item.itemAttackSpeed;
+                mp = Mathf.Clamp(mp + item._item.itemMp, 0, maxMp);
                 for (int j = 0; j < items.Length; j++)
                 {
                     if (i == j)
@@ -174,50 +155,50 @@ public class Pieces : Article
         if (grade == 2)
         {
             newsize = 1.2f;
-            maxHp = 2 * originMaxHp;
-            hp = 2 * originHp;
-            attackDamage = 2 * originAttackDamage;
-            mp += 2*originMp;
+            buffData[1].maxHp = originMaxHp;
+            hp = maxHp;
+            buffData[1].attackDamage = originAttackDamage;
+            mp = maxMp;
 
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
             this.transform.localScale = new Vector3 (newsize, newsize, newsize);
 
 
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].itemName != string.Empty || items[i].itemName != null)
-                {
-                    maxHp += items[i].itemHp;
-                    hp += items[i].itemHp;
-                    attackDamage += items[i].itemAttackDamage;
-                    attackSpeed += items[i].itemAttackSpeed;
-                    mp += items[i].itemMp;
-                }
-            }
+            //for (int i = 0; i < items.Length; i++)
+            //{
+            //    if (items[i].itemName != string.Empty || items[i].itemName != null)
+            //    {
+            //        buffData[1].maxHp += items[i].itemHp;
+            //        buffData[1].hp += items[i].itemHp;
+            //        buffData[1].attackDamage += items[i].itemAttackDamage;
+            //        buffData[1].attackSpeed += items[i].itemAttackSpeed;
+            //        buffData[1].mp += items[i].itemMp;
+            //    }
+            //}
         }
         else if (grade == 3)
         {
             newsize = 1.4f;
-            maxHp += 3 * originMaxHp;
-            hp = 3 * originHp;
-            attackDamage = 3 * originAttackDamage;
-            mp += 3 * originMp;
+            buffData[1].maxHp = 2 * originMaxHp;
+            hp = maxHp;
+            buffData[1].attackDamage = 2 * originAttackDamage;
+            mp = maxMp;
 
             canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
             this.transform.localScale = new Vector3(newsize, newsize, newsize);
 
 
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].itemName != string.Empty && items[i].itemName != null)
-                {
-                    maxHp += items[i].itemHp;
-                    hp += items[i].itemHp;
-                    attackDamage += items[i].itemAttackDamage;
-                    attackSpeed += items[i].itemAttackSpeed;
-                    mp += items[i].itemMp;
-                }
-            }
+            //for (int i = 0; i < items.Length; i++)
+            //{
+            //    if (items[i].itemName != string.Empty && items[i].itemName != null)
+            //    {
+            //        maxHp += items[i].itemHp;
+            //        hp += items[i].itemHp;
+            //        attackDamage += items[i].itemAttackDamage;
+            //        attackSpeed += items[i].itemAttackSpeed;
+            //        mp += items[i].itemMp;
+            //    }
+            //}
 
         }
     }

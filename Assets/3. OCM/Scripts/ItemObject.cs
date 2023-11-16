@@ -103,6 +103,7 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
                 else
                 {
                     equipableItem.EquipItem(this);
+                    Debug.Log($"{equipableItem.maxHp} : {equipableItem.attackDamage} : {equipableItem.attackSpeed}");
                     _item = new Item();
                 }
             }

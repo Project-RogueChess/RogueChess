@@ -157,6 +157,10 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     UIManager.instance.UIRefresh();
                     InvSpawnManager.instance.CountArticle();
                     //InvSpawnManager.instance.SearchingIdsArrayBool();
+
+                    InvSpawnManager.instance.SearchEveryTileForSynergyData();
+                    InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
+
                     break;
                 }
             }

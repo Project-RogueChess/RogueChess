@@ -151,8 +151,11 @@ public class InvSpawnManager : MonoBehaviour
                 }
                 idList[currentPiece.id] = true;
             }
-
         }
+
+
+
+
     }
 
     public void SynergyEnhance(int[] termsData)

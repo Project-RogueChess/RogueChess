@@ -101,8 +101,6 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.nextTile.piece = null;
                 InvSpawnManager.instance.CountArticle();
             }
-
-
             //InvSpawnManager.instance.SearchingIdsArrayBool();
             InvSpawnManager.instance.SearchEveryTileForSynergyData();
             InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());

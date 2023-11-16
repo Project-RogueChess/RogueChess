@@ -16,9 +16,9 @@ public class SynergySO : ScriptableObject
         {
             if(piece.spieces == spieces)
             {
-                piece.maxHp = piece.originMaxHp +injectData.maxHp  * (term + 1);
+                piece.buffData[2].maxHp = injectData.maxHp  * (term + 1);
                 piece.hp = piece.maxHp;
-                piece.attackDamage = piece.originAttackDamage + injectData.attackDamage * (term + 1);
+                piece.buffData[2].attackDamage = injectData.attackDamage * (term + 1);
             }
         }
     }
