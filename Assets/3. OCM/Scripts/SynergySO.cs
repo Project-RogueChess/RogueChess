@@ -9,6 +9,7 @@ public class SynergySO : ScriptableObject
 
     public Piece injectData;
 
+    public int[] terms;
     public void Execute(List<Pieces> pieces, int term)
     {
         foreach (Pieces piece in pieces) 

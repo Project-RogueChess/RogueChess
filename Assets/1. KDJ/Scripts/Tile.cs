@@ -85,10 +85,19 @@ public class Tile : MonoBehaviour
             UIManager.instance.CloseSellText();
 
             InvSpawnManager.instance.CountArticle();
+
+            if (DataManager.instance.WhatMyPieces()> DataManager.instance.WhatMyMAXPieces())
+            {
+                TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
+                TileManager.Instance.prevTile.piece = TileManager.Instance.nextTile.piece;
+                TileManager.Instance.nextTile.piece = null;
+                InvSpawnManager.instance.CountArticle();
+            }
+
+
             //InvSpawnManager.instance.SearchingIdsArrayBool();
             InvSpawnManager.instance.SearchEveryTileForSynergyData();
             InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
-
         }
     }
 

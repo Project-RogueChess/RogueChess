@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3037d6a3868a3b6478ca2ad59fac3364, type: 3}
-  m_Name: SE_Red
+  m_Name: red
   m_EditorClassIdentifier: 
-  spieces: 
+  spieces: red
   injectData:
     pieceImg: {fileID: 0}
     piecePrefab: {fileID: 0}
@@ -22,7 +22,7 @@ MonoBehaviour:
     spieces: 
     classes: 
     grade: 0
-    maxHp: 0
+    maxHp: 10
     hp: 0
     maxMp: 0
     mp: 0
@@ -33,3 +33,4 @@ MonoBehaviour:
     gradeImg: {fileID: 0}
     avatar: {fileID: 0}
     animator: {fileID: 0}
+  terms: 020000000400000006000000
