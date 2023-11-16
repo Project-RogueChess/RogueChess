@@ -77,6 +77,13 @@ public class RdmEvt_Main : MonoBehaviour
         EventMachine(randomvalue);
     }
 
+    public void TreasureEventStart()
+    {
+        gameObject.SetActive(true);
+        eventStage = 0;
+        EventMachine(0);
+    }
+
     private void EventMachine(int randomValue)
     {
         switch(randomValue)

@@ -515,6 +515,7 @@ public class Main_Map : MonoBehaviour
                 StoreUI.GetComponent<Store_Main>().StoreNodeStart();
                 break;
             case currentNodeTypeEnum.Treasure:
+                randomEventUI.GetComponent<RdmEvt_Main>().TreasureEventStart();
                 break;
             case currentNodeTypeEnum.None:
                 break;
