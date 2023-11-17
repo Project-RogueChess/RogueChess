@@ -244,8 +244,9 @@ public class HexaUnitManager : MonoBehaviour
     {
         if (unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
-        _teamCount[unit.team]++;
+        
         unitList.Add(unit);
+        CheckCurrentTeamCount();
     }
 
     public void UnRegisterHexaUnit(HexaUnit unit)
@@ -259,8 +260,18 @@ public class HexaUnitManager : MonoBehaviour
         if(unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
 
-        _teamCount[unit.team]--;
+        
         unitList.Remove(unit);
+        CheckCurrentTeamCount();
+    }
+
+    public void CheckCurrentTeamCount()
+    {
+        _teamCount = new int[10];
+        foreach (var u in unitList)
+        {
+            _teamCount[u.team]++;
+        }
     }
 
     public void UnRegisterAll()

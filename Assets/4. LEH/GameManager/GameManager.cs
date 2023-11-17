@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum Phase { Null, SelectMapNode, Deployment, Combat, Result, Recruitment }
+public enum Phase { None, SelectMapNode, Deployment, Combat, Result, Recruitment }
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -31,11 +31,13 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnRecruitment;
     public UnityEvent OnGameOver;
 
+    public static Phase[] phaseChain = { Phase.SelectMapNode, Phase.Deployment, Phase.Combat, Phase.Result, Phase.Recruitment };
+
     public WaitForSeconds waitThreeSec = new WaitForSeconds(3);
 
     public bool forcePause = false;
 
-    public Phase currentPhase = Phase.Null;
+    public Phase currentPhase = Phase.None;
 
     private void Awake()
     {
@@ -69,20 +71,27 @@ public class GameManager : MonoBehaviour
             CheckSkipBattle();
     }
 
-    private void OnGUI()
+    /*private void OnGUI()
     {
         GUIStyle GUIStyle = new GUIStyle(GUI.skin.label);
         GUIStyle.fontSize = 50;
         GUIStyle.normal.textColor = Color.cyan;
 
         GUI.Label(new Rect(400, 100, Screen.width * 0.5f, Screen.height * 0.25f), timeDisplay.ToString());
-    }
+    }*/
 
 
     public void RunPhase()
     {
         Resume();
         ForceChangePhaseAndInvoke(Phase.Deployment);
+    }
+
+    public void SKipToNextPhase()
+    {
+        Debug.Log(phaseChain.Length);
+        var nextPhase = phaseChain[(int)currentPhase % phaseChain.Length];
+        ForceChangePhaseAndInvoke(nextPhase);
     }
 
     public void Pause() => forcePause = true;
@@ -142,7 +151,7 @@ public class GameManager : MonoBehaviour
 
     private void ManagePhase()
     {
-        if (forcePause || currentPhase == Phase.Null || currentPhase == Phase.SelectMapNode)
+        if (forcePause || currentPhase == Phase.None || currentPhase == Phase.SelectMapNode)
             return;
 
         _time -= Time.deltaTime;
@@ -248,6 +257,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Winning(int team)
     {
+        DataManager.instance.GetGold(team == 0 ? 3 : 1);
         _playBattleEvent = true;
         var timer = 0f;
         foreach (var unit in HexaUnitManager.instance.unitList)

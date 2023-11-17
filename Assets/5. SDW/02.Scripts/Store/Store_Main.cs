@@ -45,7 +45,7 @@ public class Store_Main : MonoBehaviour
 
     public void ClickedBuyButton1()
     {
-        if (DataManager.instance.LostGold(8) == false)
+        if (DataManager.instance.TryLostGold(8) == false)
         {
             return;
         }
@@ -55,7 +55,7 @@ public class Store_Main : MonoBehaviour
     }
     public void ClickedBuyButton2()
     {
-        if (DataManager.instance.LostGold(8) == false)
+        if (DataManager.instance.TryLostGold(8) == false)
         {
             return;
         }
@@ -65,12 +65,17 @@ public class Store_Main : MonoBehaviour
     }
     public void ClickedBuyButton3()
     {
-        if (DataManager.instance.LostGold(8) == false)
+        if (DataManager.instance.TryLostGold(8) == false)
         {
             return;
         }
 
         UIManager.instance.AddNumItem(itemBuyValue[2]);
+        ExitStoreEvent();
+    }
+
+    public void StoreExitButton()
+    {
         ExitStoreEvent();
     }
     #endregion

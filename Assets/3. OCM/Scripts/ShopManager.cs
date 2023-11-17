@@ -182,6 +182,8 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
 
         currentPiece.Parse(pieceInfo);
 
+        currentPiece.GetComponent<HexaUnit>().range = currentPiece.originAttackRange;
+
         //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }

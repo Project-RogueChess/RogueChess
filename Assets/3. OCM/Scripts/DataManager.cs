@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -56,20 +58,26 @@ public class DataManager : MonoBehaviour
         UIManager.instance.UIRefresh();
     }
 
-    public bool LostGold(int lostGold)
+    public void LostGold(int lostGold)
     {
-        int falseMyGold = myGold - lostGold;
+        myGold = Math.Min(0, myGold - lostGold);
 
-        if (falseMyGold < 0)
+        UIManager.instance.UIRefresh();
+    }
+
+    public bool TryLostGold(int lostGold)
+    {
+        var current = myGold - lostGold;
+
+        if(current < 0)
         {
             return false;
         }
-
-        myGold = falseMyGold;
-
-        UIManager.instance.UIRefresh();
-
-        return true;
+        else
+        {
+            myGold = current;
+            return true;
+        }
     }
 
     public void GetGold(int gold)

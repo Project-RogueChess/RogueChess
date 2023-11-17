@@ -872,7 +872,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 52406714}
-  - component: {fileID: 52406713}
+  - component: {fileID: 52406715}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -880,28 +880,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &52406713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52406712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b6bd51a1224e5a44add94fd213645c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 0
-  myHp: 0
-  myGold: 0
-  maxPieces: 0
-  myPieces: 0
-  myLevel: 0
-  maxExp: 0
-  myExp: 0
-  wholePercentage: 00000000000000000000000000000000
-  reroolLock: 0
 --- !u!4 &52406714
 Transform:
   m_ObjectHideFlags: 0
@@ -917,6 +895,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &52406715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52406712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cae5cb2b0f2f964dbd5e98983c3982f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 15
+  myHp: 15
+  myGold: 1000
+  maxPieces: 3
+  myPieces: 0
+  myLevel: 1
+  maxExp: 4
+  myExp: 0
+  wholePercentage: 6400000000000000000000000000000000000000
+  reroolLock: 0
 --- !u!1001 &60165112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5009,7 +5009,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecesDB: {fileID: 0}
   piecesIdCounts: 
-  piecesGradeImg: []
+  piecesGradeImg:
+  - {fileID: 21300000, guid: e0e877a9ac7c67f46a6735054119b248, type: 3}
+  - {fileID: 21300000, guid: f0029cec943b7a348b105f3a8f6d4ec5, type: 3}
+  - {fileID: 21300000, guid: 277dd0fbdda37fe42a86ec2d06633376, type: 3}
 --- !u!4 &320332118
 Transform:
   m_ObjectHideFlags: 0
@@ -20066,6 +20069,8 @@ MonoBehaviour:
     type: 3}
   lineParent: {fileID: 1579593458}
   lineThickness: 10
+  startNodeSprite: {fileID: 0}
+  endNodeSprite: {fileID: 0}
   normalMonsterPer: 60
   normalMonsterSprite: {fileID: 21300000, guid: cdfaba35bca3b8241a9ca6db0d661623,
     type: 3}
@@ -20079,8 +20084,16 @@ MonoBehaviour:
   randomEventSprite: {fileID: 21300000, guid: 60a2d63dcbb846a40ab122482e16a85f, type: 3}
   shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: b5001ebca9a1d814f95c01c626630fd9, type: 3}
+  clickedNodeSize: 20
+  currentStateMarkerO: {fileID: 0}
+  currentStateMarkerX: {fileID: 0}
+  randomEventUI: {fileID: 0}
+  ShelterUI: {fileID: 0}
   currentNodeXY: {x: 0, y: 0}
   motherMapObject: {fileID: 1199019958}
+  scroll: {fileID: 0}
+  scrollRect: {fileID: 0}
+  isAccent: 0
 --- !u!114 &1280159648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27054,7 +27067,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 52406713}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: SwitchReRoolLock
         m_Mode: 1
@@ -28621,6 +28634,21 @@ MonoBehaviour:
     type: 3}
   hexaTiles: []
   invTiles: []
+  synergySpieces:
+  - 
+  - 
+  synergyClasses:
+  - 
+  - 
+  synergyPiecesDB: {fileID: 0}
+  synergySpiecesNum: 
+  synergyClassesNum: 
+  ids: 
+  idList: 
+  idsArray: 
+  synergyArraySo: {fileID: 0}
+  synergysArray: []
+  synergysNum: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31557,7 +31585,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 52406713}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: DataManager, Assembly-CSharp
         m_MethodName: GettingExp
         m_Mode: 1

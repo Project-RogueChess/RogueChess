@@ -20,7 +20,7 @@ public class Shelter : MonoBehaviour
 
     public void ClickedEnterShelter()
     {
-        if (DataManager.instance.LostGold(2) == false)
+        if (DataManager.instance.TryLostGold(2) == false)
         {
             return;
         }

@@ -155,6 +155,8 @@ public class HexaUnit : MonoBehaviour
         
         //죽는 애니메이션
         StartCoroutine(DieAction());
+        if (team == 1)
+            DataManager.instance.GetGold(UnityEngine.Random.Range(1, 4));
     }
 
     IEnumerator DieAction()
@@ -301,7 +303,8 @@ public class HexaUnit : MonoBehaviour
         _savedRot = Quaternion.identity;
         _firstMove = true;
         _startAtk = false;
-        _projectile = null;
         _forceStop = false;
+        if (_projectile != null)
+            _projectile.ForceStop();
     }
 }
