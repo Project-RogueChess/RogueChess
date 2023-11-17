@@ -99,14 +99,14 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
             {
-                num = Random.Range(0, 5);
+                num = Random.Range(0, 3);
                 pieceInfos = piecesDB.gold4list;
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f,0,0.86f);
             }
             else
             {
-                num = Random.Range(0, 5);
+                num = Random.Range(0, 3);
                 pieceInfos = piecesDB.gold5list;
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f, 0.5f, 0f);
