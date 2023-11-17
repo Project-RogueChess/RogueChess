@@ -56,6 +56,20 @@ public class TilemapManager : MonoBehaviour
     private void Start()
     {
         CreateTilemaps();
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(false);
+    }
+
+    public void ShowAllTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(true);
+        inv_tilemapPivot.gameObject.SetActive(true);
+    }
+
+    public void HideAllTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(false);
     }
 
     public void initTilePosList()

@@ -97,6 +97,8 @@ public class Tile : MonoBehaviour
             if (DataManager.instance.WhatMyPieces()> DataManager.instance.WhatMyMAXPieces())
             {
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
+                HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
+                HexaUnitManager.instance.UnRegisterHexaUnit(unit);
                 TileManager.Instance.prevTile.piece = TileManager.Instance.nextTile.piece;
                 TileManager.Instance.nextTile.piece = null;
                 InvSpawnManager.instance.CountArticle();
@@ -106,7 +108,6 @@ public class Tile : MonoBehaviour
             InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
         }
     }
-
 
     public void Reset()
     {

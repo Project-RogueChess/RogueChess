@@ -121,11 +121,7 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
             if (isCanMove == true)
             {
                 Debug.Log(gameObject);
-                if (main_map.TryAccentNode(gameObject, out int stageIndex))
-                {
-                    CreepSpawnManager.instance.LoadCreepToField(stageIndex);
-                }
-                //main_map.AccentNode(gameObject);
+                main_map.AccentNode(gameObject);
             }
             else
             {

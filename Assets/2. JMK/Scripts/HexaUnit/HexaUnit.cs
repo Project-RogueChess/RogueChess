@@ -35,6 +35,7 @@ public class HexaUnit : MonoBehaviour
     private bool _firstMove = true;
     private bool _startAtk = false;
     private HexaUnitProjectile _projectile;
+    private bool _forceStop = false;
 
     //내부 타이머
     private float _actTimer = 0f;
@@ -56,6 +57,21 @@ public class HexaUnit : MonoBehaviour
     void Update()
     {
         Act();
+    }
+
+    private void OnEnable()
+    {
+        _forceStop = false;
+    }
+
+    public void ForceStop()
+    {
+        _forceStop = true;
+    }
+
+    public void DontForceStop()
+    {
+        _forceStop = false;
     }
 
     public void SetTileIndex(Vector2Int index, bool isPre = false)
@@ -134,10 +150,11 @@ public class HexaUnit : MonoBehaviour
 
         if(team == 1)
         {
-            CreepSpawnManager.instance.ReturnCreep(gameObject);
+            CreepSpawnManager.instance.ReturnCreep(GetComponent<CreepComponent>());
             return;
         }
         //죽는 애니메이션
+        ForceStop();
         gameObject.SetActive(false);
     }
 
@@ -147,10 +164,10 @@ public class HexaUnit : MonoBehaviour
     /// </summary>
     void Act()
     {
-        if(needUpdate)
+        if(needUpdate || _forceStop)
         {
             //Idle 재생
-            if (article.animator != null)
+            if (article.animator != null && !_forceStop)
                 article.animator.Play("Idle");
             return;
         }
@@ -171,9 +188,13 @@ public class HexaUnit : MonoBehaviour
         {
             if (article.animator != null)
             {
-                if (_actTimer == 0f)
-                    article.animator?.Play("Move");
-                article.animator?.SetFloat("MoveSpeed", moveRate);
+                if (Mathf.Approximately(_actTimer,0f))
+                {
+                    article.animator.Play("Move",-1,0f);
+                    article.animator.Update(0f);
+                }
+                    
+                article.animator.SetFloat("MoveSpeed", moveRate);
             }
                 
             var dist = Vector3.Distance(_startPos,_endPos);
@@ -191,11 +212,15 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
-            if (article.animator != null )
+            if (article.animator != null)
             {
-                if(_actTimer == 0f)
-                    article.animator?.Play("Attack");
-                article.animator?.SetFloat("AttackSpeed", atkRate);
+                if(Mathf.Approximately(_actTimer, 0f))
+                {
+                    article.animator.Play("Attack", -1, 0f);
+                    article.animator.Update(0f);
+                }
+                   
+                article.animator.SetFloat("AttackSpeed", atkRate);
             }
             
             var atkF = 1 / (currentAnimLength / atkRate);

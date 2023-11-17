@@ -14,7 +14,7 @@ public class CreepSpawnManager : MonoBehaviour
     public static CreepSpawnManager instance;
 
     [SerializeField] private GameObject shellOfCreep;
-    [SerializeField] private List<GameObject> creepPool;
+    [SerializeField] private List<List<GameObject>> creepPool;
     [SerializeField] private Transform creepPoolParent;
 
     [SerializeField] private int CreepPoolSize = 10;
@@ -43,35 +43,34 @@ public class CreepSpawnManager : MonoBehaviour
         creepPool = PoolingCreeps();
     }
 
-    public GameObject GetCreep()
+    public GameObject GetCreep(int id)
     {
-        if (creepPool.Count > 0)
+        if (creepPool[id].Count > 0)
         {
-            var creep = creepPool[0];
+            var creep = creepPool[id][0];
             creep.transform.parent = null;
             creep.SetActive(true);
-            creepPool.RemoveAt(0);
+            creepPool[id].RemoveAt(0);
             return creep;
         }
         else
         {
-            var newCreep = Instantiate(shellOfCreep);
+            var newCreep = CreateCreep(id);
             return newCreep;
         }
     }
 
-    public void ReturnCreep(GameObject creep)
+    public void ReturnCreep(CreepComponent creep)
     {
-        creepPool.Add(creep);
-        creep.transform.parent = creepPoolParent;
-        creep.SetActive(false);
+        creepPool[creep.id].Add(creep.gameObject);
+        creep.transform.parent = creepPoolParent.GetChild(creep.id);
+        creep.gameObject.SetActive(false);
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("!");
             LoadCreepToField(3);
         }
     }
@@ -82,22 +81,8 @@ public class CreepSpawnManager : MonoBehaviour
 
         foreach(var stageData in currentStage)
         {
-            var creep = InjectCreepData(GetCreep(), stageData.creepID).GetComponent<CreepComponent>();
+            var unit = GetCreep(stageData.creepID).GetComponent<HexaUnit>();
 
-            if (creep.rootTransform.childCount > 0)
-                DestroyImmediate(creep.rootTransform.GetChild(0));
-            //¸ðµ¨ »ý¼º
-            Debug.Log(creep.modelPrefab);
-            Instantiate(creep.modelPrefab, creep.rootTransform);
-
-            creep.animator = creep.rootTransform.GetChild(0).GetComponent<Animator>();
-
-            var unit = creep.GetComponent<HexaUnit>();
-            unit.article = creep;
-            unit.team = 1;
-            unit.range = creep.attackRange;
-            if (creep.projectile != null)
-                unit.projectilePrefab = (creep.projectile).GetComponent<HexaUnitProjectile>();
             unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
             unit.transform.forward = Vector3.back;
             unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
@@ -165,35 +150,59 @@ public class CreepSpawnManager : MonoBehaviour
         }
     }
 
-    //"CreepPrefabs/CreepProjectiles" +
-    public GameObject InjectCreepData(GameObject go, int creepId)
+    public GameObject CreateCreep(int id)
     {
-        var creep = go.GetComponent<CreepComponent>();
+        var shell = Instantiate(shellOfCreep);
 
-        creep.id = creepId;
-        creep.creepName = creepClassDict[creepId].name;
-        creep.originMaxHp = creepClassDict[creepId].maxHp;
-        creep.hp = creepClassDict[creepId].hp;
-        creep.originAttackDamage = creepClassDict[creepId].attackDamage;
-        creep.originAttackSpeed = creepClassDict[creepId].attackSpeed;
-        creep.originAttackRange = creepClassDict[creepId].attackRange;
-        creep.originMoveSpeed = creepClassDict[creepId].moveSpeed;
+        var creep = shell.GetComponent<CreepComponent>();
 
-        creep.modelPrefab = (GameObject)Resources.Load("CreepPrefabs/" + creepClassDict[creepId].modelPrefab);
-        creep.projectile = creepClassDict[creepId].projectile != null ? (GameObject)Resources.Load("CreepPrefabs/CreepProjectiles/" + creepClassDict[creepId].projectile) : null;
+        creep.id = id;
+        creep.name = creepClassDict[id].name + "(Clone)";
+        creep.creepName = creepClassDict[id].name;
+        creep.maxHp = creepClassDict[id].maxHp;
+        creep.hp = creepClassDict[id].hp;
+        creep.attackDamage = creepClassDict[id].attackDamage;
+        creep.attackRange = creepClassDict[id].attackRange;
+        creep.attackSpeed = creepClassDict[id].attackSpeed;
+        creep.moveSpeed = creepClassDict[id].moveSpeed;
 
-        return go;
+        creep.modelPrefab = (GameObject)Resources.Load("CreepPrefabs/" + creepClassDict[id].modelPrefab);
+        creep.projectile = creepClassDict[id].projectile != null ? (GameObject)Resources.Load("CreepPrefabs/CreepProjectiles/" + creepClassDict[id].projectile) : null;
+
+        var model = Instantiate(creep.modelPrefab, creep.rootTransform);
+        creep.animator = model.GetComponent<Animator>();
+
+        var unit = creep.GetComponent<HexaUnit>();
+        unit.article = creep;
+        unit.team = 1;
+        unit.range = creep.attackRange;
+        if (creep.projectile != null)
+            unit.projectilePrefab = (creep.projectile).GetComponent<HexaUnitProjectile>();
+
+        return shell;
     }
 
-    private List<GameObject> PoolingCreeps()
+    private List<List<GameObject>> PoolingCreeps()
     {
-        List<GameObject> poolOfCreeps = new List<GameObject>();
+        List<List<GameObject>> poolOfCreeps = new List<List<GameObject>>();
 
-        for (int i = 0; i < CreepPoolSize; i++)
+        foreach(var id in creepClassDict.Keys)
         {
-            GameObject realCreep = Instantiate(shellOfCreep, creepPoolParent);
-            realCreep.SetActive(false);
-            poolOfCreeps.Add(realCreep);
+            var currentCreeps = new List<GameObject>();
+            var parent = new GameObject();
+            parent.name = creepClassDict[id].name + "_Pool";
+
+            parent.transform.parent = creepPoolParent;
+
+            for(int i = 0; i < CreepPoolSize; i++)
+            {
+                var currentCreep = CreateCreep(id);
+                currentCreep.transform.parent = parent.transform;
+                currentCreep.SetActive(false);
+                currentCreeps.Add(currentCreep);
+            }
+
+            poolOfCreeps.Add(currentCreeps);
         }
 
         return poolOfCreeps;

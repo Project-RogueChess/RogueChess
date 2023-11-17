@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/3. OCM/Prefabs/Bonus.prefab.meta
 guid: b6ab04ca72a110d409f4fa024b20e3cc
+========
+guid: d82ee4a9578f67d42ba20a3442aab7a1
+>>>>>>>> Release3:Assets/4. LEH/DemoStage/Grid.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 
