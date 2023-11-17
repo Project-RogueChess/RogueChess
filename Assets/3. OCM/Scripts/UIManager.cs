@@ -66,7 +66,7 @@ public class UIManager : MonoBehaviour
         inventory2.SetActive(false);
         itemAddNumTxt.enabled = false;
         itemAddNumImg.SetActive(false);
-        shopOnOffBool = true;
+        //shopOnOffBool = true;
 
         shopManagerList = shopmanagers.Select(shopmanagers => shopmanagers.gameObject).ToArray();
         //for(int i =0; i< shopmanagers.Length; i++)
