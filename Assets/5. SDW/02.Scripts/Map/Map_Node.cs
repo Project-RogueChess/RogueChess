@@ -96,13 +96,11 @@ public class Map_Node : MonoBehaviour, IPointerClickHandler
     {
         if (prevNodeKeys.Contains(key) == false)
         {
-            Debug.Log("FALSE");
             return false;
         }
 
         else if(prevNodeKeys.Contains(key) == true)
         {
-            Debug.Log("TRUE");
             return true;
         }
 

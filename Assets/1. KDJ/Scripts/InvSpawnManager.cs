@@ -42,12 +42,12 @@ public class InvSpawnManager : MonoBehaviour
 
 
 
-    public GameObject redPieces;
-    public GameObject greePieces;
-    public GameObject bluePeices;
-    public TMP_Text redPiecesTxt;
-    public TMP_Text greenPiecesTxt;
-    public TMP_Text bluePiecesTxt;
+    //public GameObject redPieces;
+    //public GameObject greePieces;
+    //public GameObject bluePeices;
+    //public TMP_Text redPiecesTxt;
+    //public TMP_Text greenPiecesTxt;
+    //public TMP_Text bluePiecesTxt;
 
 
 
@@ -86,9 +86,9 @@ public class InvSpawnManager : MonoBehaviour
             synergysNum[i] = 0;
         }
 
-        redPieces.SetActive(false);
-        greePieces.SetActive(false);
-        bluePeices.SetActive(false);
+        //redPieces.SetActive(false);
+        //greePieces.SetActive(false);
+        //bluePeices.SetActive(false);
 
     }
 
@@ -164,7 +164,7 @@ public class InvSpawnManager : MonoBehaviour
                         synergysNum[i]++;
 
 
-                        showSynergy(currentPiece, synergysArray);
+                        //showSynergy(currentPiece, synergysArray);
                         
                         //여기서 1개라도 있으면 시너지 UI보여줘야함
                     }
@@ -197,16 +197,16 @@ public class InvSpawnManager : MonoBehaviour
 
     }
 
-    private void showSynergy(Pieces piece, string[] synergyArray )
-    {
-        for (int i =0;i<synergysArray.Length;i++)
-        {
-            if (piece.spieces == synergysArray[i])
-            {
+    //private void showSynergy(Pieces piece, string[] synergyArray )
+    //{
+    //    for (int i =0;i<synergysArray.Length;i++)
+    //    {
+    //        if (piece.spieces == synergysArray[i])
+    //        {
 
-            }
-        }
-    }
+    //        }
+    //    }
+    //}
 
     public void SynergyEnhance(int[] termsData)
     {

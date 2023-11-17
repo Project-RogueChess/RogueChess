@@ -451,11 +451,9 @@ public class Main_Map : MonoBehaviour
                 break;
             case currentNodeTypeEnum.NormalMonster:
                 CreepSpawnManager.instance.LoadCreepToField(Random.Range(1, 8));
-                GameManager.instance.RunPhase();
                 break;
             case currentNodeTypeEnum.EliteMonster:
                 CreepSpawnManager.instance.LoadCreepToField(Random.Range(8, 16));
-                GameManager.instance.RunPhase();
                 break;
             case currentNodeTypeEnum.RandomEvent:
                 randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();

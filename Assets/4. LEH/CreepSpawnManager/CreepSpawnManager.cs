@@ -159,12 +159,12 @@ public class CreepSpawnManager : MonoBehaviour
         creep.id = id;
         creep.name = creepClassDict[id].name + "(Clone)";
         creep.creepName = creepClassDict[id].name;
-        creep.maxHp = creepClassDict[id].maxHp;
+        creep.originMaxHp = creepClassDict[id].maxHp;
         creep.hp = creepClassDict[id].hp;
-        creep.attackDamage = creepClassDict[id].attackDamage;
-        creep.attackRange = creepClassDict[id].attackRange;
-        creep.attackSpeed = creepClassDict[id].attackSpeed;
-        creep.moveSpeed = creepClassDict[id].moveSpeed;
+        creep.originAttackDamage = creepClassDict[id].attackDamage;
+        creep.originAttackRange = creepClassDict[id].attackRange;
+        creep.originAttackSpeed = creepClassDict[id].attackSpeed;
+        creep.originMoveSpeed = creepClassDict[id].moveSpeed;
 
         creep.modelPrefab = (GameObject)Resources.Load("CreepPrefabs/" + creepClassDict[id].modelPrefab);
         creep.projectile = creepClassDict[id].projectile != null ? (GameObject)Resources.Load("CreepPrefabs/CreepProjectiles/" + creepClassDict[id].projectile) : null;
