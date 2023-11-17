@@ -11996,7 +11996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 15
   myHp: 15
-  myGold: 1
+  myGold: 999
   maxPieces: 3
   myPieces: 0
   myLevel: 1

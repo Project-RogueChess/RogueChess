@@ -78,36 +78,36 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
             rangeNum = Random.Range(0, 101);
             if (rangeNum <= percentages[0])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold1list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(0.62f, 0.62f, 0.62f);
             }
             else if (rangeNum <= percentages[0] + percentages[1])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold2list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = Color.green;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold3list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = Color.blue;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold4list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f,0,0.86f);
             }
             else
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold5list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f, 0.5f, 0f);
             }
