@@ -262,6 +262,13 @@ public class HexaUnitManager : MonoBehaviour
         _teamCount[unit.team]--;
         unitList.Remove(unit);
     }
+
+    public void UnRegisterAll()
+    {
+        collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
+        _teamCount = new int[10];
+        unitList.Clear();
+    }
     #endregion
 
     #region 길찾기용 함수

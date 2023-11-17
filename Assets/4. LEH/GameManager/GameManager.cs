@@ -9,6 +9,8 @@ public enum Phase { Null, SelectMapNode, Deployment, Combat, Result, Recruitment
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public ControlBlackHole blackHole;
+    public AnimationCurve inhalationMotion;
 
     private float _time = 0;
     public float timeDisplay => _time / CurrentTime(currentPhase);
@@ -18,13 +20,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float resultTIme = 99;
     [SerializeField] private float recruitTime = 99;
 
-
     public UnityEvent OnSelectMapNode;
     public UnityEvent OnDeployment;
     public UnityEvent OnCombat;
     public UnityEvent OnResult;
     public UnityEvent OnRecruitment;
     public UnityEvent OnGameOver;
+
+    public WaitForSeconds waitThreeSec = new WaitForSeconds(3);
 
     public bool forcePause = false;
 
@@ -86,12 +89,12 @@ public class GameManager : MonoBehaviour
         {
             int winFlag = -1;
             //아군 이김
-            if (HexaUnitManager.instance.teamCount[0] == 0)
+            if (HexaUnitManager.instance.teamCount[1] == 0)
             {
                 winFlag = 0;
             }
             //적군 이김
-            else if(HexaUnitManager.instance.teamCount[1] == 0)
+            else if(HexaUnitManager.instance.teamCount[0] == 0)
             {
                 winFlag = 1;
             }
@@ -102,10 +105,10 @@ public class GameManager : MonoBehaviour
 
                 switch (winFlag)
                 {
-                    case 1:
+                    case 0:
                         //아군 승리 이벤트
                         break;
-                    case 2:
+                    case 1:
                         //적군 승리 이벤트
                         break;
                 }
@@ -203,16 +206,51 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Winning(int team)
     {
-        foreach(var unit in HexaUnitManager.instance.unitList)
+        var timer = 0f;
+        foreach (var unit in HexaUnitManager.instance.unitList)
         {
             unit.ForceStop();
             unit.article.animator.Play("Victory");
         }
-
-       
-        yield return new WaitForSeconds(5);
-
         ChangePhaseAndInvoke(Phase.Result);
+        yield return waitThreeSec;
         Resume();
+
+        if(team == 0)
+        {
+
+        }
+        else
+        {
+            var unitPositions = new List<Vector3>();
+
+            foreach (var unit in HexaUnitManager.instance.unitList)
+            {
+                unitPositions.Add(unit.transform.position);
+                unit.article.animator.Play("Idle", -1, 0f);
+                unit.article.animator.Update(0f);
+            }
+
+            blackHole.StartMotion();
+            while (timer < inhalationMotion.keys[inhalationMotion.keys.Length - 1].time)
+            {
+                for (int i = 0; i < HexaUnitManager.instance.unitList.Count; i++)
+                {
+                    HexaUnitManager.instance.unitList[i].transform.position = Vector3.Lerp(unitPositions[i], blackHole.blackHole.position, inhalationMotion.Evaluate(timer));
+                }
+                timer += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+
+        foreach (var unit in HexaUnitManager.instance.unitList)
+        {
+            if (team == 1)
+                CreepSpawnManager.instance.ReturnCreep(unit.GetComponent<CreepComponent>());
+            else
+                unit.gameObject.SetActive(false);
+        }
+        HexaUnitManager.instance.UnRegisterAll();
     }
 }

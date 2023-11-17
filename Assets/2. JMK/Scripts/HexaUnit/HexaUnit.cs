@@ -188,13 +188,13 @@ public class HexaUnit : MonoBehaviour
         {
             if (article.animator != null)
             {
-                if (_actTimer == 0f)
+                if (Mathf.Approximately(_actTimer,0f))
                 {
-                    article.animator?.Play("Move",-1,0f);
+                    article.animator.Play("Move",-1,0f);
                     article.animator.Update(0f);
                 }
                     
-                article.animator?.SetFloat("MoveSpeed", moveRate);
+                article.animator.SetFloat("MoveSpeed", moveRate);
             }
                 
             var dist = Vector3.Distance(_startPos,_endPos);
@@ -212,15 +212,15 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
-            if (article.animator != null )
+            if (article.animator != null)
             {
-                if(_actTimer == 0f)
+                if(Mathf.Approximately(_actTimer, 0f))
                 {
-                    article.animator?.Play("Attack");
+                    article.animator.Play("Attack", -1, 0f);
                     article.animator.Update(0f);
                 }
                    
-                article.animator?.SetFloat("AttackSpeed", atkRate);
+                article.animator.SetFloat("AttackSpeed", atkRate);
             }
             
             var atkF = 1 / (currentAnimLength / atkRate);
