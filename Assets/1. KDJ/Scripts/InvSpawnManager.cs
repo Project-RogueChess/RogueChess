@@ -161,6 +161,7 @@ public class InvSpawnManager : MonoBehaviour
 
                         //UI키자
                         colorSynergys[i].SetActive(true);
+                        
                     }
                     
                 }
@@ -308,17 +309,22 @@ public class InvSpawnManager : MonoBehaviour
                     termsData[j] = i;
                     //해당 시너지 UI,숫자 보여줘야함
 
-
+                    
                     if (i== SynergyDB[db].Length - 1)
                     {
-                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i];
+                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i] ;
                     }
                     else
                     {
-                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i + 1];
+                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i+1];
                     }
                     
                     break;
+                }
+
+                if (i == 0) 
+                {
+                    colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i];
                 }
             }
         }
