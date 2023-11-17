@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: 5e999a92162c1c34284165fefb14eb04
 ModelImporter:
+<<<<<<< HEAD
   serializedVersion: 22200
+=======
+  serializedVersion: 19301
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
@@ -17,7 +21,10 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+<<<<<<< HEAD
     removeConstantScaleCurves: 0
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -170,35 +177,52 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+<<<<<<< HEAD
     importPhysicalCameras: 1
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+<<<<<<< HEAD
     nodeNameCollisionStrategy: 0
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+<<<<<<< HEAD
     bakeAxisConversion: 0
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+<<<<<<< HEAD
     optimizeBones: 1
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+<<<<<<< HEAD
     secondaryUVMarginMethod: 0
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
     strictVertexDataChecks: 0
+=======
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -753,9 +777,12 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
+<<<<<<< HEAD
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 1
+=======
+>>>>>>> 6292a8a5ca71f21bbb952199a4d189b774c64bdc
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Low Poly Hexagons/Assets/Models/Objects/Materials.meta
+guid: c642a5fd63e0bf0458a0617b6fef6bdb
+========
 guid: 974396725bc9b3447a1bd9720198cc31
+>>>>>>>> b378be00f0fefe3cb2eaccf416c6ae8fb40577d8:Assets/5. SDW/05.Sprite/RandomEvent/Event00.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

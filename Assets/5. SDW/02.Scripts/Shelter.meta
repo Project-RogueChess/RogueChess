@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Kevin Iglesias.meta
+guid: e01021f2382acf943b429f7d2393d59f
+========
 guid: f1347f76b7c463541b8143c9e20b616d
+>>>>>>>> b378be00f0fefe3cb2eaccf416c6ae8fb40577d8:Assets/5. SDW/02.Scripts/Shelter.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

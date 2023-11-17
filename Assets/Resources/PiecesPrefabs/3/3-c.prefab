@@ -581,14 +581,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18760c637e35b564ea398e8bae61ec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originMaxHp: 80
-  originMaxMp: 100
-  originAttackDamage: 12
-  originAttackSpeed: 1.5
-  originAttackRange: 2
-  originMoveSpeed: 1.5
+  maxHp: 80
   hp: 80
-  mp: 0
+  attackDamage: 12
+  attackSpeed: 1.5
+  attackRange: 2
+  moveSpeed: 1.5
   animator: {fileID: 0}
   pieceImg: {fileID: 21300000, guid: 826a03657a236784d990488dae189dfa, type: 3}
   name: 1-d
@@ -597,6 +595,16 @@ MonoBehaviour:
   spieces: green
   classes: marksman
   grade: 1
+  maxMp: 100
+  mp: 0
+  originMaxHp: 80
+  originHp: 80
+  originMaxMp: 100
+  originMp: 0
+  originAttackDamage: 12
+  originAttackSpeed: 1.5
+  originAttackRange: 2
+  originMoveSpeed: 1.5
   pos: {fileID: 6571917396735129629}
   items:
   - itemSprite: {fileID: 0}
@@ -802,7 +810,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 5873075346725310280}
   m_HandleRect: {fileID: 0}
