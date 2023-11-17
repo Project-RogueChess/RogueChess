@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -40,6 +41,16 @@ public class InvSpawnManager : MonoBehaviour
     public int[] synergysNum;
 
 
+
+    public GameObject redPieces;
+    public GameObject greePieces;
+    public GameObject bluePeices;
+    public TMP_Text redPiecesTxt;
+    public TMP_Text greenPiecesTxt;
+    public TMP_Text bluePiecesTxt;
+
+
+
     private void Awake()
     {
         instance = this;
@@ -74,6 +85,10 @@ public class InvSpawnManager : MonoBehaviour
         {
             synergysNum[i] = 0;
         }
+
+        redPieces.SetActive(false);
+        greePieces.SetActive(false);
+        bluePeices.SetActive(false);
 
     }
 
@@ -147,6 +162,11 @@ public class InvSpawnManager : MonoBehaviour
                     if (currentPiece.spieces == synergyData.synergysArray[i])
                     {
                         synergysNum[i]++;
+
+
+                        showSynergy(currentPiece, synergysArray);
+                        
+                        //여기서 1개라도 있으면 시너지 UI보여줘야함
                     }
                 }
                 idList[currentPiece.id] = true;
@@ -156,6 +176,36 @@ public class InvSpawnManager : MonoBehaviour
 
 
 
+        //인벤토리에 있는 애들 억지로 시너지 제거 좋은 방법은 아닌데 시간이 없어서 이렇게 함
+        List<Pieces> invpieces = new List<Pieces>();
+        foreach (var inv in invTiles)
+        {
+            if (inv.piece != null)
+            {
+                var currentPiece = inv.piece.GetComponent<Pieces>();
+                invpieces.Add(currentPiece);
+            }
+        }
+        for (int i = 0; i < synergysArray.Length; i++)
+        {
+            
+                var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
+                currentSO.Execute(invpieces, -1);
+            
+        }
+
+
+    }
+
+    private void showSynergy(Pieces piece, string[] synergyArray )
+    {
+        for (int i =0;i<synergysArray.Length;i++)
+        {
+            if (piece.spieces == synergysArray[i])
+            {
+
+            }
+        }
     }
 
     public void SynergyEnhance(int[] termsData)
@@ -167,6 +217,7 @@ public class InvSpawnManager : MonoBehaviour
             if (hex.piece != null && hex.piece.TryGetComponent(out Pieces current))
             {
                 pieces.Add(current);
+                
             }
         }
 
@@ -186,15 +237,26 @@ public class InvSpawnManager : MonoBehaviour
         //    var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/SE_Blue");
         //    currentSO.Execute(pieces, termsData.blue);
         //}
+
+
+
+
+        //-1일 때 실행을 안하는 것이 아니라 실행을 다시해서 시너지를 돌려야함
+        //for (int i = 0; i < synergysArray.Length; i++)
+        //{
+        //    if (termsData[i] != -1)
+        //    {
+        //        var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
+        //        currentSO.Execute(pieces, termsData[i]);
+        //    }
+        //}
         for (int i = 0; i < synergysArray.Length; i++)
         {
-            if (termsData[i] != -1)
-            {
-                var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
-                currentSO.Execute(pieces, termsData[i]);
-            }
+            
+            var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
+            currentSO.Execute(pieces, termsData[i]);
+            
         }
-
     }
 
     public int[] CompareSynergy()
@@ -218,7 +280,7 @@ public class InvSpawnManager : MonoBehaviour
 
 
         //SynergyData termsData = new SynergyData(-1,-1,-1);
-        int[] termsData = new int[] { -1, -1, -1, -1 };
+        int[] termsData = new int[] { -1, -1, -1};
 
 
 
@@ -257,6 +319,15 @@ public class InvSpawnManager : MonoBehaviour
 
         }
 
+        for (int i= 0;i< synergysArray.Length;i++)
+        {
+            if (termsData[i] != -1)
+            {
+                //해당 시너지 UI,숫자 보여줘야함
+            }
+        }
+        
+        
 
         Debug.Log(termsData[0]);
         Debug.Log(termsData[1]);
