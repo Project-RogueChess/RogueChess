@@ -139,23 +139,50 @@ public class HexaUnit : MonoBehaviour
 
     public void Damaged(int damage)
     {
+        if (article.hp < 0)
+            return;
+
         article.hp -= damage;
         if (article.hp < 0)
             Die();
     }
     public void Die()
     {
+        if (_forceStop)
+            return;
+        ForceStop();
         HexaUnitManager.instance.UnRegisterHexaUnit(this);
-        //부모전환 해결방법 찾기
+        
+        //죽는 애니메이션
+        StartCoroutine(DieAction());
+    }
 
-        if(team == 1)
+    IEnumerator DieAction()
+    {
+        var timer = 0f;
+        
+        if(article.animator != null)
+        {
+            article.animator.Play("Die", -1, 0f);
+            article.animator.Update(0f);
+        }
+
+        Debug.Log(currentAnimLength);
+
+        while (timer < currentAnimLength)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (team == 1)
         {
             CreepSpawnManager.instance.ReturnCreep(GetComponent<CreepComponent>());
-            return;
         }
-        //죽는 애니메이션
-        ForceStop();
-        gameObject.SetActive(false);
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -264,5 +291,17 @@ public class HexaUnit : MonoBehaviour
             }
             return;
         }
+    }
+
+    public void ResetSavedValue()
+    {
+        _startPos = Vector3.zero;
+        _endPos = Vector3.zero;
+        _savedDirIndex = new Vector2Int(0,0);
+        _savedRot = Quaternion.identity;
+        _firstMove = true;
+        _startAtk = false;
+        _projectile = null;
+        _forceStop = false;
     }
 }

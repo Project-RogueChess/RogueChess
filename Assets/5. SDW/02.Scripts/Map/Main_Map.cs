@@ -390,10 +390,24 @@ public class Main_Map : MonoBehaviour
 
         NodeAction();
 
-        UI_MapOnOff();
-
         LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
         
+    }
+
+    public void ShowMap()
+    {
+        scrollRect.content.localScale = basicScrollRect;
+        gameObject.transform.position = basicTransform;
+        motherMapObject.SetActive(true);
+        isOnMap = true;
+    }
+
+    public void HideMap()
+    {
+        scrollRect.content.localScale = basicScrollRect;
+        gameObject.transform.position = basicTransform;
+        motherMapObject.SetActive(false);
+        isOnMap = false;
     }
 
     public void AccentNode(GameObject panelNode)
@@ -459,6 +473,7 @@ public class Main_Map : MonoBehaviour
                 break;
             case currentNodeTypeEnum.RandomEvent:
                 randomEventUI.GetComponent<RdmEvt_Main>().RandomEventStart();
+                GameManager.instance.ForceChangePhaseAndInvoke(Phase.SelectMapNode);
                 break;
             case currentNodeTypeEnum.Shelter:
                 ShelterUI.SetActive(true);

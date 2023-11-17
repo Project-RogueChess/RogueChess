@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,14 +12,17 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
+    public AnimationCurve returnMotion;
 
     private float _time = 0;
     public float timeDisplay => _time / CurrentTime(currentPhase);
 
-    [SerializeField] private float deployTime = 99;
-    [SerializeField] private float combatTime = 99;
-    [SerializeField] private float resultTIme = 99;
-    [SerializeField] private float recruitTime = 99;
+
+    [SerializeField] private bool _playBattleEvent = false;
+    [SerializeField] private float _deployTime = 99;
+    [SerializeField] private float _combatTime = 99;
+    [SerializeField] private float _resultTIme = 99;
+    [SerializeField] private float _recruitTime = 99;
 
     public UnityEvent OnSelectMapNode;
     public UnityEvent OnDeployment;
@@ -60,7 +64,9 @@ public class GameManager : MonoBehaviour
             ChangePhaseAndInvoke(Phase.SelectMapNode);
         }
         ManagePhase();
-        CheckBattleSkip();
+
+        if (currentPhase == Phase.Combat)
+            CheckSkipBattle();
     }
 
     private void OnGUI()
@@ -76,48 +82,55 @@ public class GameManager : MonoBehaviour
     public void RunPhase()
     {
         Resume();
-        ChangePhaseAndInvoke(Phase.Deployment);
+        ForceChangePhaseAndInvoke(Phase.Deployment);
     }
 
     public void Pause() => forcePause = true;
 
     public void Resume() => forcePause = false;
 
-    public void CheckBattleSkip()
+    public void CheckSkipBattle()
     {
-        if(currentPhase == Phase.Combat)
+        int winFlag = -1;
+        //아군 이김
+        if (HexaUnitManager.instance.teamCount[1] == 0)
         {
-            int winFlag = -1;
-            //아군 이김
-            if (HexaUnitManager.instance.teamCount[1] == 0)
-            {
-                winFlag = 0;
-            }
-            //적군 이김
-            else if(HexaUnitManager.instance.teamCount[0] == 0)
-            {
-                winFlag = 1;
-            }
+            winFlag = 0;
+        }
+        //적군 이김
+        else if (HexaUnitManager.instance.teamCount[0] == 0)
+        {
+            winFlag = 1;
+        }
 
-            if(winFlag != -1)
+        if(winFlag != -1)
+        {
+            CheckBattleResult(winFlag);
+        }
+    }
+
+    public void ForceEndBattle()
+    {
+        if (_playBattleEvent)
+            return;
+        var copyUnitList = HexaUnitManager.instance.unitList.ToList();
+
+        foreach (var u in copyUnitList)
+        {
+            if(u.team == 0)
             {
-                Pause();
-
-                switch (winFlag)
-                {
-                    case 0:
-                        //아군 승리 이벤트
-                        break;
-                    case 1:
-                        //적군 승리 이벤트
-                        break;
-                }
-
-                HexaUnitManager.instance.excuteUnitControll = false;
-                //코루틴(승리 모션, 인자에 승리팀 넘기기)
-                StartCoroutine(Winning(winFlag));
+                u.Die();
             }
         }
+        CheckBattleResult(1);
+    }
+
+    public void CheckBattleResult(int winFlag)
+    {
+        Pause();
+        HexaUnitManager.instance.excuteUnitControll = false;
+        //코루틴(승리 모션, 인자에 승리팀 넘기기)
+        StartCoroutine(Winning(winFlag));
     }
 
     public void GameOver()
@@ -162,17 +175,46 @@ public class GameManager : MonoBehaviour
             default:
                 return 1f;
             case Phase.Deployment:
-                return deployTime;
+                return _deployTime;
             case Phase.Combat:
-                return combatTime;
+                return _combatTime;
             case Phase.Result:
-                return resultTIme;
+                return _resultTIme;
             case Phase.Recruitment:
-                return recruitTime;
+                return _recruitTime;
         }
     }
 
-    private void ChangePhaseAndInvoke(Phase changePhase)
+    public void ForceChangePhaseAndInvoke(Phase changePhase)
+    {
+        currentPhase = changePhase;
+
+        switch (changePhase)
+        {
+            case Phase.SelectMapNode:
+                _time = 0;
+                OnSelectMapNode.Invoke();
+                break;
+            case Phase.Deployment:
+                _time = _deployTime;
+                OnDeployment.Invoke();
+                break;
+            case Phase.Combat:
+                _time = _combatTime;
+                OnCombat.Invoke();
+                break;
+            case Phase.Result:
+                _time = _resultTIme;
+                OnResult.Invoke();
+                break;
+            case Phase.Recruitment:
+                _time = _recruitTime;
+                OnRecruitment.Invoke();
+                break;
+        }
+    }
+
+    public void ChangePhaseAndInvoke(Phase changePhase)
     {
         if (currentPhase == changePhase)
             return;
@@ -186,19 +228,19 @@ public class GameManager : MonoBehaviour
                 OnSelectMapNode.Invoke();
                 break;
             case Phase.Deployment:
-                _time = deployTime;
+                _time = _deployTime;
                 OnDeployment.Invoke();
                 break;
             case Phase.Combat:
-                _time = combatTime;
+                _time = _combatTime;
                 OnCombat.Invoke();
                 break;
             case Phase.Result:
-                _time = resultTIme;
+                _time = _resultTIme;
                 OnResult.Invoke();
                 break;
             case Phase.Recruitment:
-                _time = recruitTime;
+                _time = _recruitTime;
                 OnRecruitment.Invoke();
                 break;
         }
@@ -206,29 +248,32 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Winning(int team)
     {
+        _playBattleEvent = true;
         var timer = 0f;
         foreach (var unit in HexaUnitManager.instance.unitList)
         {
-            unit.ForceStop();
-            unit.article.animator.Play("Victory");
+            if (unit.article.animator != null)
+            {
+                unit.ForceStop();
+                unit.article.animator.Play("Victory");
+            }
         }
         ChangePhaseAndInvoke(Phase.Result);
         yield return waitThreeSec;
         Resume();
 
-        if(team == 0)
-        {
-
-        }
-        else
+        if(team == 1)
         {
             var unitPositions = new List<Vector3>();
 
             foreach (var unit in HexaUnitManager.instance.unitList)
             {
                 unitPositions.Add(unit.transform.position);
-                unit.article.animator.Play("Idle", -1, 0f);
-                unit.article.animator.Update(0f);
+                if (unit.article.animator != null)
+                {
+                    unit.article.animator.Play("Idle", -1, 0f);
+                    unit.article.animator.Update(0f);
+                }
             }
 
             blackHole.StartMotion();
@@ -241,16 +286,72 @@ public class GameManager : MonoBehaviour
                 timer += Time.deltaTime;
                 yield return null;
             }
-        }
 
-
-        foreach (var unit in HexaUnitManager.instance.unitList)
-        {
-            if (team == 1)
+            foreach (var unit in HexaUnitManager.instance.unitList)
+            {
                 CreepSpawnManager.instance.ReturnCreep(unit.GetComponent<CreepComponent>());
-            else
-                unit.gameObject.SetActive(false);
+            }
+
+            yield return waitThreeSec;
         }
+
+        var destinationUnitPos = new Dictionary<GameObject, Vector3>();
+        foreach (var tile in InvSpawnManager.instance.hexaTiles)
+        {
+            if (tile.piece != null)
+            {
+                tile.piece.SetActive(true);
+                destinationUnitPos.Add(tile.piece, tile.transform.position);
+                var unit = tile.piece.GetComponent<HexaUnit>();
+                if (unit.article.animator != null)
+                {
+                    unit.article.animator.Play("Idle", -1, 0f);
+                    unit.article.animator.Update(0f);
+                }
+            }
+        }
+
+        var currentUnitPos = new Dictionary<GameObject, Vector3>();
+        var currentUnitRot = new Dictionary<GameObject, Quaternion>();
+
+        foreach (var u in destinationUnitPos.Keys)
+        {
+            currentUnitPos.Add(u, u.transform.position + (team == 1 ? Vector3.down * 2f : Vector3.zero));
+            currentUnitRot.Add(u, u.transform.rotation);
+        }
+
+        timer = 0f;
+
+        while (timer < returnMotion.keys[inhalationMotion.keys.Length - 1].time)
+        {
+            foreach (var unit in destinationUnitPos.Keys)
+            {
+                unit.transform.position = Vector3.Lerp(currentUnitPos[unit], destinationUnitPos[unit], returnMotion.Evaluate(timer));
+                unit.transform.rotation = Quaternion.Slerp(currentUnitRot[unit], Quaternion.LookRotation(Vector3.forward), returnMotion.Evaluate(timer));
+            }
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
         HexaUnitManager.instance.UnRegisterAll();
+        foreach (var tile in InvSpawnManager.instance.hexaTiles)
+        {
+            if (tile.piece != null)
+            {
+                var unit = tile.piece.GetComponent<HexaUnit>();
+                unit.ResetSavedValue();
+                unit.SetTileIndex(new Vector2Int(tile.triggerInfo.x, tile.triggerInfo.y));
+
+                HexaUnitManager.instance.RegisterHexaUnit(unit);
+
+                var piece = tile.piece.GetComponent<Pieces>();
+
+                piece.hp = piece.maxHp;
+                piece.mp = piece.maxMp;
+            }
+        }
+
+        _time = _time > 0.05f ? 0.05f : _time;
+        _playBattleEvent = false;
     }
 }

@@ -72,6 +72,12 @@ public class TilemapManager : MonoBehaviour
         inv_tilemapPivot.gameObject.SetActive(false);
     }
 
+    public void HideHexaAndShowInvTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(true);
+    }
+
     public void initTilePosList()
     {
         hexa_tilePosList = new Vector3[hexa_tilemapSizeY, hexa_tilemapSizeX]; 
@@ -220,6 +226,8 @@ public class TilemapManager : MonoBehaviour
                     Destroy(g.gameObject);
             }
         }
+
+        
     }
 }
 
