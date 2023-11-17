@@ -81,8 +81,14 @@ public class CreepSpawnManager : MonoBehaviour
 
         foreach(var stageData in currentStage)
         {
-            var unit = GetCreep(stageData.creepID).GetComponent<HexaUnit>();
+            var creepGO = GetCreep(stageData.creepID);
 
+            var creepInfo = creepGO.GetComponent<CreepComponent>();
+            creepInfo.hp = creepInfo.maxHp;
+            creepInfo.mp = creepInfo.maxMp;
+
+            var unit = creepGO.GetComponent<HexaUnit>();
+            unit.ResetSavedValue();
             unit.SetTileIndex(new Vector2Int(stageData.x, stageData.y));
             unit.transform.forward = Vector3.back;
             unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];

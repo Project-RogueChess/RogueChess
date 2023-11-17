@@ -117,6 +117,8 @@ public class UpgradeArticle : MonoBehaviour
 
             article_Grade_1[2].MergePeice();
 
+            HexaUnitManager.instance.UnRegisterHexaUnit(article_Grade_1[0].GetComponent<HexaUnit>());
+            HexaUnitManager.instance.UnRegisterHexaUnit(article_Grade_1[1].GetComponent<HexaUnit>());
 
             DestroyImmediate(article_Grade_1[0].gameObject);
             DestroyImmediate(article_Grade_1[1].gameObject);
@@ -213,6 +215,8 @@ public class UpgradeArticle : MonoBehaviour
 
                 article_Grade_2[2].MergePeice();
 
+                HexaUnitManager.instance.UnRegisterHexaUnit(article_Grade_2[0].GetComponent<HexaUnit>());
+                HexaUnitManager.instance.UnRegisterHexaUnit(article_Grade_2[1].GetComponent<HexaUnit>());
 
                 DestroyImmediate(article_Grade_2[0].gameObject);
                 DestroyImmediate(article_Grade_2[1].gameObject);

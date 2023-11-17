@@ -129,7 +129,7 @@ public class Pieces : Article
         UIManager.instance.UIRefresh();
         GivingItemInfo();
        
-        Destroy(gameObject);
+        DestroyImmediate(gameObject);
     }
 
     public int CalculateGold()

@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 2738717806720423512}
   - component: {fileID: 8760162306562616561}
   - component: {fileID: 6722757189234032785}
+  - component: {fileID: 4319624114135567154}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -349,6 +350,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
+--- !u!114 &4319624114135567154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3911531644955157478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95d50a9b83e5a542ab8a2640107de60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  article: {fileID: 0}
+  hpBar: {fileID: 0}
 --- !u!1 &6040080841562191561
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +676,7 @@ Transform:
   - {fileID: 5028353237858139036}
   - {fileID: 4469658736518747522}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1477364815591122591
 MonoBehaviour:
@@ -692,12 +707,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18760c637e35b564ea398e8bae61ec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 80
+  originMaxHp: 80
+  originMaxMp: 100
+  originAttackDamage: 12
+  originAttackSpeed: 1.5
+  originAttackRange: 2
+  originMoveSpeed: 1.5
   hp: 80
-  attackDamage: 12
-  attackSpeed: 1.5
-  attackRange: 2
-  moveSpeed: 1.5
+  mp: 0
   animator: {fileID: 3159329633810854436}
   pieceImg: {fileID: 21300000, guid: 826a03657a236784d990488dae189dfa, type: 3}
   name: 1-d
@@ -706,16 +723,6 @@ MonoBehaviour:
   spieces: green
   classes: marksman
   grade: 1
-  maxMp: 100
-  mp: 0
-  originMaxHp: 80
-  originHp: 80
-  originMaxMp: 100
-  originMp: 0
-  originAttackDamage: 12
-  originAttackSpeed: 1.5
-  originAttackRange: 2
-  originMoveSpeed: 1.5
   pos: {fileID: 3878727513592951748}
   items:
   - itemSprite: {fileID: 0}

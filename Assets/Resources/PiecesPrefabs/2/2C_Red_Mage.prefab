@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 6753116147800533103}
   - component: {fileID: 8390228230534325743}
   - component: {fileID: 96025287928732587}
+  - component: {fileID: 4439795321982726214}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -514,6 +515,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
+--- !u!114 &4439795321982726214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6049873947581524120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee062c0ac5eaa6b4980ee24850682d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_goPrefab: {fileID: 0}
+  m_hpBarsList: []
+  t_objects: []
+  t_HpBar: {fileID: 0}
+  hpBars: {fileID: 0}
+  m_ItemsList: []
 --- !u!1 &6217417540623586734
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +680,7 @@ Transform:
   - {fileID: 4987473564740526998}
   - {fileID: 6681427028438226087}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6481857727715809452
 MonoBehaviour:
@@ -693,12 +712,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18760c637e35b564ea398e8bae61ec13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 80
+  originMaxHp: 80
+  originMaxMp: 100
+  originAttackDamage: 12
+  originAttackSpeed: 1.5
+  originAttackRange: 2
+  originMoveSpeed: 1.5
   hp: 80
-  attackDamage: 12
-  attackSpeed: 1.5
-  attackRange: 2
-  moveSpeed: 1.5
+  mp: 0
   animator: {fileID: 6382866517747552983}
   pieceImg: {fileID: 21300000, guid: 826a03657a236784d990488dae189dfa, type: 3}
   name: 1-d
@@ -707,16 +728,6 @@ MonoBehaviour:
   spieces: green
   classes: marksman
   grade: 1
-  maxMp: 100
-  mp: 0
-  originMaxHp: 80
-  originHp: 80
-  originMaxMp: 100
-  originMp: 0
-  originAttackDamage: 12
-  originAttackSpeed: 1.5
-  originAttackRange: 2
-  originMoveSpeed: 1.5
   pos: {fileID: 6753997765603521879}
   items:
   - itemSprite: {fileID: 0}

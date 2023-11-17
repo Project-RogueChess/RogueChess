@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Tile))]
 public class TilemapTriggerInfo : MonoBehaviour
 {
     public TileType type;

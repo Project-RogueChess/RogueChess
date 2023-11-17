@@ -252,7 +252,7 @@ public class HexaUnit : MonoBehaviour
                 article.animator.SetFloat("AttackSpeed", atkRate);
             }
             
-            var atkF = 1 / (currentAnimLength / atkRate);
+            var atkF = 1 / ((currentAnimLength + 0.5f) / atkRate);
             _actTimer += atkF * Time.deltaTime;
 
             if (_startAtk)
@@ -297,6 +297,10 @@ public class HexaUnit : MonoBehaviour
 
     public void ResetSavedValue()
     {
+        _atkDirty = false;
+        _moveDirty = false;
+        _hasTurn = false;
+
         _startPos = Vector3.zero;
         _endPos = Vector3.zero;
         _savedDirIndex = new Vector2Int(0,0);

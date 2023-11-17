@@ -107,7 +107,7 @@ public class InvSpawnManager : MonoBehaviour
         {
             if (hexaTiles[i].piece != null)
             {
-                hexaTiles[i].Reset();
+                hexaTiles[i].TileReset();
             }
         }
     }

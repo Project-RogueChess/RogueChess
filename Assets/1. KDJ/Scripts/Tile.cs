@@ -54,7 +54,13 @@ public class Tile : MonoBehaviour
             {
                 if (TileManager.Instance.nextTile.tag == "Sell")
                 {
+                    if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(piece.GetComponent<HexaUnit>());
                     piece.GetComponent<Pieces>().SellPiece();
+                    TileManager.Instance.prevTile.piece = null;
+                    UIManager.instance.CloseSellText();
+                    InvSpawnManager.instance.CountArticle();
+                    return;
                 }
                 GameObject tempGO = TileManager.Instance.nextPiece;
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
@@ -109,9 +115,10 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void Reset()
+    public void TileReset()
     {
-        this.piece.SetActive(true);
+        if(piece != null) 
+            piece.SetActive(true);
 
         //스텟 리셋 추가
 

@@ -108,6 +108,7 @@ public class Main_Map : MonoBehaviour
         basicTransform = gameObject.transform.position;
 
         StartCoroutine(StartMethod());
+
         
     }
     IEnumerator StartMethod()
@@ -120,6 +121,8 @@ public class Main_Map : MonoBehaviour
         DeleteNodeSystem();
 
         DisableMap();
+
+        
     }
     private void Update()
     {

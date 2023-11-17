@@ -60,7 +60,7 @@ public class DataManager : MonoBehaviour
 
     public void LostGold(int lostGold)
     {
-        myGold = Math.Min(0, myGold - lostGold);
+        myGold = Math.Max(0, myGold - lostGold);
 
         UIManager.instance.UIRefresh();
     }
