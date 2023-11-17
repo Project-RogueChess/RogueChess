@@ -53,6 +53,9 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text sellTxt;
     public GameObject[] shopManagerList;
+
+
+
     private void Awake()
     {
         instance = this;
