@@ -9082,19 +9082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitList: []
-  mainCam: {fileID: 1594907216}
   excuteUnitControll: 0
-  debugUnit01: {fileID: 8791028202132986315, guid: 755a401951582a34b9b230b1cd18b397,
-    type: 3}
-  debugUnit02: {fileID: 8791028202132986315, guid: f82a2be906e5824409631bb08756d008,
-    type: 3}
-  selectStart: 0
-  selectEnd: 0
-  selectStartIndex: {x: 0, y: 0}
-  selectEndIndex: {x: 0, y: 0}
-  loadPath: []
-  loadTiles: {fileID: 0}
-  range: 0
   axialDirVec:
   - {x: 1, y: 0}
   - {x: 1, y: -1}
@@ -15357,7 +15345,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shellOfCreep: {fileID: 8832289863418134633, guid: 1521ecfb2c2a52f4c9d9ce763cb4072a,
     type: 3}
-  creepPool: []
   creepPoolParent: {fileID: 595918032}
   CreepPoolSize: 10
   CreepDB_CSV_Path: CreepDB
@@ -29363,12 +29350,6 @@ MonoBehaviour:
   synergyArraySo: {fileID: 0}
   synergysArray: []
   synergysNum: 
-  redPieces: {fileID: 0}
-  greePieces: {fileID: 0}
-  bluePeices: {fileID: 0}
-  redPiecesTxt: {fileID: 0}
-  greenPiecesTxt: {fileID: 0}
-  bluePiecesTxt: {fileID: 0}
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30772,6 +30753,9 @@ MonoBehaviour:
     type: 3}
   currentStateMarkerX: {fileID: 21300000, guid: cf337061c757d0847b776883ac79ca7a,
     type: 3}
+  randomEventUI: {fileID: 0}
+  ShelterUI: {fileID: 0}
+  StoreUI: {fileID: 0}
   currentNodeXY: {x: 0, y: 0}
   motherMapObject: {fileID: 1298926193}
   scroll: {fileID: 239978764}
