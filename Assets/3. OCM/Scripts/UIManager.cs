@@ -197,6 +197,22 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void FreeReRool()
+    {
+        if (DataManager.instance.reroolLock == true)
+        {
+            return;
+        }
+        else
+        {
+            foreach (ShopManager shopManager in shopmanagers)
+            {
+                shopManager.ReRoll(DataManager.instance.reroolLock);
+            }
+            UIRefresh();
+        }
+    }
+
     public void ImageOnOff()
     {
         if (DataManager.instance.reroolLock == true)

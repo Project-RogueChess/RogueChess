@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static Map_Node;
@@ -63,6 +64,7 @@ public class Main_Map : MonoBehaviour
     [Header("Scroll Control")]
     [SerializeField] private GameObject scroll;
     [SerializeField] ScrollRect scrollRect;
+    [SerializeField] GameObject background;
 
 
     Dictionary<Vector2Int, GameObject> childPanelDictionary = new Dictionary<Vector2Int, GameObject>();
@@ -97,6 +99,16 @@ public class Main_Map : MonoBehaviour
         }
     }
     #endregion
+
+    private void OnEnable()
+    {
+        background.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        background.SetActive(false);
+    }
 
     private void Start()
     {
@@ -395,6 +407,7 @@ public class Main_Map : MonoBehaviour
 
         LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
         
+        GameManager.instance.isNodeComplete = false;
     }
 
     public void ShowMap()
@@ -415,6 +428,12 @@ public class Main_Map : MonoBehaviour
 
     public void AccentNode(GameObject panelNode)
     {
+        if (GameManager.instance.isNodeComplete == false)
+        {
+            LogUI.instance.SettingLogText("노드가 진행중 입니다");
+            return;
+        }
+
         if (isAccent == false && prevPanel == null)
         {
             Debug.Log("isAccent F , prevPanel N");

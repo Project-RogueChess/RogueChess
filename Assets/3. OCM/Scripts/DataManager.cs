@@ -209,7 +209,7 @@ public class DataManager : MonoBehaviour
                 }
                 case 5:
                 {
-                    wholePercentage = new int[] { 45, 30, 15, 0 ,0};
+                    wholePercentage = new int[] { 40, 40, 19, 1 ,0};
                     break;
                 }
                 case 6:
