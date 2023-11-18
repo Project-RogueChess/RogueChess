@@ -89,12 +89,17 @@ public class Tile : MonoBehaviour
                 {
                     HexaUnit unit = TileManager.Instance.prevPiece.GetComponent<HexaUnit>();
                     unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
-                    HexaUnitManager.instance.RegisterHexaUnit(unit);
+                    if (!HexaUnitManager.instance.unitList.Contains(unit))
+                        HexaUnitManager.instance.RegisterHexaUnit(unit);
                 }
 
             }
             else
             {
+                if(TileManager.Instance.prevTile.triggerInfo.type == TileType.Hexa)
+                {
+                    HexaUnitManager.instance.RegisterHexaUnit(TileManager.Instance.prevPiece.GetComponent<HexaUnit>());
+                }
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.prevTile.transform.position;
                 Debug.Log("ºóÄ­¿¡ ³öµÒ");
             }

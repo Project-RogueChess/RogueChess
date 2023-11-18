@@ -131,11 +131,16 @@ public class TileManager : MonoBehaviour
                 {
                     HexaUnit unit = nextTile.piece.GetComponent<HexaUnit>();
                     unit.SetTileIndex(new Vector2Int(nextTile.triggerInfo.x, nextTile.triggerInfo.y));
-                    HexaUnitManager.instance.RegisterHexaUnit(unit);
+                    if(!HexaUnitManager.instance.unitList.Contains(unit))
+                        HexaUnitManager.instance.RegisterHexaUnit(unit);
                 }
             }
             else
             {
+                if (prevTile.triggerInfo.type == TileType.Hexa)
+                {
+                    HexaUnitManager.instance.RegisterHexaUnit(prevPiece.GetComponent<HexaUnit>());
+                }
                 prevPiece.transform.position = prevTile.transform.position;
             }
             InvSpawnManager.instance.CountArticle();
