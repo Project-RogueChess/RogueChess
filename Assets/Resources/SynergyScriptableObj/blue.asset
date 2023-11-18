@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3037d6a3868a3b6478ca2ad59fac3364, type: 3}
   m_Name: blue
   m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 8184934e44702e8429f2851b45b693c9, type: 3}
   spieces: blue
   injectData:
     pieceImg: {fileID: 0}
@@ -34,3 +35,4 @@ MonoBehaviour:
     avatar: {fileID: 0}
     animator: {fileID: 0}
   terms: 010000000200000003000000
+  injectDataStr: 

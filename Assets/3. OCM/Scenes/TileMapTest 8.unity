@@ -7825,9 +7825,9 @@ RectTransform:
   - {fileID: 1121129122}
   - {fileID: 1279503724}
   - {fileID: 65253286}
-  - {fileID: 2010815322}
   - {fileID: 260651178}
   - {fileID: 1151530561}
+  - {fileID: 2010815322}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26056,7 +26056,7 @@ MonoBehaviour:
   percentagePanel: {fileID: 1871727590}
   rerollLockButton: {fileID: 1330601054}
   rerollLockImg: {fileID: 2064013856}
-  UpRerollPanel: {fileID: 0}
+  UpRerollPanel: {fileID: 906477194}
   shopmanagers:
   - {fileID: 0}
   - {fileID: 0}
