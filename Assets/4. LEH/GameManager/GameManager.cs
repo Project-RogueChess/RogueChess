@@ -10,9 +10,12 @@ public enum Phase { None, SelectMapNode, Deployment, Combat, Result, Recruitment
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
     public AnimationCurve returnMotion;
+
+    public bool isNodeComplete = true;
 
     private float _time = 0;
     public float timeDisplay => _time / CurrentTime(currentPhase);

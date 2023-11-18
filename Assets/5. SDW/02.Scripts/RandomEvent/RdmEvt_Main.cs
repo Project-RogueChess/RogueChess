@@ -122,6 +122,7 @@ public class RdmEvt_Main : MonoBehaviour
     private void ExitChoiceMethod()
     {
         // 매니저한테 bool값(이 노드가 끝났다는) 알려주기 + 지도 노드 클릭할때 해당 bool값 검사하기
+        GameManager.instance.isNodeComplete = true;
         gameObject.SetActive(false);
     }
     #region Button Click

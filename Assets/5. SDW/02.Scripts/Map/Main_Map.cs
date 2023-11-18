@@ -395,6 +395,7 @@ public class Main_Map : MonoBehaviour
 
         LineDrawer(prevNodeKey, currentNodeXY, linePrefabRed);
         
+        GameManager.instance.isNodeComplete = false;
     }
 
     public void ShowMap()
@@ -415,6 +416,8 @@ public class Main_Map : MonoBehaviour
 
     public void AccentNode(GameObject panelNode)
     {
+        if (GameManager.instance.isNodeComplete == false) { return; }
+
         if (isAccent == false && prevPanel == null)
         {
             Debug.Log("isAccent F , prevPanel N");

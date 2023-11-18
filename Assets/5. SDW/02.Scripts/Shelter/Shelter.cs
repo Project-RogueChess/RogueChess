@@ -36,6 +36,7 @@ public class Shelter : MonoBehaviour
 
     private void ExitShelterNode()
     {
+        GameManager.instance.isNodeComplete = true;
         gameObject.SetActive(false);
         //게임 매니저한테 컴플리트
         //지도창 켜기

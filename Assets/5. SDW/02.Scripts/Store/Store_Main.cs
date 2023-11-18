@@ -82,6 +82,7 @@ public class Store_Main : MonoBehaviour
 
     private void ExitStoreEvent()
     {
+        GameManager.instance.isNodeComplete = true;
         gameObject.SetActive(false);
         //노드 종료
     }
