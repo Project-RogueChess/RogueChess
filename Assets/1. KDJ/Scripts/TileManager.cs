@@ -139,6 +139,7 @@ public class TileManager : MonoBehaviour
                 prevPiece.transform.position = prevTile.transform.position;
             }
             InvSpawnManager.instance.CountArticle();
+            UIManager.instance.CloseSellText();
             isDrag = false;
         }
     }

@@ -757,6 +757,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b6bd51a1224e5a44add94fd213645c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnChangeHP:
+    m_PersistentCalls:
+      m_Calls: []
+  OnZeroHP:
+    m_PersistentCalls:
+      m_Calls: []
   maxHp: 0
   myHp: 0
   myGold: 0
@@ -5592,20 +5598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b889c41fe8e3a40818b64834e772bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitList: []
-  mainCam: {fileID: 1594907216}
   excuteUnitControll: 0
-  debugUnit01: {fileID: 8791028202132986315, guid: 755a401951582a34b9b230b1cd18b397,
-    type: 3}
-  debugUnit02: {fileID: 8791028202132986315, guid: f82a2be906e5824409631bb08756d008,
-    type: 3}
-  selectStart: 0
-  selectEnd: 0
-  selectStartIndex: {x: 0, y: 0}
-  selectEndIndex: {x: 0, y: 0}
-  loadPath: []
-  loadTiles: {fileID: 0}
-  range: 0
+  _unitList: []
   axialDirVec:
   - {x: 1, y: 0}
   - {x: 1, y: -1}
@@ -10810,7 +10804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1199019959
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11696,6 +11690,8 @@ MonoBehaviour:
     type: 3}
   lineParent: {fileID: 1579593458}
   lineThickness: 10
+  startNodeSprite: {fileID: 0}
+  endNodeSprite: {fileID: 0}
   normalMonsterPer: 60
   normalMonsterSprite: {fileID: 21300000, guid: cdfaba35bca3b8241a9ca6db0d661623,
     type: 3}
@@ -11709,8 +11705,17 @@ MonoBehaviour:
   randomEventSprite: {fileID: 21300000, guid: 60a2d63dcbb846a40ab122482e16a85f, type: 3}
   shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: b5001ebca9a1d814f95c01c626630fd9, type: 3}
+  clickedNodeSize: 20
+  currentStateMarkerO: {fileID: 0}
+  currentStateMarkerX: {fileID: 0}
+  randomEventUI: {fileID: 0}
+  ShelterUI: {fileID: 0}
+  StoreUI: {fileID: 0}
   currentNodeXY: {x: 0, y: 0}
   motherMapObject: {fileID: 1199019958}
+  scroll: {fileID: 0}
+  scrollRect: {fileID: 0}
+  isAccent: 0
 --- !u!114 &1280159648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14063,6 +14068,7 @@ MonoBehaviour:
   itemAddNumImg: {fileID: 140853435}
   sellTxt: {fileID: 194406074}
   shopManagerList: []
+  UpRerollPanel: {fileID: 0}
 --- !u!4 &1518990296
 Transform:
   m_ObjectHideFlags: 0
@@ -18539,10 +18545,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a7c529f363f0e45901d4bbee6bd78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  articleCount: 0
   spawnUnit: {fileID: 4698882718803087615, guid: 9b9053fd329297e44874939d8c8557d8,
     type: 3}
   hexaTiles: []
   invTiles: []
+  synergySpieces:
+  - 
+  - 
+  synergyClasses:
+  - 
+  - 
+  synergyPiecesDB: {fileID: 0}
+  synergySpiecesNum: 
+  synergyClassesNum: 
+  ids: 
+  idList: 
+  idsArray: 
+  synergyArraySo: {fileID: 0}
+  synergysArray: []
+  synergysNum: 
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0
