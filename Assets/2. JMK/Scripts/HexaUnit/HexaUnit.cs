@@ -300,6 +300,7 @@ public class HexaUnit : MonoBehaviour
         _atkDirty = false;
         _moveDirty = false;
         _hasTurn = false;
+        _target = null;
 
         _startPos = Vector3.zero;
         _endPos = Vector3.zero;

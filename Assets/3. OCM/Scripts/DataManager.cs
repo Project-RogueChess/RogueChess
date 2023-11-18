@@ -4,12 +4,38 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance {  get; private set; }
 
+    public int PlayerHP
+    {
+        get
+        {
+            return myHp;
+        }
+        set
+        {
+            var lastMyHp = myHp;
+            myHp = math.clamp(value, 0, maxHp);
+
+            OnChangeHP?.Invoke(myHp - lastMyHp);
+
+            if(myHp == 0)
+            {
+                OnZeroHP?.Invoke();
+            }
+
+            if(UIManager.instance != null)
+                UIManager.instance.UIRefresh();
+        }
+    }
+
+    public UnityEvent<int> OnChangeHP;
+    public UnityEvent OnZeroHP;
 
     [SerializeField] private int maxHp = 15;
     [SerializeField] private int myHp = 15;
@@ -36,26 +62,12 @@ public class DataManager : MonoBehaviour
     #region External Call == Get,Lost
     public void LostHp(int damage)
     {
-        myHp = myHp - damage;
-
-        if (myHp < 0)
-        {
-            //플레이어 사망
-        }
-
-        UIManager.instance.UIRefresh();
+        PlayerHP -= damage;
     }
 
     public void GetHp(int recoveryHp)
     {
-        myHp = myHp + recoveryHp;
-
-        if (myHp > maxHp)
-        {
-            myHp = maxHp;
-        }
-
-        UIManager.instance.UIRefresh();
+        PlayerHP += recoveryHp;
     }
 
     public void LostGold(int lostGold)
