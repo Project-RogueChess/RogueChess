@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     public GameObject percentagePanel;
     public GameObject rerollLockButton;
     public GameObject rerollLockImg;
+    public GameObject UpRerollPanel;
     public ShopManager[] shopmanagers = new ShopManager[5];
 
     public bool shopOnOffBool;
@@ -53,6 +54,9 @@ public class UIManager : MonoBehaviour
 
     public TMP_Text sellTxt;
     public GameObject[] shopManagerList;
+
+
+    
     private void Awake()
     {
         instance = this;
@@ -170,6 +174,7 @@ public class UIManager : MonoBehaviour
         rerollButton.SetActive(showing);
         percentagePanel.SetActive(showing);
         rerollLockButton.SetActive(showing);
+        UpRerollPanel.SetActive(showing);
     }
 
     public void ReRoolForBtn()
