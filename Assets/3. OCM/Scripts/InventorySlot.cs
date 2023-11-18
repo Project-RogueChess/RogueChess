@@ -20,8 +20,6 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
         image = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
         itemObject = transform.GetChild(0).GetComponent<ItemObject>();
-
-        tooltip.gameObject.SetActive(false);
     }
 
 
@@ -30,12 +28,12 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
         image.color = Color.yellow;
         if (itemObject._item.itemName != string.Empty && itemObject._item.itemName !=null)
         {
-            tooltip.gameObject.SetActive(true);
-            tooltip.SetupItemToolTip(itemObject._item.itemSprite,itemObject._item.itemName, itemObject._item.itemHp, itemObject._item.itemAttackDamage, itemObject._item.itemAttackSpeed);
+            tooltip.gameObject.transform.position = new Vector3(1710, 810, 0);
+            tooltip.SetupItemToolTip(itemObject._item.itemSprite,itemObject._item.itemName,itemObject._item.itemHp,itemObject._item.itemAttackDamage,itemObject._item.itemAttackSpeed);
         }
         else
         {
-            tooltip.gameObject.SetActive(false);
+            tooltip.gameObject.transform.position = new Vector3(2300, 400, 0);
         }
         
     }
@@ -43,7 +41,7 @@ public class InventorySlot : MonoBehaviour , IPointerEnterHandler,IDropHandler, 
     public void OnPointerExit(PointerEventData eventData)
     {
         image.color = Color.white;
-        tooltip.gameObject.SetActive(false);
+        tooltip.gameObject.transform.position = new Vector3(2300, 400, 0);
     }
 
     public void OnDrop(PointerEventData eventData)

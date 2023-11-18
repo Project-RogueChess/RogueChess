@@ -159,6 +159,7 @@ public class InvSpawnManager : MonoBehaviour
                     {
                         synergysNum[i]++;
 
+                        Debug.Log("UI한번에 켜지나?");
                         //UI키자
                         colorSynergys[i].SetActive(true);
                         

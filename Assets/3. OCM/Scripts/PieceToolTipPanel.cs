@@ -15,6 +15,8 @@ public class PieceToolTip : MonoBehaviour
     public Image itemImg1;
     public Image itemImg2;
     public Image itemImg3;
+    
+
     public void SetupPieceToolTip(Sprite sprite,Sprite itemSprite1, Sprite itemSprite2, Sprite itemSprite3, string name, int hp, int atkdmg, float atkspd)
     {
         img.sprite = sprite;
@@ -48,11 +50,13 @@ public class PieceToolTip : MonoBehaviour
             itemSprite3 = sprite;
             itemImg3.gameObject.GetComponent<CanvasGroup>().alpha = 0;
         }
-        
-        
+      
+      
         nameTxt.text = "name: " + name;
         hpTxt.text = "hp: " + hp.ToString();
         atkdmgTxt.text = "atkdmg: " + atkdmg.ToString();
         atkspdTxt.text = "atkspd: " + atkspd.ToString();
     }
+
+    
 }

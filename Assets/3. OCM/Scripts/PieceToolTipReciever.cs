@@ -15,10 +15,11 @@ public class PieceToolTipReciever : MonoBehaviour, IPointerEnterHandler, IPointe
     void Awake()
     {
         parentParent = transform.parent.parent;
-        piece = parentParent.gameObject.GetComponent<Pieces>();
 
 
         pieceToolTip = FindObjectOfType<PieceToolTip>();
+
+        piece = parentParent.GetComponent<Pieces>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -30,7 +31,7 @@ public class PieceToolTipReciever : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        pieceToolTip.gameObject.transform.position = new Vector3(2300, 810, 0);
+        pieceToolTip.gameObject.transform.position = new Vector3(2300, 600, 0);
     }
 
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SE_", menuName = "SynergyData/SynergyEnhance")]
 public class SynergySO : ScriptableObject
 {
+    public Sprite icon;
+
     public string spieces;
 
     public Piece injectData;
