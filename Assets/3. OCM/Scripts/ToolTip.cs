@@ -18,9 +18,9 @@ public class ToolTip : MonoBehaviour
     {
         image.sprite = sprite;
         nameTxt.text =  name;
-        hpTxt.text = "hp: " + hp.ToString();
-        atkdmgTxt.text = "atkdmg: " + atkdmg.ToString();
-        atkspdTxt.text = "atkspd: " + atkspd.ToString();
+        hpTxt.text = "Hp: " + hp.ToString();
+        atkdmgTxt.text = "AtkDmg: " + atkdmg.ToString();
+        atkspdTxt.text = "AtkSpd: " + atkspd.ToString();
     }
 }
     
