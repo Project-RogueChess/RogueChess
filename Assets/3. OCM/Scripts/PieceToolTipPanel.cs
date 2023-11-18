@@ -52,7 +52,7 @@ public class PieceToolTip : MonoBehaviour
         }
       
       
-        nameTxt.text = "name: " + name;
+        nameTxt.text = name;
         hpTxt.text = "hp: " + hp.ToString();
         atkdmgTxt.text = "atkdmg: " + atkdmg.ToString();
         atkspdTxt.text = "atkspd: " + atkspd.ToString();

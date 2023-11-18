@@ -28678,6 +28678,11 @@ MonoBehaviour:
   ids: 
   idList: 
   idsArray: 
+  synergyArraySo: {fileID: 0}
+  synergysArray: []
+  synergysNum: 
+  colorSynergys: []
+  colorSynergysTxt: []
 --- !u!114 &1857887561
 MonoBehaviour:
   m_ObjectHideFlags: 0

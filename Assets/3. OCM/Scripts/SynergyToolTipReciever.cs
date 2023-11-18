@@ -64,11 +64,11 @@ public class SynergyToolTipReciever : MonoBehaviour, IPointerEnterHandler, IPoin
         }
         if (synergySO.injectData.maxHp !=0)
         {
-            SynergyToolTip.SetupSynergyToolTip(synergySO.icon,whatisme, termsNum,"maxHp",synergySO.injectData.maxHp);
+            SynergyToolTip.SetupSynergyToolTip(synergySO.icon,whatisme, termsNum,synergySO.injectDataStr,synergySO.injectData.maxHp);
         }
         else
         {
-            SynergyToolTip.SetupSynergyToolTip(synergySO.icon, whatisme, termsNum, "atkDmg", synergySO.injectData.attackDamage);
+            SynergyToolTip.SetupSynergyToolTip(synergySO.icon, whatisme, termsNum,synergySO.injectDataStr, synergySO.injectData.attackDamage);
         }
         termsNum = "";
 

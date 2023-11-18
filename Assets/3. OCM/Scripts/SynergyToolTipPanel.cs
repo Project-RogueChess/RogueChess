@@ -17,11 +17,11 @@ public class SynergyToolTipPanel : MonoBehaviour
         
     }
 
-    public void SetupSynergyToolTip(Sprite icon,string name,string des,string injectData,int injectDataNum)
+    public void SetupSynergyToolTip(Sprite icon,string name,string des,string injectDataStr,int injectDataNum)
     {
         image.sprite = icon;
         nameTxt.text = name;
         desTxt.text = $"term : {des}";
-        des2Txt.text = $"{injectData} : {injectDataNum}" ;
+        des2Txt.text = $"{injectDataStr} : {injectDataNum}" ;
     }
 }
