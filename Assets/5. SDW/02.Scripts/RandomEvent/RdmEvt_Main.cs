@@ -145,28 +145,28 @@ public class RdmEvt_Main : MonoBehaviour
                     // get piece
                     float randomValuepieces = Random.Range(0, 100);
 
-                    if (randomValuepieces < 5)
+                    if (randomValuepieces < 1)
                     {
                         InvSpawnManager.instance.AddRandomPiece(5);
                         Debug.Log("AddPieces5");
                         LogUI.instance.SettingLogText("5코스트 기물을 획득했습니다");
                     }
 
-                    else if (randomValuepieces < 15)
+                    else if (randomValuepieces < 6)
                     {
                         InvSpawnManager.instance.AddRandomPiece(4);
                         Debug.Log("AddPieces4");
                         LogUI.instance.SettingLogText("4코스트 기물을 획득했습니다");
                     }
 
-                    else if (randomValuepieces < 35)
+                    else if (randomValuepieces < 21)
                     {
                         InvSpawnManager.instance.AddRandomPiece(3);
                         Debug.Log("AddPieces3");
                         LogUI.instance.SettingLogText("3코스트 기물을 획득했습니다");
                     }
 
-                    else if (randomValuepieces < 60)
+                    else if (randomValuepieces < 41)
                     {
                         InvSpawnManager.instance.AddRandomPiece(2);
                         Debug.Log("AddPieces2");
