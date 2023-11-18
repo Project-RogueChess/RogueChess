@@ -16,11 +16,12 @@ public class PlayerDamagedImage : MonoBehaviour
     void Update()
     {
         _hurtGage = Mathf.Max(_hurtGage - Time.deltaTime * recoverSpeed, 0.0f);
-        damagedImage.color = new Color(1f,1f,1f,_hurtGage / 4);
+        damagedImage.color = new Color(1f, 1f, 1f, _hurtGage / 4);
     }
 
     public void SetHurtGage(int hurtAmount)
     {
-        _hurtGage = Mathf.Clamp(math.abs(hurtAmount), 0, 4);
+        if (hurtAmount < 0)
+            _hurtGage = Mathf.Clamp(math.abs(hurtAmount), 0, 4);
     }
 }
