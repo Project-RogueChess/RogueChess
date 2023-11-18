@@ -258,6 +258,8 @@ public class GameManager : MonoBehaviour
     IEnumerator Winning(int team)
     {
         DataManager.instance.GetGold(team == 0 ? 3 : 1);
+        if (team == 1)
+            DataManager.instance.PlayerHP -= HexaUnitManager.instance.teamCount[1];
         _playBattleEvent = true;
         var timer = 0f;
         foreach (var unit in HexaUnitManager.instance.unitList)
