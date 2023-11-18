@@ -31,11 +31,6 @@ public class SynergyToolTipReciever : MonoBehaviour, IPointerEnterHandler, IPoin
         
     }
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         SynergyToolTip.gameObject.transform.position = new Vector3(1710, 810, 0);

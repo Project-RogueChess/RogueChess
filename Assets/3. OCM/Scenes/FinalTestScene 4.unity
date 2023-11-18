@@ -14069,7 +14069,7 @@ PrefabInstance:
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3.2999878
+      value: -291.90002
       objectReference: {fileID: 0}
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}
@@ -16455,6 +16455,14 @@ MonoBehaviour:
   synergyArraySo: {fileID: 0}
   synergysArray: []
   synergysNum: 
+  colorSynergys:
+  - {fileID: 1328631436}
+  - {fileID: 2018799790}
+  - {fileID: 842390990}
+  colorSynergysTxt:
+  - {fileID: 1195612820}
+  - {fileID: 1551371281}
+  - {fileID: 1414465176}
 --- !u!114 &979590550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22064,7 +22072,7 @@ PrefabInstance:
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3.2999878
+      value: -291.90002
       objectReference: {fileID: 0}
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}
@@ -32249,7 +32257,7 @@ PrefabInstance:
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3.2999878
+      value: -291.9
       objectReference: {fileID: 0}
     - target: {fileID: 8226663827659477092, guid: b6ab04ca72a110d409f4fa024b20e3cc,
         type: 3}

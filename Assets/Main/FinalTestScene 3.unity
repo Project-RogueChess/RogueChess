@@ -3672,7 +3672,7 @@ MonoBehaviour:
   percentagePanel: {fileID: 1261147584}
   rerollLockButton: {fileID: 137066830}
   rerollLockImg: {fileID: 1641481498}
-  UpRerollPanel: {fileID: 1817553610}
+  UpRerollPanel: {fileID: 0}
   shopmanagers:
   - {fileID: 0}
   - {fileID: 0}
@@ -10856,14 +10856,14 @@ MonoBehaviour:
     type: 3}
   currentStateMarkerX: {fileID: 21300000, guid: cf337061c757d0847b776883ac79ca7a,
     type: 3}
-  randomEventUI: {fileID: 2145212595}
-  ShelterUI: {fileID: 2028194795}
-  StoreUI: {fileID: 2093988215}
+  randomEventUI: {fileID: 0}
+  ShelterUI: {fileID: 0}
+  StoreUI: {fileID: 0}
   currentNodeXY: {x: 0, y: 0}
   motherMapObject: {fileID: 433538176}
   scroll: {fileID: 1161132924}
   scrollRect: {fileID: 1588206989}
-  background: {fileID: 1011436101}
+  background: {fileID: 0}
   isAccent: 0
 --- !u!114 &652091499
 MonoBehaviour:
@@ -13117,19 +13117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnChangeHP:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1749707467}
-        m_TargetAssemblyTypeName: PlayerDamagedImage, Assembly-CSharp
-        m_MethodName: SetHurtGage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnZeroHP:
     m_PersistentCalls:
       m_Calls: []
@@ -16455,6 +16443,8 @@ MonoBehaviour:
   synergyArraySo: {fileID: 0}
   synergysArray: []
   synergysNum: 
+  colorSynergys: []
+  colorSynergysTxt: []
 --- !u!114 &979590550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17844,79 +17834,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fca82c98bf9ac48af55aea349a3f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackHole: {fileID: 939346540}
+  blackHole: {fileID: 0}
   inhalationMotion:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.86166906
-      value: 0.10359755
-      inSlope: 0.30702776
-      outSlope: 0.30702776
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.07686033
-    - serializedVersion: 3
-      time: 1.6131744
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   returnMotion:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0006653359
-      value: 0
-      inSlope: 4.1356134
-      outSlope: 4.1356134
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.019973367
-    - serializedVersion: 3
-      time: 0.32462135
-      value: 0.85905504
-      inSlope: 0.785198
-      outSlope: 0.785198
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.052304596
-    - serializedVersion: 3
-      time: 0.6840646
-      value: 1.0072254
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   isNodeComplete: 1
   _playBattleEvent: 0
-  _deployTime: 10
-  _combatTime: 20
-  _resultTIme: 5.5
-  _recruitTime: 20
+  _deployTime: 99
+  _combatTime: 99
+  _resultTIme: 99
+  _recruitTime: 99
   OnSelectMapNode:
     m_PersistentCalls:
       m_Calls:
@@ -18144,43 +18080,7 @@ MonoBehaviour:
         m_CallState: 2
   OnResult:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1603978272}
-        m_TargetAssemblyTypeName: TimeGageController, Assembly-CSharp
-        m_MethodName: HideGage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1080368692}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ForceEndBattle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2013898653}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnRecruitment:
     m_PersistentCalls:
       m_Calls:
@@ -18246,31 +18146,7 @@ MonoBehaviour:
         m_CallState: 2
   OnGameOver:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1603978272}
-        m_TargetAssemblyTypeName: TimeGageController, Assembly-CSharp
-        m_MethodName: HideGage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 652091498}
-        m_TargetAssemblyTypeName: Main_Map, Assembly-CSharp
-        m_MethodName: HideMap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   forcePause: 0
   currentPhase: 0
 --- !u!1 &1090843995
@@ -34744,24 +34620,19 @@ MonoBehaviour:
   - {fileID: 252122627}
   - {fileID: 743941197}
   - {fileID: 1224568520}
-  dataManagerObject: {fileID: 762402921}
-  questButton: {fileID: 1755968671}
+  dataManagerObject: {fileID: 0}
+  questButton: {fileID: 0}
   evt01Title: {fileID: 21300000, guid: 25fb6ec8616eaaf429f29cd282c11895, type: 3}
   evt01Image: {fileID: 21300000, guid: aa5b93f2ee348b048b7e0622b69002ec, type: 3}
   evt01Text: {fileID: 21300000, guid: d59763df93dd4ad4a97bb5dd97be9206, type: 3}
   evt01Choices:
   - {fileID: 21300000, guid: db9fcb756a75e81449630fc7c52e731f, type: 3}
   - {fileID: 21300000, guid: ceba54c3cf59fda47b14b5dd93570fc4, type: 3}
-  evt02Title: {fileID: 21300000, guid: cbff5b06c54a4a845b8e2e17b4bd7878, type: 3}
-  evt02Image: {fileID: 21300000, guid: 70a449aabd7759f47a0a7ff7d7347861, type: 3}
-  evt02Text: {fileID: 21300000, guid: 71e8243fcf60e0e4fb9e5ccba859325a, type: 3}
-  evt02Choices:
-  - {fileID: 21300000, guid: 51b4c176beae805438fe8f31d81b64ac, type: 3}
-  - {fileID: 21300000, guid: 46e66c7abbe11c64cbe82e9c3301c6f1, type: 3}
-  evt03Title: {fileID: 21300000, guid: 4579df2a82447e5498be3f7aaecd8387, type: 3}
-  evt03Image: {fileID: 21300000, guid: 2776bdeb4f64b7349892d66d11e93e2a, type: 3}
-  evt03Text: {fileID: 21300000, guid: b87575d05d02331498113997ed908502, type: 3}
-  evt03Choices:
-  - {fileID: 21300000, guid: 47de1d8406e2bb74785043163187627f, type: 3}
-  - {fileID: 21300000, guid: 9d775e2c411dc674086c65e9dd9f895e, type: 3}
-  - {fileID: 21300000, guid: 8b3414ed1c9768740b432332c9bcae10, type: 3}
+  evt02Title: {fileID: 0}
+  evt02Image: {fileID: 0}
+  evt02Text: {fileID: 0}
+  evt02Choices: []
+  evt03Title: {fileID: 0}
+  evt03Image: {fileID: 0}
+  evt03Text: {fileID: 0}
+  evt03Choices: []

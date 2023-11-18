@@ -35,4 +35,4 @@ MonoBehaviour:
     avatar: {fileID: 0}
     animator: {fileID: 0}
   terms: 010000000200000003000000
-  injectDataStr: 
+  injectDataStr: AtkDmg
