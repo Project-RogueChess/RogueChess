@@ -3394,7 +3394,7 @@ GameObject:
   - component: {fileID: 532332141809297018}
   - component: {fileID: 2770408051425867801}
   m_Layer: 0
-  m_Name: Red_Marks
+  m_Name: Clara
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

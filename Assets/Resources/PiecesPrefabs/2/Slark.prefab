@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 3837714579927887265}
   - component: {fileID: 5768720798769811042}
   m_Layer: 0
-  m_Name: Green_Spear_Warrior
+  m_Name: Slark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2134,7 +2134,7 @@ GameObject:
   - component: {fileID: 7189505489719913531}
   - component: {fileID: 576488549210793232}
   m_Layer: 0
-  m_Name: Green_OH_Warrior
+  m_Name: Eden
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

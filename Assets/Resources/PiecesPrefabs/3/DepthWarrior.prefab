@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 786793818337166818}
   - component: {fileID: 4256460853986618750}
   m_Layer: 0
-  m_Name: Blue_TH_Warrior
+  m_Name: DepthWarrior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

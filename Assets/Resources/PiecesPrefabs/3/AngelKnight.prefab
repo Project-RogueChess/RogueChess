@@ -2671,7 +2671,7 @@ GameObject:
   - component: {fileID: 1220862950052296372}
   - component: {fileID: 3193733934970543204}
   m_Layer: 0
-  m_Name: Blue_SS_Warrior
+  m_Name: AngelKnight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
