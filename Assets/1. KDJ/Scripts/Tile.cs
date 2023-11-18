@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -55,8 +56,8 @@ public class Tile : MonoBehaviour
                 if (TileManager.Instance.nextTile.tag == "Sell")
                 {
                     if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Hexa)
-                        HexaUnitManager.instance.UnRegisterHexaUnit(piece.GetComponent<HexaUnit>());
-                    piece.GetComponent<Pieces>().SellPiece();
+                        HexaUnitManager.instance.UnRegisterHexaUnit(TileManager.Instance.prevTile.piece.GetComponent<HexaUnit>());
+                    TileManager.Instance.prevTile.piece.GetComponent<Pieces>().SellPiece();
                     TileManager.Instance.prevTile.piece = null;
                     UIManager.instance.CloseSellText();
                     InvSpawnManager.instance.CountArticle();
@@ -66,7 +67,23 @@ public class Tile : MonoBehaviour
                 TileManager.Instance.prevPiece.transform.position = TileManager.Instance.nextTile.transform.position;
                 TileManager.Instance.nextTile.piece = TileManager.Instance.prevPiece;
                 TileManager.Instance.prevTile.piece = tempGO;
-                
+
+                if (tempGO != null)
+                {
+                    TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
+                    if(TileManager.Instance.nextTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(tempGO.GetComponent<HexaUnit>());
+
+                    //만약에 가는 곳이 헥사인 경우에 다시 유닛등록
+                    if(TileManager.Instance.prevTile.triggerInfo.type == TileType.Hexa)
+                    {
+                        //다시 등록
+                        var otherUnit = tempGO.GetComponent<HexaUnit>();
+                        otherUnit.SetTileIndex(new Vector2Int(TileManager.Instance.prevTile.triggerInfo.x, TileManager.Instance.prevTile.triggerInfo.y));
+                        HexaUnitManager.instance.RegisterHexaUnit(otherUnit);
+                    }
+                }
+
                 if (TileManager.Instance.nextTile.tag != "Sell"
                     && TileManager.Instance.nextTile.triggerInfo.type == TileType.Hexa)
                 {
@@ -74,21 +91,7 @@ public class Tile : MonoBehaviour
                     unit.SetTileIndex(new Vector2Int(TileManager.Instance.nextTile.triggerInfo.x, TileManager.Instance.nextTile.triggerInfo.y));
                     HexaUnitManager.instance.RegisterHexaUnit(unit);
                 }
-               
 
-                if (tempGO != null)
-                {
-                    HexaUnit otherUnit = TileManager.Instance.nextPiece.GetComponent<HexaUnit>();
-                    otherUnit.SetTileIndex(new Vector2Int(TileManager.Instance.prevTile.triggerInfo.x, TileManager.Instance.prevTile.triggerInfo.y));
-                    if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Inv)
-                    {
-                        HexaUnitManager.instance.UnRegisterHexaUnit(otherUnit);
-                    }
-                    
-
-                    TileManager.Instance.prevTile.piece.transform.position = TileManager.Instance.prevTile.transform.position;
-                }
-                
             }
             else
             {

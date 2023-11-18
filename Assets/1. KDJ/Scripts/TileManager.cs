@@ -89,56 +89,57 @@ public class TileManager : MonoBehaviour
     {
         if (isDrag)
         {
-            if (DataManager.instance.WhatMyPieces() == DataManager.instance.WhatMyMAXPieces())
+            if (nextTile != null)
             {
-                prevPiece.transform.position = prevTile.transform.position;
-            }
-            else
-            {
-                if (nextTile != null && nextPiece == null
-                && nextTile.tag != "Sell" && nextTile.triggerInfo.type == TileType.Hexa)
+                if (nextTile.piece == null && DataManager.instance.WhatMyPieces() == DataManager.instance.WhatMyMAXPieces())
                 {
-                    GameObject tempGO = nextPiece;
-                    prevPiece.transform.position = nextTile.transform.position;
-                    nextTile.piece = prevPiece;
-                    prevTile.piece = tempGO;
-                    HexaUnit unit = prevPiece.GetComponent<HexaUnit>();
+                    prevPiece.transform.position = prevTile.transform.position;
+                    return;
+                }
+                if (nextTile.tag == "Sell")
+                {
+                    if (prevTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(prevTile.piece.GetComponent<HexaUnit>());
+                    prevTile.piece.GetComponent<Pieces>().SellPiece();
+                    prevTile.piece = null;
+                    UIManager.instance.CloseSellText();
+                    InvSpawnManager.instance.CountArticle();
+                    return;
+                }
+                var tempGO = nextTile.piece;
+                prevPiece.transform.position = nextTile.transform.position;
+                nextTile.piece = prevPiece;
+                prevTile.piece = tempGO;
+
+                if (tempGO != null)
+                {
+                    prevTile.piece.transform.position = prevTile.transform.position;
+                    if (nextTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(tempGO.GetComponent<HexaUnit>());
+
+                    //만약에 가는 곳이 헥사인 경우에 다시 유닛등록
+                    if (prevTile.triggerInfo.type == TileType.Hexa)
+                    {
+                        //다시 등록
+                        var otherUnit = tempGO.GetComponent<HexaUnit>();
+                        otherUnit.SetTileIndex(new Vector2Int(prevTile.triggerInfo.x, prevTile.triggerInfo.y));
+                        HexaUnitManager.instance.RegisterHexaUnit(otherUnit);
+                    }
+                }
+
+                if (nextTile.triggerInfo.type == TileType.Hexa)
+                {
+                    HexaUnit unit = nextTile.piece.GetComponent<HexaUnit>();
                     unit.SetTileIndex(new Vector2Int(nextTile.triggerInfo.x, nextTile.triggerInfo.y));
                     HexaUnitManager.instance.RegisterHexaUnit(unit);
                 }
-                else
-                {
-                    RandomSelectTile();
-                }
+            }
+            else
+            {
+                prevPiece.transform.position = prevTile.transform.position;
             }
             InvSpawnManager.instance.CountArticle();
             isDrag = false;
-        }
-    }
-
-    void RandomSelectTile()
-    {
-        var tileIndex = new Vector2Int(Random.Range(0, 8), Random.Range(0, 4));
-
-        if (HexaUnitManager.instance.unitList.Count > 32)
-            return;    
-
-        if (HexaUnitManager.instance.collisionMap[tileIndex.y, tileIndex.x])
-        {
-            RandomSelectTile();
-            return;
-        }
-
-        foreach(var tile in InvSpawnManager.instance.hexaTiles)
-        {
-            if(tile.triggerInfo.x == tileIndex.x && tile.triggerInfo.y == tileIndex.y)
-            {
-                tile.piece = prevPiece;
-                prevPiece.transform.position = tile.transform.position;
-                HexaUnit unit = tile.piece.GetComponent<HexaUnit>();
-                unit.SetTileIndex(new Vector2Int(tileIndex.x, tileIndex.y));
-                HexaUnitManager.instance.RegisterHexaUnit(unit);
-            }
         }
     }
 }

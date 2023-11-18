@@ -15,9 +15,8 @@ public class HexaUnitManager : MonoBehaviour
 {
     public static HexaUnitManager instance;
 
-    public List<HexaUnit> unitList;
-
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
+    public List<HexaUnit> unitList => _unitList;
     public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public bool excuteUnitControll = false;
 
@@ -37,6 +36,8 @@ public class HexaUnitManager : MonoBehaviour
     private const int MAX_MAP_Y = 8;
 
     private int[] _teamCount = new int[10];
+
+    [SerializeField] private List<HexaUnit> _unitList;
 
     void Awake()
     {
@@ -61,7 +62,7 @@ public class HexaUnitManager : MonoBehaviour
 
         var updateUnitList = new List<HexaUnit>();
 
-        foreach (var u in unitList)
+        foreach (var u in _unitList)
         {
             if (u.needUpdate)
                 updateUnitList.Add(u);
@@ -101,7 +102,7 @@ public class HexaUnitManager : MonoBehaviour
             }
 
             //가까운 적 우선순위 리스트 생성
-            foreach (var other in unitList)
+            foreach (var other in _unitList)
             {
                 if (other == u || other.team == u.team)
                     continue;
@@ -245,12 +246,15 @@ public class HexaUnitManager : MonoBehaviour
         if (unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
         
-        unitList.Add(unit);
+        _unitList.Add(unit);
         CheckCurrentTeamCount();
     }
 
     public void UnRegisterHexaUnit(HexaUnit unit)
     {
+        if (!_unitList.Contains(unit))
+            return;
+
         if (unit.preIndex.x != -1)
         {
             collisionMap[unit.preIndex.y, unit.preIndex.x] = false;
@@ -259,16 +263,15 @@ public class HexaUnitManager : MonoBehaviour
 
         if(unit.tileIndex.y != -1)
             collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
-
         
-        unitList.Remove(unit);
+        _unitList.Remove(unit);
         CheckCurrentTeamCount();
     }
 
     public void CheckCurrentTeamCount()
     {
         _teamCount = new int[10];
-        foreach (var u in unitList)
+        foreach (var u in _unitList)
         {
             _teamCount[u.team]++;
         }
@@ -278,7 +281,7 @@ public class HexaUnitManager : MonoBehaviour
     {
         collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
         _teamCount = new int[10];
-        unitList.Clear();
+        _unitList.Clear();
     }
     #endregion
 
