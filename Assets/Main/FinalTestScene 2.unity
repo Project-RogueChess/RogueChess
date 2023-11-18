@@ -16667,7 +16667,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 243646128}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ReRoolForBtn
+        m_MethodName: FreeReRool
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
