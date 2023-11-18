@@ -16,6 +16,10 @@ public class LogUI : MonoBehaviour
     private Image logBackground;
     private Color logBackgroundBasicColor;
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         logText = logTextObject.GetComponent<Text>();
