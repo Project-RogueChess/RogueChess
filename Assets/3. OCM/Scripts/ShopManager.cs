@@ -43,9 +43,9 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         for (int i = 0; i < DataManager.instance.wholePercentage.Length; i++)
         {
             percentages[i] = DataManager.instance.wholePercentage[i];
-            
+
         }
-        
+
         canvasGroup = GetComponent<CanvasGroup>();
         piecesDB = FindObjectOfType<PiecesDB>();
         piecesShopImage = GetComponent<Image>();

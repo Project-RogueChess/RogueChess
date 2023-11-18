@@ -137,6 +137,7 @@ public class RdmEvt_Main : MonoBehaviour
                     // get item
                     UIManager.instance.AddRandomItem();
                     Debug.Log("AddItem");
+                    LogUI.instance.SettingLogText("아이템을 획득했습니다");
                 }
 
                 else if (randomEventValue < 80)
@@ -148,30 +149,35 @@ public class RdmEvt_Main : MonoBehaviour
                     {
                         InvSpawnManager.instance.AddRandomPiece(5);
                         Debug.Log("AddPieces5");
+                        LogUI.instance.SettingLogText("5코스트 기물을 획득했습니다");
                     }
 
                     else if (randomValuepieces < 15)
                     {
                         InvSpawnManager.instance.AddRandomPiece(4);
                         Debug.Log("AddPieces4");
+                        LogUI.instance.SettingLogText("4코스트 기물을 획득했습니다");
                     }
 
                     else if (randomValuepieces < 35)
                     {
                         InvSpawnManager.instance.AddRandomPiece(3);
                         Debug.Log("AddPieces3");
+                        LogUI.instance.SettingLogText("3코스트 기물을 획득했습니다");
                     }
 
                     else if (randomValuepieces < 60)
                     {
                         InvSpawnManager.instance.AddRandomPiece(2);
                         Debug.Log("AddPieces2");
+                        LogUI.instance.SettingLogText("2코스트 기물을 획득했습니다");
                     }
 
                     else if (randomValuepieces <= 100)
                     {
                         InvSpawnManager.instance.AddRandomPiece(1);
                         Debug.Log("AddPieces1");
+                        LogUI.instance.SettingLogText("1코스트 기물을 획득했습니다");
                     }
                     
                 }
@@ -181,6 +187,7 @@ public class RdmEvt_Main : MonoBehaviour
                     // lost hp
                     dataManagerScript.LostHp(1);
                     Debug.Log("LostHp1");
+                    LogUI.instance.SettingLogText("체력을 1만큼 잃었습니다");
                 }
                 break;
 
@@ -190,6 +197,7 @@ public class RdmEvt_Main : MonoBehaviour
                     // get hp
                     dataManagerScript.GetHp(1);
                     Debug.Log("GetHp1");
+                    LogUI.instance.SettingLogText("체력을 1만큼 회복했습니다");
                 }
 
                 else if (randomEventValue <= 100)
@@ -197,6 +205,7 @@ public class RdmEvt_Main : MonoBehaviour
                     // lost hp
                     dataManagerScript.LostHp(1);
                     Debug.Log("LostHp1");
+                    LogUI.instance.SettingLogText("체력을 1만큼 잃었습니다");
                 }
                 break;
 
@@ -204,6 +213,7 @@ public class RdmEvt_Main : MonoBehaviour
                 //lost piece
                 InvSpawnManager.instance.DeleteRandomPiece();
                 Debug.Log("LostPieces");
+                LogUI.instance.SettingLogText("해당 부하가 떠났습니다");
                 break;
 
             default:
@@ -218,18 +228,21 @@ public class RdmEvt_Main : MonoBehaviour
         {
             case 0:
                 // nothing
+                LogUI.instance.SettingLogText("그냥 지나갔습니다");
                 break;
 
             case 1:
                 //lost hp
                 dataManagerScript.LostHp(1);
                 Debug.Log("LostHp1");
+                LogUI.instance.SettingLogText("배가 고파 체력을 1만큼 잃었습니다");
                 break;
 
             case 2:
                 //lost gold
                 dataManagerScript.LostGold(4);
                 Debug.Log("LostGold4");
+                LogUI.instance.SettingLogText("부하에게 4골드를 지불했습니다");
                 break;
 
             default:
@@ -251,28 +264,33 @@ public class RdmEvt_Main : MonoBehaviour
                     UIManager.instance.DeleteRandomItem();
                     dataManagerScript.LostGold(5);
                     Debug.Log("DelItem + LostGold5");
+                    LogUI.instance.SettingLogText("부하가 아이템과 골드를 훔쳐달아났습니다");
                 }
                 else if (randomValue < 15)
                 {
                     //lost item
                     UIManager.instance.DeleteRandomItem();
                     Debug.Log("DelItem");
+                    LogUI.instance.SettingLogText("부하가 아이템을 훔쳐달아났습니다");
                 }
                 else if (randomValue < 45)
                 {
                     //lost gold
                     dataManagerScript.LostGold(5);
                     Debug.Log("LostGold5");
+                    LogUI.instance.SettingLogText("부하가 골드를 훔쳐달아났습니다");
                 }
                 else if (randomValue < 80)
                 {
                     //lost hp
                     dataManagerScript.LostHp(1);
                     Debug.Log("LostHp1");
+                    LogUI.instance.SettingLogText("부하를 제압하다가 체력을 1만큼 잃었습니다");
                 }
                 else if (randomValue <= 100)
                 {
                     //nothing
+                    LogUI.instance.SettingLogText("부하를 제압했습니다");
                 }
                 break;
 
