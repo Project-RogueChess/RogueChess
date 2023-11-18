@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
     //UI 보여주는 것
     public void UIRefresh()
     {
-        levelTxt.text = "Level: " + DataManager.instance.WhatMyLevel().ToString();
+        levelTxt.text = DataManager.instance.WhatMyLevel().ToString();
         expTxt.text = DataManager.instance.WhatMyEXP().ToString() + "/" + DataManager.instance.WhatMyMAXEXP().ToString();
         hpTxt.text = DataManager.instance.WhatMyHp().ToString() + "/ 15";
         piecesTxt.text = DataManager.instance.WhatMyPieces().ToString() + "/" + DataManager.instance.WhatMyMAXPieces().ToString();
