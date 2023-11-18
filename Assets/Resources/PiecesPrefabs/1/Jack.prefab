@@ -2283,7 +2283,7 @@ GameObject:
   - component: {fileID: 3087238071584993156}
   - component: {fileID: 4343715589868748762}
   m_Layer: 0
-  m_Name: Blue_Spear_Warrior
+  m_Name: Jack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

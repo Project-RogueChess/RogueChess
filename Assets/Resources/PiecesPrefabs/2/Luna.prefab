@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1363927967082349607}
   - component: {fileID: 2210163653851520774}
   m_Layer: 0
-  m_Name: Blue_Marks
+  m_Name: Luna
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

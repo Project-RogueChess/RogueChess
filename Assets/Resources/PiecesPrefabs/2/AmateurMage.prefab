@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 5445560749375071286}
   - component: {fileID: 129911897477671250}
   m_Layer: 0
-  m_Name: Red_Mage
+  m_Name: AmateurMage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

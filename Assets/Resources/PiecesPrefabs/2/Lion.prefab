@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 678716756478591792}
   - component: {fileID: 2179580759381628811}
   m_Layer: 0
-  m_Name: Blue_DS_Warrior
+  m_Name: Lion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
