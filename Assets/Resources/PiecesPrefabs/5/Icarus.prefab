@@ -275,7 +275,7 @@ Transform:
   - {fileID: 5302323135482292310}
   - {fileID: 7105320679584651504}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2760003129015307361
 MonoBehaviour:
@@ -467,6 +467,7 @@ MonoBehaviour:
   parentParent: {fileID: 0}
   piece: {fileID: 0}
   pieceToolTip: {fileID: 0}
+  isMouseOn: 0
 --- !u!1 &3046483072101505038
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +878,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7986526498900013136}
     m_Modifications:
+    - target: {fileID: 1516287720437412603, guid: 6ed68ae0439223b4cb6715cc1f33eb19,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1423f7231d1d2954589d303993581978, type: 2}
+    - target: {fileID: 2834349485707836472, guid: 6ed68ae0439223b4cb6715cc1f33eb19,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dbce143d874578643ba2d9dd52b370ff, type: 2}
     - target: {fileID: 6437017945818902863, guid: 6ed68ae0439223b4cb6715cc1f33eb19,
         type: 3}
       propertyPath: m_RootOrder

@@ -2657,7 +2657,7 @@ Animator:
   m_GameObject: {fileID: 6167311860445374256}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2513921a36ff3784d92a4fabb2c7e1c8, type: 3}
-  m_Controller: {fileID: 9100000, guid: f5a6c6f1fbdd8fd46924d0f4500f64f9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1423f7231d1d2954589d303993581978, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3293,6 +3293,7 @@ MonoBehaviour:
   parentParent: {fileID: 0}
   piece: {fileID: 0}
   pieceToolTip: {fileID: 0}
+  isMouseOn: 0
 --- !u!1 &8051439572212333988
 GameObject:
   m_ObjectHideFlags: 0
@@ -3508,7 +3509,7 @@ Transform:
   - {fileID: 1673837419633544896}
   - {fileID: 2484866971376900566}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3507553360218057598
 MonoBehaviour:
@@ -3770,7 +3771,7 @@ Animator:
   m_GameObject: {fileID: 8677129648907905787}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1b563cd76791a5743ae5ad3ad0b187bb, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4921e18709702c0448a8f9be07cdc5f7, type: 2}
+  m_Controller: {fileID: 9100000, guid: dbce143d874578643ba2d9dd52b370ff, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
