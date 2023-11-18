@@ -205,6 +205,7 @@ public class GameManager : MonoBehaviour
         {
             case Phase.SelectMapNode:
                 _time = 0;
+                isNodeComplete = true;
                 OnSelectMapNode.Invoke();
                 break;
             case Phase.Deployment:
@@ -236,6 +237,7 @@ public class GameManager : MonoBehaviour
         switch (changePhase)
         {
             case Phase.SelectMapNode:
+                isNodeComplete = true;
                 _time = 0;
                 OnSelectMapNode.Invoke();
                 break;

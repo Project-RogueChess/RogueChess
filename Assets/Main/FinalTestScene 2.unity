@@ -3442,7 +3442,7 @@ MonoBehaviour:
   inventoryOnOffBool: 0
   inventorySwitchBool: 0
   inventoryNumTxt: {fileID: 1717248140}
-  mapObject: {fileID: 0}
+  mapObject: {fileID: 652091495}
   itemAddNum: 0
   itemAddNumTxt: {fileID: 249050574}
   itemAddNumImg: {fileID: 1136772306}
@@ -16063,6 +16063,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  isNodeComplete: 1
   _playBattleEvent: 0
   _deployTime: 10
   _combatTime: 20

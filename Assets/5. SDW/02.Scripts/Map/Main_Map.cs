@@ -416,7 +416,11 @@ public class Main_Map : MonoBehaviour
 
     public void AccentNode(GameObject panelNode)
     {
-        if (GameManager.instance.isNodeComplete == false) { return; }
+        if (GameManager.instance.isNodeComplete == false)
+        {
+            LogUI.instance.SettingLogText("노드가 진행중 입니다");
+            return;
+        }
 
         if (isAccent == false && prevPanel == null)
         {
