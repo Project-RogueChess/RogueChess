@@ -41,13 +41,8 @@ public class InvSpawnManager : MonoBehaviour
     public int[] synergysNum;
 
 
-
-    //public GameObject redPieces;
-    //public GameObject greePieces;
-    //public GameObject bluePeices;
-    //public TMP_Text redPiecesTxt;
-    //public TMP_Text greenPiecesTxt;
-    //public TMP_Text bluePiecesTxt;
+    public GameObject[] colorSynergys;
+    public TMP_Text[] colorSynergysTxt;
 
 
 
@@ -86,9 +81,10 @@ public class InvSpawnManager : MonoBehaviour
             synergysNum[i] = 0;
         }
 
-        //redPieces.SetActive(false);
-        //greePieces.SetActive(false);
-        //bluePeices.SetActive(false);
+        for (int i = 0; i < synergyArraySo.synergyArray.Length; i ++)
+        {
+            colorSynergys[i].SetActive(false);
+        }
 
     }
 
@@ -107,7 +103,7 @@ public class InvSpawnManager : MonoBehaviour
         {
             if (hexaTiles[i].piece != null)
             {
-                hexaTiles[i].TileReset();
+                hexaTiles[i].Reset();
             }
         }
     }
@@ -163,12 +159,16 @@ public class InvSpawnManager : MonoBehaviour
                     {
                         synergysNum[i]++;
 
-
-                        //showSynergy(currentPiece, synergysArray);
+                        //UI키자
+                        colorSynergys[i].SetActive(true);
                         
-                        //여기서 1개라도 있으면 시너지 UI보여줘야함
                     }
+                    
                 }
+
+
+
+
                 idList[currentPiece.id] = true;
             }
         }
@@ -189,24 +189,18 @@ public class InvSpawnManager : MonoBehaviour
         for (int i = 0; i < synergysArray.Length; i++)
         {
             
-                var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
-                currentSO.Execute(invpieces, -1);
-            
+            var currentSO = (SynergySO)Resources.Load("SynergyScriptableObj/" + synergysArray[i]);
+            currentSO.Execute(invpieces, -1);
+
+
+            if (synergysNum[i] == 0)
+            {
+                colorSynergys[i].SetActive(false);
+            }
         }
-
-
     }
 
-    //private void showSynergy(Pieces piece, string[] synergyArray )
-    //{
-    //    for (int i =0;i<synergysArray.Length;i++)
-    //    {
-    //        if (piece.spieces == synergysArray[i])
-    //        {
-
-    //        }
-    //    }
-    //}
+   
 
     public void SynergyEnhance(int[] termsData)
     {
@@ -313,19 +307,30 @@ public class InvSpawnManager : MonoBehaviour
                 if (SynergyDB[db][i] <= synergysNum[j])
                 {
                     termsData[j] = i;
+                    //해당 시너지 UI,숫자 보여줘야함
+
+                    
+                    if (i== SynergyDB[db].Length - 1)
+                    {
+                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i] ;
+                    }
+                    else
+                    {
+                        colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i+1];
+                    }
+                    
                     break;
                 }
-            }
 
-        }
-
-        for (int i= 0;i< synergysArray.Length;i++)
-        {
-            if (termsData[i] != -1)
-            {
-                //해당 시너지 UI,숫자 보여줘야함
+                if (i == 0) 
+                {
+                    colorSynergysTxt[j].text = synergysNum[j].ToString() + "/" + SynergyDB[db][i];
+                }
             }
         }
+
+
+
         
         
 
