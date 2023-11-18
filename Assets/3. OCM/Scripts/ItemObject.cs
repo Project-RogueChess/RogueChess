@@ -19,7 +19,7 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public RectTransform rect;
     public CanvasGroup canvasGroup;
     public int num = 0;
-    public ToolTip toolTip;
+    
     public Item _item
     {
         get
@@ -50,7 +50,6 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         rect = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         image = GetComponent<Image>();
-        toolTip = GetComponent<ToolTip>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -120,10 +119,6 @@ public class ItemObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
         OffCollider();
     }
-
-
-    
-
 
     void SwitchImage()
     {

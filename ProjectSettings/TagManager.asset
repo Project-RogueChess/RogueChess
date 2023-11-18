@@ -8,7 +8,6 @@ TagManager:
   - Marker
   - Line
   - Sell
-  - PieceToolTip
   layers:
   - Default
   - TransparentFX
