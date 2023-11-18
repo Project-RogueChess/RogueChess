@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,17 +13,17 @@ using static UnityEditor.Progress;
 
 //일단 상점 구현 할 때 써야할 필요 기물 정보
 
+
+
 public class Pieces : Article
 {
     public Sprite pieceImg;
     public new string name;
-    
+    public int id;
     public int gold;
     public string spieces;
     public string classes;
     public int grade;
-    public int maxMp;
-    public int mp;
 
     public Transform pos;
     public Item[] items;
@@ -33,20 +35,29 @@ public class Pieces : Article
     public ItemsImg itemImage;
 
     BoxCollider boxCollider;
+
+    public PiecesCountManager piecesCountManager;
+    public Sprite[] pieceGradeImgs;
     public void Parse(Piece piece)
     {
         pieceImg = piece.pieceImg;
+        id = piece.id;
         gold = piece.gold;
         name = piece.name;
         grade = piece.grade;
-        maxHp = piece.maxHp;
+
         hp = piece.hp;
-        maxMp = piece.maxMp;
         mp = piece.mp;
-        attackDamage = piece.attackDamage;
-        attackSpeed = piece.attackSpeed;
-        attackRange = piece.attackRange;
-        moveSpeed = piece.moveSpeed;
+        originMaxHp = piece.maxHp;
+        originMaxMp = piece.maxMp;
+      
+        originAttackDamage = piece.attackDamage;
+        originAttackSpeed = piece.attackSpeed;
+        originAttackRange = piece.attackRange;
+        originMoveSpeed = piece.moveSpeed;
+
+        spieces = piece.spieces;
+        classes = piece.classes;
     }
     private void Awake()
     {
@@ -57,71 +68,43 @@ public class Pieces : Article
         {
             items[i] = new Item(string.Empty,0,0,0,0,0);
         }
-        canvas = FindObjectOfType<Canvas>();
-        hpbarScript = FindObjectOfType<HpBar>().GetComponent<HpBar>();
-        itemImage = FindObjectOfType<ItemsImg>();
-        for ( int i = 0;i<hpbarScript.t_objects.Length;i++)
-        {
-            if (!hpbarScript.t_objects[i].GetComponent<Pieces>())
-            {
-                hpbarScript.t_objects[i] = gameObject;
-                t_objectsNum = i;
-                hpbarScript.m_hpBarsList[i].SetActive(true);
-                hpbarScript.m_ItemsList[i*3+0].SetActive(true);
-                hpbarScript.m_ItemsList[i*3+1].SetActive(true);
-                hpbarScript.m_ItemsList[i*3+2].SetActive(true);
-                return;
-            }
-        }
 
-        //hpbarScript.m_objectList.Add(gameObject.transform);
-        //hpbarScript.t_HpBar = Instantiate(hpbarScript.m_goPrefab, gameObject.transform.position, Quaternion.identity, canvas.transform);
-        //hpbarScript.m_hpBarsList.Add(hpbarScript.t_HpBar);
+
+        canvas = GetComponentInChildren<Canvas>();
+
         boxCollider = GetComponent<BoxCollider>();
+
+        pieceGradeImgs = FindObjectOfType<PiecesCountManager>().GetComponent<PiecesCountManager>().piecesGradeImg;
+
+        
     }
-
-
-
     public void EquipItem(ItemObject item)
     {
-
         for (int i=0; i < items.Length;i++)
         {
-            
             if (items[i].itemName == string.Empty || items[i].itemName == null)
             {
                 items[i] = item._item;
-                maxHp += item._item.itemHp;
-                hp += item._item.itemHp;
-                attackDamage += item._item.itemAttackDamage;
-                attackSpeed += item._item.itemAttackSpeed;
-                mp += item._item.itemMp ;
-                if (i==0)
+                buffData[0].maxHp += item._item.itemHp;
+                hp = Mathf.Clamp(hp + item._item.itemHp, 0, maxHp);
+                buffData[0].attackDamage += item._item.itemAttackDamage;
+                buffData[0].attackSpeed += item._item.itemAttackSpeed;
+                mp = Mathf.Clamp(mp + item._item.itemMp, 0, maxMp);
+                for (int j = 0; j < items.Length; j++)
                 {
-                    itemImage.transform.GetChild(t_objectsNum*3).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
-                    Color color = itemImage.transform.GetChild(t_objectsNum * 3).gameObject.GetComponent<Image>().color;
-                    color.a = 1;
-                    itemImage.transform.GetChild(t_objectsNum * 3).gameObject.GetComponent<Image>().color = color;
+                    if (i == j)
+                    {
+                        GameObject itemImg = canvas.gameObject.transform.GetChild(i).gameObject;
+                        itemImg.SetActive(true);
+                        itemImg.GetComponent<Image>().sprite = item._item.itemSprite;
+                        return;
+                    }
                 }
-                else if (i==1)
-                {
-                    itemImage.transform.GetChild(t_objectsNum * 3 + 1).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
-                    Color color = itemImage.transform.GetChild(t_objectsNum * 3+1).gameObject.GetComponent<Image>().color;
-                    color.a = 1;
-                    itemImage.transform.GetChild(t_objectsNum * 3+1).gameObject.GetComponent<Image>().color = color;
-                }
-                else
-                {
-                    itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().sprite = item._item.itemSprite;
-                    Color color = itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().color;
-                    color.a = 1;
-                    itemImage.transform.GetChild(t_objectsNum * 3+2).gameObject.GetComponent<Image>().color = color;
-                }
-                
                 return;
             }
         }
     }
+
 
     public void GivingItemInfo()
     {
@@ -134,26 +117,90 @@ public class Pieces : Article
         } 
     }
 
+
     public void OnBoxCollider()
     {
         boxCollider.enabled = true;
     }
 
+
     public void SellPiece()
     {
-        DataManager.instance.myGold += gold;
+        DataManager.instance.GetGold(CalculateGold());
         UIManager.instance.UIRefresh();
         GivingItemInfo();
-        hpbarScript.t_objects[t_objectsNum] = hpbarScript.t_HpBar;
-        hpbarScript.m_hpBarsList[t_objectsNum].SetActive(false);
-        for (int i = 0; i < 3; i++)
+       
+        DestroyImmediate(gameObject);
+    }
+
+    public int CalculateGold()
+    {
+        if(grade == 1)
         {
-            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().sprite = null;
-            Color color = itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color;
-            color.a = 0;
-            itemImage.transform.GetChild(t_objectsNum * 3 + i).gameObject.GetComponent<Image>().color = color;
-            hpbarScript.m_ItemsList[t_objectsNum * 3 + i].SetActive(false);
+            return gold = gold;
         }
-        Destroy(gameObject);
+        else 
+        {
+            return gold = gold+2*(grade-1);
+        }
+    }
+
+
+    public void MergePeice()
+    {
+        grade++;
+        float newsize = 1f;
+
+
+
+        if (grade == 2)
+        {
+            newsize = 1.2f;
+            buffData[1].maxHp = originMaxHp;
+            hp = maxHp;
+            buffData[1].attackDamage = originAttackDamage;
+            mp = maxMp;
+
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[1];
+            this.transform.localScale = new Vector3 (newsize, newsize, newsize);
+
+
+            //for (int i = 0; i < items.Length; i++)
+            //{
+            //    if (items[i].itemName != string.Empty || items[i].itemName != null)
+            //    {
+            //        buffData[1].maxHp += items[i].itemHp;
+            //        buffData[1].hp += items[i].itemHp;
+            //        buffData[1].attackDamage += items[i].itemAttackDamage;
+            //        buffData[1].attackSpeed += items[i].itemAttackSpeed;
+            //        buffData[1].mp += items[i].itemMp;
+            //    }
+            //}
+        }
+        else if (grade == 3)
+        {
+            newsize = 1.4f;
+            buffData[1].maxHp = 2 * originMaxHp;
+            hp = maxHp;
+            buffData[1].attackDamage = 2 * originAttackDamage;
+            mp = maxMp;
+
+            canvas.gameObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = pieceGradeImgs[2];
+            this.transform.localScale = new Vector3(newsize, newsize, newsize);
+
+
+            //for (int i = 0; i < items.Length; i++)
+            //{
+            //    if (items[i].itemName != string.Empty && items[i].itemName != null)
+            //    {
+            //        maxHp += items[i].itemHp;
+            //        hp += items[i].itemHp;
+            //        attackDamage += items[i].itemAttackDamage;
+            //        attackSpeed += items[i].itemAttackSpeed;
+            //        mp += items[i].itemMp;
+            //    }
+            //}
+
+        }
     }
 }

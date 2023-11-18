@@ -12,6 +12,6 @@ public class Creep
     //public int x;
     //public int y;
 
-    public string avatarPath; // + .fbx .dae (Collada) .3ds .dxf .obj 
-    public string animatorPath; // + .controller
+    public string modelPrefab; // + .fbx .dae (Collada) .3ds .dxf .obj 
+    public string projectile; // + .controller
 }

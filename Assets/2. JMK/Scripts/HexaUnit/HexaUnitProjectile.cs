@@ -46,6 +46,12 @@ public class HexaUnitProjectile : MonoBehaviour
         transform.position = owner.transform.position;
     }
 
+    public void ForceStop()
+    {
+        _endMovement = true;
+        gameObject.SetActive(false);
+    }
+
     private void Update()
     {
         if (!_endMovement)

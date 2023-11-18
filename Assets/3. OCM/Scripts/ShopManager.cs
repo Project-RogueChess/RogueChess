@@ -78,36 +78,36 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
             rangeNum = Random.Range(0, 101);
             if (rangeNum <= percentages[0])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold1list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(0.62f, 0.62f, 0.62f);
             }
             else if (rangeNum <= percentages[0] + percentages[1])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold2list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = Color.green;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold3list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = Color.blue;
             }
             else if (rangeNum <= percentages[0] + percentages[1] + percentages[2] + percentages[3])
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold4list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f,0,0.86f);
             }
             else
             {
-                num = Random.Range(0, 5);
                 pieceInfos = piecesDB.gold5list;
+                num = Random.Range(0, pieceInfos.Count);
                 pieceInfo = pieceInfos[num];
                 nameTxt.color = new Color(1f, 0.5f, 0f);
             }
@@ -142,16 +142,26 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         {
             if (InvSpawnManager.instance.invTiles[i].piece == null)
             {
-                if (DataManager.instance.myGold >= pieceInfo.gold)
+                if (DataManager.instance.WhatMyGold() >= pieceInfo.gold)
                 {
                     canvasGroup.alpha = 0f;
                     canvasGroup.blocksRaycasts = false;
-                    DataManager.instance.myGold -= pieceInfo.gold;
+                    DataManager.instance.LostGold(pieceInfo.gold);
                     PiecesCountManager.instance.piecesIdCounts[pieceInfo.id]++;
                     CreatePiece();
-
+                    if (PiecesCountManager.instance.piecesIdCounts[pieceInfo.id] > 2)
+                    {
+                        UpgradeArticle.instance.TryUpgradeArticle(pieceInfo);
+                        PiecesCountManager.instance.resetCounts(pieceInfo);
+                    }
                     UIManager.instance.UIRefresh();
-                    return ;
+                    InvSpawnManager.instance.CountArticle();
+                    //InvSpawnManager.instance.SearchingIdsArrayBool();
+
+                    InvSpawnManager.instance.SearchEveryTileForSynergyData();
+                    InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
+
+                    break;
                 }
             }
 
@@ -171,8 +181,9 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
         var currentPiece = InvSpawnManager.instance.invTiles[index].piece.GetComponent<Pieces>();
 
         currentPiece.Parse(pieceInfo);
-        var unit = currentPiece.GetComponent<HexaUnit>();
-        unit.article = currentPiece;
+
+        currentPiece.GetComponent<HexaUnit>().range = currentPiece.originAttackRange;
+
         //Instantiate(piecesList.gold1Pieces[num],new Vector3(0,0,0), Quaternion.identity);
     }
 }

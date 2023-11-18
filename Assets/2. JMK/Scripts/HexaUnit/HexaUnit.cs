@@ -7,18 +7,11 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum HexaUnitMoveType
-{
-    Common,
-    Jumper
-}
-
 public class HexaUnit : MonoBehaviour
 {
     //기본 정보
     public int team;
     public int range;
-    public HexaUnitMoveType moveType;
     public HexaUnitProjectile projectilePrefab;
     public GameObject attackFX;
     public Article article;
@@ -42,6 +35,7 @@ public class HexaUnit : MonoBehaviour
     private bool _firstMove = true;
     private bool _startAtk = false;
     private HexaUnitProjectile _projectile;
+    private bool _forceStop = false;
 
     //내부 타이머
     private float _actTimer = 0f;
@@ -54,6 +48,7 @@ public class HexaUnit : MonoBehaviour
     public float moveRate => article.moveSpeed;
     public float atkRate => article.attackSpeed;
     public float turnRate => moveRate * 0.4f;
+    public float currentAnimLength => article.animator != null ? article.animator.GetCurrentAnimatorClipInfo(0)[0].clip.length : 1f;
     public bool firstMove => _firstMove;
     public HexaUnit target => _target;
     public HexaUnitProjectile projectile => _projectile;
@@ -62,6 +57,21 @@ public class HexaUnit : MonoBehaviour
     void Update()
     {
         Act();
+    }
+
+    private void OnEnable()
+    {
+        _forceStop = false;
+    }
+
+    public void ForceStop()
+    {
+        _forceStop = true;
+    }
+
+    public void DontForceStop()
+    {
+        _forceStop = false;
     }
 
     public void SetTileIndex(Vector2Int index, bool isPre = false)
@@ -129,22 +139,52 @@ public class HexaUnit : MonoBehaviour
 
     public void Damaged(int damage)
     {
+        if (article.hp < 0)
+            return;
+
         article.hp -= damage;
         if (article.hp < 0)
             Die();
     }
     public void Die()
     {
-        HexaUnitManager.instance.UnRegisterHexaUnit(this);
-        //부모전환 해결방법 찾기
-
-        if(team == 1)
-        {
-            CreepSpawnManager.instance.ReturnCreep(gameObject);
+        if (_forceStop)
             return;
-        }
+        ForceStop();
+        HexaUnitManager.instance.UnRegisterHexaUnit(this);
+        
         //죽는 애니메이션
-        gameObject.SetActive(false);
+        StartCoroutine(DieAction());
+        if (team == 1)
+            DataManager.instance.GetGold(UnityEngine.Random.Range(1, 4));
+    }
+
+    IEnumerator DieAction()
+    {
+        var timer = 0f;
+        
+        if(article.animator != null)
+        {
+            article.animator.Play("Die", -1, 0f);
+            article.animator.Update(0f);
+        }
+
+        Debug.Log(currentAnimLength);
+
+        while (timer < currentAnimLength)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (team == 1)
+        {
+            CreepSpawnManager.instance.ReturnCreep(GetComponent<CreepComponent>());
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -153,8 +193,14 @@ public class HexaUnit : MonoBehaviour
     /// </summary>
     void Act()
     {
-        if(needUpdate)
+        if(needUpdate || _forceStop)
+        {
+            //Idle 재생
+            if (article.animator != null && !_forceStop)
+                article.animator.Play("Idle");
             return;
+        }
+            
 
         if(_hasTurn)
         {
@@ -169,6 +215,17 @@ public class HexaUnit : MonoBehaviour
         }
         if(_moveDirty)
         {
+            if (article.animator != null)
+            {
+                if (Mathf.Approximately(_actTimer,0f))
+                {
+                    article.animator.Play("Move",-1,0f);
+                    article.animator.Update(0f);
+                }
+                    
+                article.animator.SetFloat("MoveSpeed", moveRate);
+            }
+                
             var dist = Vector3.Distance(_startPos,_endPos);
             var distF = 1 / (dist / (moveRate * 2f));
             _actTimer += distF * Time.deltaTime;
@@ -184,7 +241,18 @@ public class HexaUnit : MonoBehaviour
         }
         if (_atkDirty)
         {
-            var atkF = 1 / (1 / atkRate);
+            if (article.animator != null)
+            {
+                if(Mathf.Approximately(_actTimer, 0f))
+                {
+                    article.animator.Play("Attack", -1, 0f);
+                    article.animator.Update(0f);
+                }
+                   
+                article.animator.SetFloat("AttackSpeed", atkRate);
+            }
+            
+            var atkF = 1 / ((currentAnimLength + 0.5f) / atkRate);
             _actTimer += atkF * Time.deltaTime;
 
             if (_startAtk)
@@ -225,5 +293,23 @@ public class HexaUnit : MonoBehaviour
             }
             return;
         }
+    }
+
+    public void ResetSavedValue()
+    {
+        _atkDirty = false;
+        _moveDirty = false;
+        _hasTurn = false;
+        _target = null;
+
+        _startPos = Vector3.zero;
+        _endPos = Vector3.zero;
+        _savedDirIndex = new Vector2Int(0,0);
+        _savedRot = Quaternion.identity;
+        _firstMove = true;
+        _startAtk = false;
+        _forceStop = false;
+        if (_projectile != null)
+            _projectile.ForceStop();
     }
 }

@@ -84,4 +84,62 @@ public class TileManager : MonoBehaviour
             }
         }
     }
+
+    public void AutoSelectTile()
+    {
+        if (isDrag)
+        {
+            if (nextTile != null)
+            {
+                if (nextTile.piece == null && DataManager.instance.WhatMyPieces() == DataManager.instance.WhatMyMAXPieces())
+                {
+                    prevPiece.transform.position = prevTile.transform.position;
+                    return;
+                }
+                if (nextTile.tag == "Sell")
+                {
+                    if (prevTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(prevTile.piece.GetComponent<HexaUnit>());
+                    prevTile.piece.GetComponent<Pieces>().SellPiece();
+                    prevTile.piece = null;
+                    UIManager.instance.CloseSellText();
+                    InvSpawnManager.instance.CountArticle();
+                    return;
+                }
+                var tempGO = nextTile.piece;
+                prevPiece.transform.position = nextTile.transform.position;
+                nextTile.piece = prevPiece;
+                prevTile.piece = tempGO;
+
+                if (tempGO != null)
+                {
+                    prevTile.piece.transform.position = prevTile.transform.position;
+                    if (nextTile.triggerInfo.type == TileType.Hexa)
+                        HexaUnitManager.instance.UnRegisterHexaUnit(tempGO.GetComponent<HexaUnit>());
+
+                    //만약에 가는 곳이 헥사인 경우에 다시 유닛등록
+                    if (prevTile.triggerInfo.type == TileType.Hexa)
+                    {
+                        //다시 등록
+                        var otherUnit = tempGO.GetComponent<HexaUnit>();
+                        otherUnit.SetTileIndex(new Vector2Int(prevTile.triggerInfo.x, prevTile.triggerInfo.y));
+                        HexaUnitManager.instance.RegisterHexaUnit(otherUnit);
+                    }
+                }
+
+                if (nextTile.triggerInfo.type == TileType.Hexa)
+                {
+                    HexaUnit unit = nextTile.piece.GetComponent<HexaUnit>();
+                    unit.SetTileIndex(new Vector2Int(nextTile.triggerInfo.x, nextTile.triggerInfo.y));
+                    HexaUnitManager.instance.RegisterHexaUnit(unit);
+                }
+            }
+            else
+            {
+                prevPiece.transform.position = prevTile.transform.position;
+            }
+            InvSpawnManager.instance.CountArticle();
+            isDrag = false;
+        }
+    }
 }

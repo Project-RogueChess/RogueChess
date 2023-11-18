@@ -48,11 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 1
   range: 6
-  moveType: 0
-  atkRate: 0.5
-  moveRate: 0.3
   projectilePrefab: {fileID: 8884746836251305693, guid: 87344a5d09bcb914e913714aba542243,
     type: 3}
+  attackFX: {fileID: 0}
+  article: {fileID: 0}
 --- !u!136 &6623875402971644593
 CapsuleCollider:
   m_ObjectHideFlags: 0

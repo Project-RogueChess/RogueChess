@@ -1,29 +1,57 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance {  get; private set; }
 
+    public int PlayerHP
+    {
+        get
+        {
+            return myHp;
+        }
+        set
+        {
+            var lastMyHp = myHp;
+            myHp = math.clamp(value, 0, maxHp);
 
-    public int maxHp = 0;
-    public int myHp = 0;
-    public int myGold = 1;
-    public int maxPieces =0;
-    public int myPieces = 0;
-    public int myLevel = 0;
-    public int maxExp = 0;
-    public int myExp = 0;
-    public int[] wholePercentage = new int[5];
+            OnChangeHP?.Invoke(myHp - lastMyHp);
+
+            if(myHp == 0)
+            {
+                OnZeroHP?.Invoke();
+            }
+
+            if(UIManager.instance != null)
+                UIManager.instance.UIRefresh();
+        }
+    }
+
+    public UnityEvent<int> OnChangeHP;
+    public UnityEvent OnZeroHP;
+
+    [SerializeField] private int maxHp = 15;
+    [SerializeField] private int myHp = 15;
+    [SerializeField] private int myGold = 1000;
+    [SerializeField] private int maxPieces = 3;
+    [SerializeField] private int myPieces = 0;
+    [SerializeField] private int myLevel = 1;
+    [SerializeField] private int maxExp = 4;
+    [SerializeField] private int myExp = 0;
+
+    public int[] wholePercentage = new int[] { 100, 0, 0, 0, 0 };
     public bool reroolLock = false;
 
     private void Awake()
     {
         instance = this;
-        DataReset();
     }
 
     private void Start()
@@ -31,7 +59,89 @@ public class DataManager : MonoBehaviour
         UIManager.instance.UIRefresh();
     }
 
-    
+    #region External Call == Get,Lost
+    public void LostHp(int damage)
+    {
+        PlayerHP -= damage;
+    }
+
+    public void GetHp(int recoveryHp)
+    {
+        PlayerHP += recoveryHp;
+    }
+
+    public void LostGold(int lostGold)
+    {
+        myGold = Math.Max(0, myGold - lostGold);
+
+        UIManager.instance.UIRefresh();
+    }
+
+    public bool TryLostGold(int lostGold)
+    {
+        var current = myGold - lostGold;
+
+        if(current < 0)
+        {
+            return false;
+        }
+        else
+        {
+            myGold = current;
+            return true;
+        }
+    }
+
+    public void GetGold(int gold)
+    {
+        myGold = myGold + gold;
+        UIManager.instance.UIRefresh();
+    }
+    #endregion
+
+    public void FixWhatMyPieces(int pieceNum)
+    {
+        myPieces = pieceNum;
+    }
+
+    #region External Call == WhatIs
+    public int WhatMyLevel()
+    {
+        return myLevel;
+    }
+
+    public int WhatMyHp()
+    {
+        return myHp;
+    }
+
+    public int WhatMyGold()
+    {
+        return myGold;
+    }
+
+    public int WhatMyEXP()
+    {
+        return myExp;
+    }
+
+    public int WhatMyPieces()
+    {
+        return myPieces;
+    }
+
+    public int WhatMyMAXPieces()
+    {
+        return maxPieces;
+    }
+
+    public int WhatMyMAXEXP()
+    {
+        return maxExp;
+    }
+    #endregion
+
+
     //°æÇèÄ¡ È¹µæ ¹öÆ° ´­·¶À» ¶§ ÀÛµ¿ ÇÔ¼ö
     public void GettingExp()
     {
@@ -53,9 +163,7 @@ public class DataManager : MonoBehaviour
                     }
                 }
             }
-            
             UIManager.instance.UIRefresh();
-        
     }
 
     public void LevelUP()
@@ -69,20 +177,10 @@ public class DataManager : MonoBehaviour
         myExp -= maxExp;
         myLevel += 1;
         maxExp = 4 * myLevel;
+        maxPieces += 1;
     }
 
-    public void DataReset()
-    {
-        myLevel = 1;
-        maxExp = 4;
-        myExp = 0;
-        maxHp = 15;
-        myHp = 15;
-        myGold = 1000;
-        maxPieces = 3;
-        myPieces = 0;
-        wholePercentage = new int[]{ 100, 0, 0, 0,0 };
-    }
+    
 
     //±â¹° È®·ü
     public void DistributePercentage()
@@ -146,4 +244,5 @@ public class DataManager : MonoBehaviour
         reroolLock = !reroolLock;
         UIManager.instance.ImageOnOff();
     }
+
 }

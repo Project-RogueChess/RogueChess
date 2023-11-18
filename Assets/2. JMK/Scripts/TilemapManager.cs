@@ -7,6 +7,7 @@ using Unity.Collections;
 using System.Linq;
 using Unity.VisualScripting;
 using static UnityEditor.PlayerSettings;
+using System.IO;
 
 public class TilemapManager : MonoBehaviour
 {
@@ -56,6 +57,26 @@ public class TilemapManager : MonoBehaviour
     private void Start()
     {
         CreateTilemaps();
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(false);
+    }
+
+    public void ShowAllTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(true);
+        inv_tilemapPivot.gameObject.SetActive(true);
+    }
+
+    public void HideAllTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(false);
+    }
+
+    public void HideHexaAndShowInvTilemap()
+    {
+        hexa_tilemapPivot.gameObject.SetActive(false);
+        inv_tilemapPivot.gameObject.SetActive(true);
     }
 
     public void initTilePosList()
@@ -108,10 +129,15 @@ public class TilemapManager : MonoBehaviour
                 triggerGO.transform.position = hexa_tilePosList[i, j];
                 triggerGO.transform.parent = hexaTileTriggerContainer.transform;
                 triggerGO.name = $"[{triggerGO.transform.parent.childCount}]Trigger";
-                triggerGO.GetComponent<Tile>().tile = tileGO;
-                //추가할 내용
-                triggerGO.GetComponent<Tile>().triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
-                InvSpawnManager.instance.hexaTiles.Add(triggerGO.GetComponent<Tile>());               
+
+                //인게임에서만 -> 에디터에서 인스턴스 접근 불가, -> awake에서 인스턴스 생성
+                if(InvSpawnManager.instance != null)
+                {
+                    var tileInfo = triggerGO.AddComponent<Tile>();
+                    tileInfo.tile = tileGO;
+                    tileInfo.triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
+                    InvSpawnManager.instance.hexaTiles.Add(tileInfo);
+                }
             }
 
         //인벤토리 타일맵 생성
@@ -138,10 +164,14 @@ public class TilemapManager : MonoBehaviour
             triggerGO.transform.position = inv_tilePosList[i];
             triggerGO.transform.parent = invTileTriggerContainer.transform;
             triggerGO.name = $"[{triggerGO.transform.parent.childCount}]Trigger";
-            triggerGO.GetComponent<Tile>().tile = tileGO;
-            //추가할 내용
-            triggerGO.GetComponent<Tile>().triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
-            InvSpawnManager.instance.invTiles.Add(triggerGO.GetComponent<Tile>());
+
+            if (InvSpawnManager.instance != null)
+            {
+                var tileInfo = triggerGO.AddComponent<Tile>();
+                tileInfo.tile = tileGO;
+                tileInfo.triggerInfo = triggerGO.GetComponent<TilemapTriggerInfo>();
+                InvSpawnManager.instance.invTiles.Add(tileInfo);
+            }
         }
     }
 
@@ -206,6 +236,8 @@ public class TilemapManager : MonoBehaviour
                     Destroy(g.gameObject);
             }
         }
+
+        
     }
 }
 
