@@ -36,4 +36,20 @@ public class OptionManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void LoadMainSceneWithFadeMotion(string sceneName)
+    {
+        StartCoroutine(StartMotion(sceneName));
+    }
+
+    IEnumerator StartMotion(string sceneName)
+    {
+        FadeSceneManager.instance.FadeInOut(1f);
+        var timer = 0f;
+        while (timer < 1.5f)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        LoadMainScene(sceneName);
+    }
 }

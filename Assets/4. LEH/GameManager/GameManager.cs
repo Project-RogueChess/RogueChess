@@ -58,9 +58,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //RunPhase();
+        StartCoroutine(StartScene());
     }
-
 
     private void Update()
     {
@@ -370,5 +369,16 @@ public class GameManager : MonoBehaviour
 
         _time = _time > 0.05f ? 0.05f : _time;
         _playBattleEvent = false;
+    }
+
+    IEnumerator StartScene()
+    {
+        yield return waitThreeSec;
+        ForceChangePhaseAndInvoke(Phase.SelectMapNode);
+    }
+
+    public void InitializeManager()
+    {
+
     }
 }
