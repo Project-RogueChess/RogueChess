@@ -13,6 +13,9 @@ public class Tile : MonoBehaviour
 
     public TilemapTriggerInfo triggerInfo;
 
+    private Color blackholeColor = Color.black;
+
+
     private void OnMouseDown()
     {
         if (piece != null)
@@ -30,7 +33,7 @@ public class Tile : MonoBehaviour
 
     private void OnMouseOver()
     {
-
+        
         TileManager.Instance.nextTile = this;
         TileManager.Instance.nextPiece = piece;
         if (TileManager.Instance.isDrag)
@@ -41,9 +44,18 @@ public class Tile : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (TileManager.Instance.nextTile.tag == "Sell")
+        {
+            Debug.Log("yer");
+            tile.GetComponent<MeshRenderer>().material.color = blackholeColor;
+        }
+        else
+        {
+            tile.GetComponent<MeshRenderer>().material.color = TilemapManager.instance.hexa_defColor;
+        }
         TileManager.Instance.nextTile = null;
         TileManager.Instance.nextPiece = null;
-        tile.GetComponent<MeshRenderer>().material.color = TilemapManager.instance.hexa_defColor;
+        
     }
 
     private void OnMouseUp()
