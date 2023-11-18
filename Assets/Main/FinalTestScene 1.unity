@@ -3427,6 +3427,7 @@ MonoBehaviour:
   percentagePanel: {fileID: 1261147584}
   rerollLockButton: {fileID: 1602358802}
   rerollLockImg: {fileID: 1641481498}
+  UpRerollPanel: {fileID: 0}
   shopmanagers:
   - {fileID: 0}
   - {fileID: 0}
@@ -9515,17 +9516,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2a89be3da1a8b7d4180f9867136bbc82,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2a89be3da1a8b7d4180f9867136bbc82,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.61
+      value: -8.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2a89be3da1a8b7d4180f9867136bbc82,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.64
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2a89be3da1a8b7d4180f9867136bbc82,
         type: 3}
@@ -26345,7 +26346,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802390594}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0.5, z: -6}
+  m_LocalPosition: {x: -4.8, y: 0.5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27426,7 +27427,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936377877}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.25, y: 0.5, z: -4.25}
+  m_LocalPosition: {x: -5, y: 0.5, z: -4.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
