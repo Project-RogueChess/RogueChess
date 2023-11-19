@@ -6,11 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-<<<<<<< HEAD
-    path: Assets/4. LEH/StartScene/StartScene.unity
-=======
     path: Assets/Main/StartScene.unity
->>>>>>> 2919827b9f27fcde10f1b737c27f4ca48652dd51
     guid: d25affecb17560b44b846baf0e54b281
   - enabled: 1
     path: Assets/Main/FinalTestScene 4.unity
