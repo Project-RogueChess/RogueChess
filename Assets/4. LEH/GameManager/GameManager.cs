@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public Map_Node.currentNodeTypeEnum currentNode;
+    public int currentMapNodeY;
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
     public AnimationCurve returnMotion;
@@ -260,8 +261,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Winning(int team)
     {
-        DataManager.instance.GetGold(team == 0 ? 3 : 1);
-
+        DataManager.instance.GetGold((team == 0 ? 3 : 1) * currentMapNodeY);
         
         if (team == 1)
         {
