@@ -28,6 +28,8 @@ public class Tile : MonoBehaviour
             HexaUnit unit = piece.GetComponent<HexaUnit>();
             if (HexaUnitManager.instance.unitList.Contains(unit))
                 HexaUnitManager.instance.UnRegisterHexaUnit(unit);
+
+            SoundManager.instance.PlaySound("pieceDown");
         }
     }
 
@@ -132,6 +134,9 @@ public class Tile : MonoBehaviour
             //InvSpawnManager.instance.SearchingIdsArrayBool();
             InvSpawnManager.instance.SearchEveryTileForSynergyData();
             InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
+
+            SoundManager.instance.PlaySound("pieceUp");
+
         }
     }
 
