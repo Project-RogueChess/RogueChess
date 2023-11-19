@@ -25,6 +25,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public AudioClip[] audio_clips;
+    public AudioClip[] BGM_clips;
     public void PlaySound(string type)
     {
         int index = 0;
@@ -43,5 +44,26 @@ public class SoundManager : MonoBehaviour
 
         sfx.clip = audio_clips[index];
         sfx.PlayOneShot(sfx.clip);
+    }
+
+    public void PlayBGM(string type)
+    {
+        int index = 0;
+
+        switch (type)
+        {
+            default: index = 0; break;
+            //case "pieceUp": index = 0; break;
+            //case "pieceDown": index = 1; break;
+            //case "combatStart": index = 2; break;
+            //case "boxBell": index = 3; break;
+            //case "lock": index = 4; break;
+            //case "playerHeat": index = 5; break;
+            //case "smash1": index = 6; break;
+            //case "smash2": index = 7; break;
+        }
+
+        bgm.clip = audio_clips[index];
+        bgm.Play();
     }
 }
