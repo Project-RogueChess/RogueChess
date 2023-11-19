@@ -484,6 +484,8 @@ public class Main_Map : MonoBehaviour
             case currentNodeTypeEnum.Start:
                 break;
             case currentNodeTypeEnum.End:
+                CreepSpawnManager.instance.LoadBossCreepToField();
+                GameManager.instance.RunPhase();
                 break;
             case currentNodeTypeEnum.NormalMonster:
                 CreepSpawnManager.instance.LoadCreepToField(Random.Range(1, 8));
