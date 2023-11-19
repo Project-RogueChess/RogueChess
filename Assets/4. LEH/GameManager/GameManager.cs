@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     public Phase currentPhase = Phase.None;
 
+    public GameObject gameOverUI;
+
     private void Awake()
     {
         if(instance == null)
@@ -381,4 +383,6 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
+    public void EnbleEndScreen() => gameOverUI.SetActive(true);
 }
