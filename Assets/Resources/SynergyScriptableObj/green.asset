@@ -34,5 +34,5 @@ MonoBehaviour:
     gradeImg: {fileID: 0}
     avatar: {fileID: 0}
     animator: {fileID: 0}
-  terms: 010000000300000005000000
+  terms: 020000000300000005000000
   injectDataStr: Hp

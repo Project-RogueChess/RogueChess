@@ -23,11 +23,11 @@ MonoBehaviour:
     spieces: 
     classes: 
     grade: 0
-    maxHp: 30
+    maxHp: 0
     hp: 0
     maxMp: 0
     mp: 0
-    attackDamage: 10
+    attackDamage: 20
     attackSpeed: 0
     attackRange: 0
     moveSpeed: 0
