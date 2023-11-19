@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public Map_Node.currentNodeTypeEnum currentNode;
-    public int currentMapNodeY;
+    public int currentMapNodeY = 0;
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
     public AnimationCurve returnMotion;
