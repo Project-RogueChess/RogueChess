@@ -24,7 +24,6 @@ public class CreepSpawnManager : MonoBehaviour
         if(instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {

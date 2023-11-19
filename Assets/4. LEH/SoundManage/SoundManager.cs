@@ -13,11 +13,11 @@ public class SoundManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(instance);
+            Destroy(gameObject);
         }
 
         bgm = GameObject.Find("BGM").GetComponent<AudioSource>();
