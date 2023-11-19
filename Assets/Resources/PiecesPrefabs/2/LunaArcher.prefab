@@ -34,7 +34,7 @@ Transform:
   - {fileID: 8505107429173817983}
   - {fileID: 5629151796662819703}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5049388433626893431
 MonoBehaviour:
@@ -756,6 +756,7 @@ MonoBehaviour:
   parentParent: {fileID: 0}
   piece: {fileID: 0}
   pieceToolTip: {fileID: 0}
+  isMouseOn: 0
 --- !u!1 &7025736793240812848
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,6 +933,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3066206458119706867, guid: 72bf4e94b222f1d46babb8498221c1df,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1423f7231d1d2954589d303993581978, type: 2}
     - target: {fileID: 4174510730904612186, guid: 72bf4e94b222f1d46babb8498221c1df,
         type: 3}
       propertyPath: m_Controller
@@ -947,6 +953,11 @@ PrefabInstance:
       propertyPath: m_Bones.Array.data[26]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7621950376140467750, guid: 72bf4e94b222f1d46babb8498221c1df,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dbce143d874578643ba2d9dd52b370ff, type: 2}
     - target: {fileID: 8622658220053875021, guid: 72bf4e94b222f1d46babb8498221c1df,
         type: 3}
       propertyPath: m_Name
