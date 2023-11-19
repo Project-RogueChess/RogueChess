@@ -48,7 +48,6 @@ public class HexaUnit : MonoBehaviour
     public Vector2Int lastTargetIndex => _lastTargetIndex;
     public float moveRate => article.moveSpeed;
     public float atkRate => article.attackSpeed;
-    public float turnRate => moveRate * 0.4f;
     public float currentAnimLength => article.animator != null ? article.animator.GetCurrentAnimatorClipInfo(0)[0].clip.length : 1f;
     public bool firstMove => _firstMove;
     public HexaUnit target => _target;
@@ -200,12 +199,10 @@ public class HexaUnit : MonoBehaviour
 
         if(_hasTurn)
         {
-            Debug.Log($"{_actTimer} : {turnRate}");
-            _actTimer += Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / (moveRate * 0.5f));
-            Debug.Log(_actTimer > turnRate);
+            _actTimer += moveRate * Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / 0.5f);
 
-            if(_actTimer > turnRate)
+            if(_actTimer / 0.5f > 1f)
             {
                 _actTimer = 0f;
                 _hasTurn = false;
@@ -222,7 +219,7 @@ public class HexaUnit : MonoBehaviour
                     article.animator.Update(0f);
                 }
                     
-                article.animator.SetFloat("MoveSpeed", Mathf.Clamp(moveRate,0,8));
+                article.animator.SetFloat("MoveSpeed", moveRate);
             }
 
             var dist = Vector3.Distance(_startPos,_endPos);
@@ -279,6 +276,8 @@ public class HexaUnit : MonoBehaviour
                         _target.Damaged(article.attackDamage);
                     //공격 이펙트
                     //타겟 attack 이펙트
+                    int attackSound = UnityEngine.Random.Range(1, 3);
+                    SoundManager.instance.PlaySound("smash" + attackSound.ToString());
                 }
 
                 _startAtk = false;

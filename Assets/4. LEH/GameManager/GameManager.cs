@@ -208,10 +208,12 @@ public class GameManager : MonoBehaviour
                 break;
             case Phase.Combat:
                 _time = _combatTime;
+                SoundManager.instance.PlaySound("combatStart");
                 OnCombat.Invoke();
                 break;
             case Phase.Result:
                 _time = _resultTIme;
+                SoundManager.instance.PlaySound("boxBell");
                 OnResult.Invoke();
                 break;
             case Phase.Recruitment:
@@ -241,10 +243,12 @@ public class GameManager : MonoBehaviour
                 break;
             case Phase.Combat:
                 _time = _combatTime;
+                SoundManager.instance.PlaySound("combatStart");
                 OnCombat.Invoke();
                 break;
             case Phase.Result:
                 _time = _resultTIme;
+                SoundManager.instance.PlaySound("boxBell");
                 OnResult.Invoke();
                 break;
             case Phase.Recruitment:
