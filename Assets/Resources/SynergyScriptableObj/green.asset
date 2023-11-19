@@ -23,7 +23,7 @@ MonoBehaviour:
     spieces: 
     classes: 
     grade: 0
-    maxHp: 10
+    maxHp: 50
     hp: 0
     maxMp: 0
     mp: 0

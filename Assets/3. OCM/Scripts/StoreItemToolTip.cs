@@ -10,9 +10,10 @@ public class StoreItemToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public ItemsDB itemDB;
     public int itemObjectNum;
-    void Start()
+    void Awake()
     {
-        itemDB = FindObjectOfType<ItemsDB>();
+        //itemDB = FindObjectOfType<ItemsDB>();
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)

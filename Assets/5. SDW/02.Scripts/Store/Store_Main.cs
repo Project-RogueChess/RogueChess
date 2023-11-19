@@ -29,6 +29,7 @@ public class Store_Main : MonoBehaviour
             int randomValue = Random.Range(0, itemSprites.Length);
             itemBuyValue[i] = randomValue;
             images[i].GetComponent<Image>().sprite = itemSprites[randomValue];
+            images[i].GetComponent<StoreItemToolTip>().itemObjectNum = randomValue;
         }
 
     }
@@ -45,7 +46,7 @@ public class Store_Main : MonoBehaviour
 
     public void ClickedBuyButton1()
     {
-        if (DataManager.instance.TryLostGold(8) == false)
+        if (DataManager.instance.TryLostGold(4) == false)
         {
             return;
         }
@@ -55,7 +56,7 @@ public class Store_Main : MonoBehaviour
     }
     public void ClickedBuyButton2()
     {
-        if (DataManager.instance.TryLostGold(8) == false)
+        if (DataManager.instance.TryLostGold(4) == false)
         {
             return;
         }
@@ -65,7 +66,7 @@ public class Store_Main : MonoBehaviour
     }
     public void ClickedBuyButton3()
     {
-        if (DataManager.instance.TryLostGold(8) == false)
+        if (DataManager.instance.TryLostGold(4) == false)
         {
             return;
         }

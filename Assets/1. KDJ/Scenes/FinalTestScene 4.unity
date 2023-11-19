@@ -5614,6 +5614,7 @@ GameObject:
   - component: {fileID: 305681067}
   - component: {fileID: 305681066}
   - component: {fileID: 305681065}
+  - component: {fileID: 305681068}
   m_Layer: 5
   m_Name: Image1
   m_TagString: Untagged
@@ -5679,6 +5680,21 @@ RectTransform:
   m_AnchoredPosition: {x: -500, y: 125}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &305681068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305681064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad6a643ef23db847bb96ab48e8ce05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemToolTip: {fileID: 2121296355}
+  itemDB: {fileID: 1527473033}
+  itemObjectNum: 0
 --- !u!1 &319874382
 GameObject:
   m_ObjectHideFlags: 0
@@ -10754,7 +10770,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1834571320}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: set_volume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &592522034
 GameObject:
   m_ObjectHideFlags: 0
@@ -12691,7 +12719,7 @@ MonoBehaviour:
   storeSprite: {fileID: 21300000, guid: d79919669fc5628449047c8be1528cb7, type: 3}
   treasurePer: 20
   treasureSprite: {fileID: 21300000, guid: c46486a1e2648f349bb3a6d554fc8140, type: 3}
-  randomEventPer: 60
+  randomEventPer: 20
   randomEventSprite: {fileID: 21300000, guid: 4800731ef4eae344c85a8e9b24fb7278, type: 3}
   shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: 72ab64089a5d479418dd109d905e40de, type: 3}
@@ -15283,7 +15311,7 @@ MonoBehaviour:
         m_CallState: 2
   maxHp: 15
   myHp: 15
-  myGold: 999
+  myGold: 3
   maxPieces: 3
   myPieces: 0
   myLevel: 1
@@ -18219,6 +18247,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  motionSpeed: 1
 --- !u!1001 &946084389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20286,10 +20315,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   isNodeComplete: 1
   _playBattleEvent: 0
-  _deployTime: 10
-  _combatTime: 20
+  _deployTime: 30
+  _combatTime: 30
   _resultTIme: 5.5
-  _recruitTime: 20
+  _recruitTime: 30
   OnSelectMapNode:
     m_PersistentCalls:
       m_Calls:
@@ -23602,7 +23631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 8 Gold
+  m_Text: 4 Gold
 --- !u!222 &1273581151
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24833,7 +24862,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 8 Gold
+  m_Text: 4 Gold
 --- !u!222 &1332200701
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -27995,7 +28024,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 8 Gold
+  m_Text: 4 Gold
 --- !u!222 &1525290967
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -30879,6 +30908,7 @@ GameObject:
   - component: {fileID: 1669929530}
   - component: {fileID: 1669929529}
   - component: {fileID: 1669929528}
+  - component: {fileID: 1669929531}
   m_Layer: 5
   m_Name: Image2
   m_TagString: Untagged
@@ -30944,6 +30974,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 125}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1669929531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669929527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad6a643ef23db847bb96ab48e8ce05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemToolTip: {fileID: 2121296355}
+  itemDB: {fileID: 1527473033}
+  itemObjectNum: 0
 --- !u!1 &1681193622
 GameObject:
   m_ObjectHideFlags: 0
@@ -32228,6 +32273,7 @@ GameObject:
   - component: {fileID: 1775756401}
   - component: {fileID: 1775756400}
   - component: {fileID: 1775756399}
+  - component: {fileID: 1775756402}
   m_Layer: 5
   m_Name: Image3
   m_TagString: Untagged
@@ -32293,6 +32339,21 @@ RectTransform:
   m_AnchoredPosition: {x: 500, y: 125}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1775756402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775756398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aad6a643ef23db847bb96ab48e8ce05d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemToolTip: {fileID: 2121296355}
+  itemDB: {fileID: 1527473033}
+  itemObjectNum: 0
 --- !u!1001 &1778615663
 PrefabInstance:
   m_ObjectHideFlags: 0

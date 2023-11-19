@@ -27,12 +27,12 @@ MonoBehaviour:
     hp: 0
     maxMp: 0
     mp: 0
-    attackDamage: 5
+    attackDamage: 20
     attackSpeed: 0
     attackRange: 0
     moveSpeed: 0
     gradeImg: {fileID: 0}
     avatar: {fileID: 0}
     animator: {fileID: 0}
-  terms: 010000000200000003000000
+  terms: 020000000400000006000000
   injectDataStr: AtkDmg
