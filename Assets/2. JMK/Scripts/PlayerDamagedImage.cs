@@ -24,8 +24,8 @@ public class PlayerDamagedImage : MonoBehaviour
         if (hurtAmount < 0)
         {
             _hurtGage = Mathf.Clamp(math.abs(hurtAmount), 0, 4);
+            SoundManager.instance.PlaySound("playerHeat");
             UnityEngine.Debug.Log(_hurtGage);
         }
-
     }
 }

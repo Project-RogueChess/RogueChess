@@ -64,7 +64,11 @@ public class HexaUnitProjectile : MonoBehaviour
             {
                 //충돌 이펙트 재생
                 if (_owner.target != null && _owner.target.gameObject.activeSelf)
+                {
+                    int attackSound = Random.Range(1, 3);
+                    SoundManager.instance.PlaySound("smash" + attackSound.ToString());
                     _owner.target.Damaged(attackDamage);
+                }
 
                 _endMovement = true;
                 gameObject.SetActive(false);

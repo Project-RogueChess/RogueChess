@@ -20285,6 +20285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fca82c98bf9ac48af55aea349a3f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentNode: 0
   blackHole: {fileID: 939346540}
   inhalationMotion:
     serializedVersion: 2
@@ -20697,36 +20698,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  OnGameOver:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1603978272}
-        m_TargetAssemblyTypeName: TimeGageController, Assembly-CSharp
-        m_MethodName: HideGage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 652091498}
-        m_TargetAssemblyTypeName: Main_Map, Assembly-CSharp
-        m_MethodName: HideMap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   forcePause: 0
   currentPhase: 0
   gameOverUI: {fileID: 761219401}
+  gameClearUI: {fileID: 2126152797}
 --- !u!114 &1080368693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29469,8 +29444,8 @@ RectTransform:
   - {fileID: 2058465379}
   - {fileID: 2013898654}
   - {fileID: 1603978271}
-  - {fileID: 1749707466}
   - {fileID: 1514579699}
+  - {fileID: 1749707466}
   - {fileID: 1755968672}
   - {fileID: 830877188}
   - {fileID: 862845726}
@@ -31682,7 +31657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.02745098}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
