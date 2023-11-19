@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public Map_Node.currentNodeTypeEnum currentNode;
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
     public AnimationCurve returnMotion;
@@ -32,7 +33,6 @@ public class GameManager : MonoBehaviour
     public UnityEvent OnCombat;
     public UnityEvent OnResult;
     public UnityEvent OnRecruitment;
-    public UnityEvent OnGameOver;
 
     public static Phase[] phaseChain = { Phase.SelectMapNode, Phase.Deployment, Phase.Combat, Phase.Result, Phase.Recruitment };
 
@@ -43,13 +43,13 @@ public class GameManager : MonoBehaviour
     public Phase currentPhase = Phase.None;
 
     public GameObject gameOverUI;
+    public GameObject gameClearUI;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             winFlag = 1;
         }
 
-        if(winFlag != -1)
+        if (winFlag != -1)
         {
             CheckBattleResult(winFlag);
         }
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var u in copyUnitList)
         {
-            if(u.team == 0)
+            if (u.team == 0)
             {
                 u.Die();
             }
@@ -146,13 +146,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Winning(winFlag));
     }
 
-    public void GameOver()
-    {
-        forcePause = true;
-        OnGameOver.Invoke();
-        //페이드 인,아웃
-    }
-
     private void ManagePhase()
     {
         if (forcePause || currentPhase == Phase.None || currentPhase == Phase.SelectMapNode)
@@ -160,7 +153,7 @@ public class GameManager : MonoBehaviour
 
         _time -= Time.deltaTime;
 
-        if(_time < 0)
+        if (_time < 0)
         {
             switch (currentPhase)
             {
@@ -169,7 +162,7 @@ public class GameManager : MonoBehaviour
                     break;
                 case Phase.Combat:
                     ChangePhaseAndInvoke(Phase.Result);
-                    
+
                     break;
                 case Phase.Result:
                     ChangePhaseAndInvoke(Phase.Recruitment);
@@ -264,8 +257,21 @@ public class GameManager : MonoBehaviour
     IEnumerator Winning(int team)
     {
         DataManager.instance.GetGold(team == 0 ? 3 : 1);
+
+        
         if (team == 1)
-            DataManager.instance.PlayerHP -= HexaUnitManager.instance.teamCount[1];
+        {
+            if (currentNode == Map_Node.currentNodeTypeEnum.End)
+            {
+                DataManager.instance.PlayerHP -= DataManager.instance.PlayerHP;
+            }
+            else
+            {
+                DataManager.instance.PlayerHP -= HexaUnitManager.instance.teamCount[1];
+            }
+        }
+            
+
         _playBattleEvent = true;
         var timer = 0f;
         foreach (var unit in HexaUnitManager.instance.unitList)
@@ -280,7 +286,7 @@ public class GameManager : MonoBehaviour
         yield return waitThreeSec;
         Resume();
 
-        if(team == 1)
+        if (team == 1)
         {
             var unitPositions = new List<Vector3>();
 
@@ -312,6 +318,12 @@ public class GameManager : MonoBehaviour
 
             yield return waitThreeSec;
         }
+
+        //엔딩 (게임 클 / 게임 오버)
+        if(DataManager.instance.PlayerHP <= 0)
+            gameOverUI.SetActive(true);
+        if (currentNode == Map_Node.currentNodeTypeEnum.End && team == 0)
+            gameClearUI.SetActive(true);
 
         var destinationUnitPos = new Dictionary<GameObject, Vector3>();
         foreach (var tile in InvSpawnManager.instance.hexaTiles)
@@ -375,14 +387,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartScene()
     {
-        yield return waitThreeSec;
+        yield return new WaitForSeconds(1f);
         ForceChangePhaseAndInvoke(Phase.SelectMapNode);
     }
-
-    public void InitializeManager()
-    {
-
-    }
-
-    public void EnbleEndScreen() => gameOverUI.SetActive(true);
 }

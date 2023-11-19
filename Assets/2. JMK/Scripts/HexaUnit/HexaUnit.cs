@@ -90,9 +90,6 @@ public class HexaUnit : MonoBehaviour
 
     public virtual void Move(Vector2Int next)
     {
-        if(_moveDirty)
-            return;
-
         if (_firstMove)
             _firstMove = false;
 
@@ -203,8 +200,11 @@ public class HexaUnit : MonoBehaviour
 
         if(_hasTurn)
         {
+            Debug.Log($"{_actTimer} : {turnRate}");
             _actTimer += Time.deltaTime;
-            transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / turnRate);
+            transform.rotation = Quaternion.Slerp(_savedRot, Quaternion.LookRotation((_endPos - _startPos).normalized), _actTimer / (moveRate * 0.5f));
+            Debug.Log(_actTimer > turnRate);
+
             if(_actTimer > turnRate)
             {
                 _actTimer = 0f;
@@ -222,9 +222,9 @@ public class HexaUnit : MonoBehaviour
                     article.animator.Update(0f);
                 }
                     
-                article.animator.SetFloat("MoveSpeed", moveRate);
+                article.animator.SetFloat("MoveSpeed", Mathf.Clamp(moveRate,0,8));
             }
-                
+
             var dist = Vector3.Distance(_startPos,_endPos);
             var distF = 1 / (dist / (moveRate * 2f));
             _actTimer += distF * Time.deltaTime;

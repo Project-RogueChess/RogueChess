@@ -479,7 +479,10 @@ public class Main_Map : MonoBehaviour
 
     private void NodeAction()
     {
-        switch (FindPanelToSearchDictionary(currentNodeXY).GetComponent<Map_Node>().myNodeType)
+        var currentNodeType = FindPanelToSearchDictionary(currentNodeXY).GetComponent<Map_Node>().myNodeType;
+        GameManager.instance.currentNode = currentNodeType;
+
+        switch (currentNodeType)
         {
             case currentNodeTypeEnum.Start:
                 break;
