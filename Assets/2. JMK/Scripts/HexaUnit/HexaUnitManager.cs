@@ -8,9 +8,13 @@ public class HexaUnitManager : MonoBehaviour
 {
     public static HexaUnitManager instance;
 
+    public const int MAX_MAP_X = 8;
+    public const int MAX_MAP_Y = 8;
+
+
     public Vector3[,] positionMap => TilemapManager.instance.hexa_tilePosList;
+    public bool[,] collisionMap => _collisionMap;
     public List<HexaUnit> unitList => _unitList;
-    public bool[,] collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
     public bool excuteUnitControll = false;
 
     public void OnUnitControll()
@@ -25,8 +29,7 @@ public class HexaUnitManager : MonoBehaviour
 
     public int[] teamCount => _teamCount;
 
-    private const int MAX_MAP_X = 8;
-    private const int MAX_MAP_Y = 8;
+    private bool[,] _collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
 
     private int[] _teamCount = new int[10];
 
@@ -65,6 +68,11 @@ public class HexaUnitManager : MonoBehaviour
 
     #region 유닛 관리
 
+    public void RequestSetColMapIndex(Vector2Int index, bool collision)
+    {
+        _collisionMap[index.y,index.x] = collision;
+    }
+
     public void HexaUnitUpdate(List<HexaUnit> units)
     {
         //업데이트가 필요한 유닛 하나씩 계산
@@ -73,11 +81,11 @@ public class HexaUnitManager : MonoBehaviour
             //예약된 충돌 인덱스 초기화
             if (u.preIndex.x != -1)
             {
-                collisionMap[u.preIndex.y, u.preIndex.x] = false;
+                _collisionMap[u.preIndex.y, u.preIndex.x] = false;
                 u.SetTileIndex(new Vector2Int(-1, -1), true);
             }
 
-            collisionMap[u.tileIndex.y, u.tileIndex.x] = true;
+            _collisionMap[u.tileIndex.y, u.tileIndex.x] = true;
 
             Dictionary<HexaUnit, int> distDic = new Dictionary<HexaUnit, int>();
 
@@ -97,7 +105,9 @@ public class HexaUnitManager : MonoBehaviour
             //가까운 적 우선순위 리스트 생성
             foreach (var other in _unitList)
             {
-                if (other == u || other.team == u.team)
+                if (other == u || other.team == u.team 
+                    || other.tileIndex.x >= MAX_MAP_X || other.tileIndex.x < 0
+                    || other.tileIndex.y >= MAX_MAP_Y || other.tileIndex.y < 0)
                     continue;
 
                 distDic.Add(other, CalcDist(u.tileIndex, other.tileIndex));
@@ -112,7 +122,7 @@ public class HexaUnitManager : MonoBehaviour
             //첫번째 체크 - 보정없이 길찾기
             var firstCheck = false;
             var tileTemp = new bool[MAX_MAP_Y, MAX_MAP_X];
-            Buffer.BlockCopy(collisionMap, 0, tileTemp, 0, collisionMap.Length);
+            Buffer.BlockCopy(_collisionMap, 0, tileTemp, 0, _collisionMap.Length);
 
             //가까운 적부터 길찾기
             while (distList.Count > 0)
@@ -135,7 +145,7 @@ public class HexaUnitManager : MonoBehaviour
                 var inUseIndexCount = 0;
 
                 foreach (var idx in ringIndex)
-                    if (collisionMap[idx.y, idx.x])
+                    if (_collisionMap[idx.y, idx.x])
                         inUseIndexCount++;
 
                 if (inUseIndexCount == ringIndex.Count)
@@ -145,7 +155,7 @@ public class HexaUnitManager : MonoBehaviour
                 }
 
                 //충돌맵 세팅
-                collisionMap[currentTarget.tileIndex.y, currentTarget.tileIndex.x] = false;
+                _collisionMap[currentTarget.tileIndex.y, currentTarget.tileIndex.x] = false;
 
                 //사정거리 긴 유닛은 사정거리를 고려한 충돌맵 사용
                 if (u.range > 0)
@@ -154,7 +164,7 @@ public class HexaUnitManager : MonoBehaviour
 
                     foreach (var t in rangeTile)
                     {
-                        collisionMap[t.y, t.x] = false;
+                        _collisionMap[t.y, t.x] = false;
                     }
                 }
 
@@ -166,13 +176,13 @@ public class HexaUnitManager : MonoBehaviour
                     pathTile.RemoveAt(0);
                     u.Move(pathTile[0]);
                     firstCheck = true;
-                    Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
-                    collisionMap[pathTile[0].y, pathTile[0].x] = true;
+                    Buffer.BlockCopy(tileTemp, 0, _collisionMap, 0, tileTemp.Length);
+                    _collisionMap[pathTile[0].y, pathTile[0].x] = true;
                     distList.Clear();
                     break;
                 }
 
-                Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
+                Buffer.BlockCopy(tileTemp, 0, _collisionMap, 0, tileTemp.Length);
             }
 
             //길찾기 성공시 다음 업데이트가 필요한 유닛으로
@@ -183,23 +193,23 @@ public class HexaUnitManager : MonoBehaviour
 
             //충돌맵 세팅
             var secondRangeTile = RangeOfHexaGridIndex(secondCheckTarget.tileIndex, u.range + 1);
-            collisionMap[secondCheckTarget.tileIndex.y, secondCheckTarget.tileIndex.x] = false;
+            _collisionMap[secondCheckTarget.tileIndex.y, secondCheckTarget.tileIndex.x] = false;
 
             foreach (var t in secondRangeTile)
             {
-                collisionMap[t.y, t.x] = false;
+                _collisionMap[t.y, t.x] = false;
             }
 
             var secondPathTile = PathFinding(u.tileIndex, secondCheckTarget.tileIndex);
             if(secondPathTile.Count > 0)
                 secondPathTile.RemoveAt(0);
-            Buffer.BlockCopy(tileTemp, 0, collisionMap, 0, tileTemp.Length);
+            Buffer.BlockCopy(tileTemp, 0, _collisionMap, 0, tileTemp.Length);
 
-            if (secondPathTile.Count > 0 && !collisionMap[secondPathTile[0].y, secondPathTile[0].x])
+            if (secondPathTile.Count > 0 && !_collisionMap[secondPathTile[0].y, secondPathTile[0].x])
             {
                 //성공시 이동으로 전환
                 u.Move(secondPathTile[0]);
-                collisionMap[secondPathTile[0].y, secondPathTile[0].x] = true;
+                _collisionMap[secondPathTile[0].y, secondPathTile[0].x] = true;
             }
             else
             {
@@ -219,10 +229,10 @@ public class HexaUnitManager : MonoBehaviour
                 while(checkTiles.Count > 0)
                 {
                     var currentTile = checkTiles.Pop();
-                    if(!collisionMap[currentTile.index.y, currentTile.index.x])
+                    if(!_collisionMap[currentTile.index.y, currentTile.index.x])
                     {
                         u.Move(currentTile.index);
-                        collisionMap[currentTile.index.y, currentTile.index.x] = true;
+                        _collisionMap[currentTile.index.y, currentTile.index.x] = true;
                         break;
                     }
                 }
@@ -237,7 +247,7 @@ public class HexaUnitManager : MonoBehaviour
     public void RegisterHexaUnit(HexaUnit unit)
     {
         if (unit.tileIndex.y != -1)
-            collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
+            _collisionMap[unit.tileIndex.y, unit.tileIndex.x] = true;
         
         _unitList.Add(unit);
         CheckCurrentTeamCount();
@@ -250,12 +260,12 @@ public class HexaUnitManager : MonoBehaviour
 
         if (unit.preIndex.x != -1)
         {
-            collisionMap[unit.preIndex.y, unit.preIndex.x] = false;
+            _collisionMap[unit.preIndex.y, unit.preIndex.x] = false;
             unit.SetTileIndex(unit.preIndex);
         }
 
         if(unit.tileIndex.y != -1)
-            collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
+            _collisionMap[unit.tileIndex.y, unit.tileIndex.x] = false;
         
         _unitList.Remove(unit);
         CheckCurrentTeamCount();
@@ -272,7 +282,7 @@ public class HexaUnitManager : MonoBehaviour
 
     public void UnRegisterAll()
     {
-        collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
+        _collisionMap = new bool[MAX_MAP_Y, MAX_MAP_X];
         _teamCount = new int[10];
         _unitList.Clear();
     }
@@ -328,7 +338,7 @@ public class HexaUnitManager : MonoBehaviour
                     continue;
                 if (closed[next.y, next.x])
                     continue;
-                if (collisionMap[next.y, next.x])
+                if (_collisionMap[next.y, next.x])
                     continue;
                 int g = t.G + cost[i];
                 int h = CalcDist(next, end);

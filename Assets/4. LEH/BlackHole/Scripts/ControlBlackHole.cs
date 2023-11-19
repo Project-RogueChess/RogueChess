@@ -6,15 +6,7 @@ public class ControlBlackHole : MonoBehaviour
 {
     public Transform blackHole;
     public AnimationCurve motion;
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StartMotion();
-        }
-    }
+    public float motionSpeed = 1f;
 
     public void StartMotion()
     {
@@ -28,7 +20,7 @@ public class ControlBlackHole : MonoBehaviour
 
         while (timer < motion.keys[motion.keys.Length - 1].time)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime * motionSpeed;
             blackHole.transform.localScale = Vector3.one * Mathf.Max(0.001f, motion.Evaluate(timer));
             yield return null;
         }

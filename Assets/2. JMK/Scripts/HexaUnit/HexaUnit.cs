@@ -17,31 +17,32 @@ public class HexaUnit : MonoBehaviour
     public Article article;
 
     //더티 셋
-    private bool _moveDirty = false;
-    private bool _atkDirty = false;
-    private bool _hasTurn = false;
+    protected bool _moveDirty = false;
+    protected bool _atkDirty = false;
+    protected bool _hasTurn = false;
 
     //타겟 정보
-    private HexaUnit _target;
-    private Vector2Int _tileIndex;
-    private Vector2Int _preIndex = new Vector2Int(-1,-1);
-    private Vector2Int _lastTargetIndex;
+    protected HexaUnit _target;
+    protected Vector2Int _tileIndex;
+    protected Vector2Int _preIndex = new Vector2Int(-1,-1);
+    protected Vector2Int _lastTargetIndex;
 
     //저장 값
-    private Vector3 _startPos;
-    private Vector3 _endPos;
-    private Vector2Int _savedDirIndex;
-    private Quaternion _savedRot;
-    private bool _firstMove = true;
-    private bool _startAtk = false;
-    private HexaUnitProjectile _projectile;
-    private bool _forceStop = false;
+    protected Vector3 _startPos;
+    protected Vector3 _endPos;
+    protected Vector2Int _savedDirIndex;
+    protected Quaternion _savedRot;
+    protected bool _firstMove = true;
+    protected bool _startAtk = false;
+    protected HexaUnitProjectile _projectile;
+    protected bool _forceStop = false;
 
     //내부 타이머
-    private float _actTimer = 0f;
+    protected float _actTimer = 0f;
+    protected WaitForSeconds _waitSec = new WaitForSeconds(3f);
 
     //속성
-    public bool needUpdate => !_moveDirty && !_atkDirty;
+    public virtual bool needUpdate => !_moveDirty && !_atkDirty;
     public Vector2Int tileIndex => _tileIndex;
     public Vector2Int preIndex => _preIndex;
     public Vector2Int lastTargetIndex => _lastTargetIndex;
@@ -64,12 +65,12 @@ public class HexaUnit : MonoBehaviour
         _forceStop = false;
     }
 
-    public void ForceStop()
+    public virtual void ForceStop()
     {
         _forceStop = true;
     }
 
-    public void DontForceStop()
+    public virtual void DontForceStop()
     {
         _forceStop = false;
     }
@@ -87,7 +88,7 @@ public class HexaUnit : MonoBehaviour
         _target = unit;
     }
 
-    public void Move(Vector2Int next)
+    public virtual void Move(Vector2Int next)
     {
         if(_moveDirty)
             return;
@@ -115,7 +116,7 @@ public class HexaUnit : MonoBehaviour
         }
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         //디버그용 스타트 어택
         _startAtk = true;
@@ -137,16 +138,16 @@ public class HexaUnit : MonoBehaviour
 
     public void StartAttack() => _startAtk = true;
 
-    public void Damaged(int damage)
+    public virtual void Damaged(int damage)
     {
-        if (article.hp < 0)
+        if (article.hp <= 0)
             return;
 
         article.hp -= damage;
-        if (article.hp < 0)
+        if (article.hp <= 0)
             Die();
     }
-    public void Die()
+    public virtual void Die()
     {
         if (_forceStop)
             return;
@@ -169,8 +170,6 @@ public class HexaUnit : MonoBehaviour
             article.animator.Update(0f);
         }
 
-        Debug.Log(currentAnimLength);
-
         while (timer < currentAnimLength)
         {
             timer += Time.deltaTime;
@@ -191,7 +190,7 @@ public class HexaUnit : MonoBehaviour
     /// 행동 수행, 더티셋에 따라 분기행동
     /// 단 회전이 있다면 회전을 제일 먼저 수행
     /// </summary>
-    void Act()
+    protected virtual void Act()
     {
         if(needUpdate || _forceStop)
         {
@@ -309,7 +308,47 @@ public class HexaUnit : MonoBehaviour
         _firstMove = true;
         _startAtk = false;
         _forceStop = false;
+        _actTimer = 0f;
         if (_projectile != null)
             _projectile.ForceStop();
     }
+
+    /*public void Airbone()
+    {
+        StartCoroutine(PlayAirbone());
+    }
+
+    IEnumerator PlayAirbone()
+    {
+        ForceStop();
+
+        float velocity = 5f;
+
+        float currentY = transform.position.y;
+
+        transform.position += Vector3.up * velocity * Time.deltaTime;
+        yield return null;
+
+        while (true)
+        {
+            velocity = Mathf.Max(-6f, velocity - 9f * Time.deltaTime);
+            transform.position += Vector3.up * velocity * Time.deltaTime;
+
+            if (transform.position.y < currentY)
+            {
+                transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+                break;
+            }
+            yield return null;
+        }
+
+        yield return _waitSec;
+       
+        DontForceStop();
+        if (article.hp <= 0)
+        {
+            Die();
+        }
+        yield return null;
+    }*/
 }

@@ -79,7 +79,7 @@ public class CreepSpawnManager : MonoBehaviour
 
             var creepInfo = creepGO.GetComponent<CreepComponent>();
             creepInfo.hp = creepInfo.maxHp;
-            creepInfo.mp = creepInfo.maxMp;
+            creepInfo.mp = 0;
 
             var unit = creepGO.GetComponent<HexaUnit>();
             unit.ResetSavedValue();
@@ -88,6 +88,30 @@ public class CreepSpawnManager : MonoBehaviour
             unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
             HexaUnitManager.instance.RegisterHexaUnit(unit);
         }
+    }
+
+    public void LoadBossCreepToField()
+    {
+        //추가시간증정
+        //GameManager.instance.time
+
+        var parent = new GameObject();
+        parent.name = "Creep_Boss_Pool";
+        parent.transform.parent = creepPoolParent;
+        var bossPool = new List<GameObject>();
+        creepPool.Add(bossPool);
+
+        var boss = Instantiate((GameObject)Resources.Load("CreepPrefabs/CustomCreeps/Creep_Boss"));
+        boss.transform.forward = Vector3.back;
+
+        var creep = boss.GetComponent<CreepComponent>();
+        var model = Instantiate(creep.modelPrefab, creep.rootTransform);
+        creep.animator = model.GetComponent<Animator>();
+
+        var unit = boss.GetComponent<HexaUnit>();
+        unit.SetTileIndex(new Vector2Int(4, 7));
+        unit.transform.position = TilemapManager.instance.hexa_tilePosList[unit.tileIndex.y, unit.tileIndex.x];
+        HexaUnitManager.instance.RegisterHexaUnit(unit);
     }
 
     public List<StageData> SearchStageWithID(int id, List<StageData> stageSource)

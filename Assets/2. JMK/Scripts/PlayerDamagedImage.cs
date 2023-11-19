@@ -22,6 +22,10 @@ public class PlayerDamagedImage : MonoBehaviour
     public void SetHurtGage(int hurtAmount)
     {
         if (hurtAmount < 0)
+        {
             _hurtGage = Mathf.Clamp(math.abs(hurtAmount), 0, 4);
+            UnityEngine.Debug.Log(_hurtGage);
+        }
+
     }
 }

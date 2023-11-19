@@ -9,4 +9,9 @@ public class CreepComponent : Article
     public GameObject projectile;
     public string creepName;
     public int id;
+
+    private void OnDisable()
+    {
+        buffData = new ArticleData[4] { ArticleData.ZeroArticleData, ArticleData.ZeroArticleData, ArticleData.ZeroArticleData, ArticleData.ZeroArticleData };
+    }
 }
