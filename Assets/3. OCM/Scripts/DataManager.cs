@@ -33,7 +33,6 @@ public class DataManager : MonoBehaviour
                 UIManager.instance.UIRefresh();
         }
     }
-
     public UnityEvent<int> OnChangeHP;
     public UnityEvent OnZeroHP;
 
