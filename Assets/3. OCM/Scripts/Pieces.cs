@@ -122,7 +122,16 @@ public class Pieces : Article
         DataManager.instance.GetGold(CalculateGold());
         UIManager.instance.UIRefresh();
         GivingItemInfo();
-       
+        foreach (var tile in InvSpawnManager.instance.hexaTiles)
+        {
+            if (tile.piece == this)
+                tile.piece = null;
+        }
+        foreach (var tile in InvSpawnManager.instance.invTiles)
+        {
+            if (tile.piece == this)
+                tile.piece = null;
+        }
         DestroyImmediate(gameObject);
     }
 
