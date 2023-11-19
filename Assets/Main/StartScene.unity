@@ -845,7 +845,7 @@ GameObject:
   - component: {fileID: 193682206}
   - component: {fileID: 193682205}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: InfoUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1606,7 +1606,7 @@ GameObject:
   - component: {fileID: 388331130}
   - component: {fileID: 388331129}
   m_Layer: 5
-  m_Name: OptionUIescape
+  m_Name: InfoUIescape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1676,7 +1676,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2002216742}
+      - m_Target: {fileID: 193682203}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -3913,6 +3913,7 @@ GameObject:
   - component: {fileID: 1044758332}
   - component: {fileID: 1044758331}
   - component: {fileID: 1044758330}
+  - component: {fileID: 1044758333}
   m_Layer: 5
   m_Name: Exit Button
   m_TagString: Untagged
@@ -3985,10 +3986,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1661550213}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1044758333}
+        m_TargetAssemblyTypeName: EndScreenButtonManage, Assembly-CSharp
+        m_MethodName: ExitGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4035,6 +4036,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1044758328}
   m_CullTransparentMesh: 1
+--- !u!114 &1044758333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044758328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74249c1ae64ca94e8799a7910ca5c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1091908529
 GameObject:
   m_ObjectHideFlags: 0

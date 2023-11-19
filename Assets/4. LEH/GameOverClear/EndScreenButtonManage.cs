@@ -25,4 +25,9 @@ public class EndScreenButtonManage : MonoBehaviour
         TilemapManager.instance = null;
         SceneManager.LoadScene(sceneName);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

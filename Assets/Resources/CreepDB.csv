@@ -1,8 +1,3 @@
 name,id,maxHp,hp,attackDamage,attackSpeed,attackRange,moveSpeed,modelPrefab,projectile
-<<<<<<< HEAD
-Creep_Warrior,0,180,180,10,0.8,0,1.0,CreepWarriorModel,
-Creep_Marksman,1,130,130,13,1.0,1,1.5,CreepMarksmanModel,CreepArrow
-=======
-Creep_Warrior,0,180,180,10,0.8 ,0,1.0 ,CreepWarriorModel,
-Creep_Marksman,1,130,130,13,1.0 ,1,1.5 ,CreepMarksmanModel,CreepArrow
->>>>>>> 226f192386a2c1b301f3a59b10ac32e74545730e
+Creep_Warrior,0,180,180,6,0.8,0,1.0,CreepWarriorModel,
+Creep_Marksman,1,130,130,8,1.0,1,1.5,CreepMarksmanModel,CreepArrow

@@ -1296,7 +1296,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c76a7a2abf0141d4b895fc55ef9901fb, type: 3}
   - {fileID: 8300000, guid: b761bf25fe706e349aeae0454eab9d18, type: 3}
   - {fileID: 8300000, guid: d980553c2a5f69c448e7097bc952b310, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: dc085ccd9b2adfc4084987f4a76cd014, type: 3}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!4 &54644653
@@ -9901,10 +9901,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2126152803}
         m_TargetAssemblyTypeName: EndScreenButtonManage, Assembly-CSharp
-        m_MethodName: SceneManageButton
-        m_Mode: 5
+        m_MethodName: ExitGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -15198,6 +15198,7 @@ GameObject:
   - component: {fileID: 761219404}
   - component: {fileID: 761219403}
   - component: {fileID: 761219402}
+  - component: {fileID: 761219406}
   m_Layer: 5
   m_Name: GameEndCanvus
   m_TagString: Untagged
@@ -15266,7 +15267,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &761219405
 RectTransform:
@@ -15289,6 +15290,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &761219406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 761219401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74249c1ae64ca94e8799a7910ca5c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &762402921
 GameObject:
   m_ObjectHideFlags: 0
@@ -20286,6 +20299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNode: 0
+  currentMapNodeY: 0
   blackHole: {fileID: 939346540}
   inhalationMotion:
     serializedVersion: 2
@@ -34274,7 +34288,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2126152803}
         m_TargetAssemblyTypeName: EndScreenButtonManage, Assembly-CSharp
         m_MethodName: SceneManageButton
         m_Mode: 5
@@ -34283,7 +34297,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FinalTestScene 4
+          m_StringArgument: FinalTestScene 5
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1888585689
@@ -37250,7 +37264,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FinalTestScene 4
+          m_StringArgument: FinalTestScene 5
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2103900971
@@ -37959,6 +37973,7 @@ GameObject:
   - component: {fileID: 2126152801}
   - component: {fileID: 2126152800}
   - component: {fileID: 2126152799}
+  - component: {fileID: 2126152803}
   m_Layer: 5
   m_Name: GameClearCanvus
   m_TagString: Untagged
@@ -38027,7 +38042,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &2126152802
 RectTransform:
@@ -38050,6 +38065,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2126152803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126152797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74249c1ae64ca94e8799a7910ca5c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2128584098
 PrefabInstance:
   m_ObjectHideFlags: 0
