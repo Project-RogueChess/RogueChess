@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(phaseChain.Length);
         var nextPhase = phaseChain[(int)currentPhase % phaseChain.Length];
         ForceChangePhaseAndInvoke(nextPhase);
+        SoundManager.instance.PlaySound("ShopClick");
     }
 
     public void Pause() => forcePause = true;

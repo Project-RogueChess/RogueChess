@@ -163,6 +163,8 @@ public class DataManager : MonoBehaviour
                 }
             }
             UIManager.instance.UIRefresh();
+        SoundManager.instance.PlaySound("ShopClick");
+
     }
 
     public void LevelUP()

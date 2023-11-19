@@ -40,6 +40,15 @@ public class SoundManager : MonoBehaviour
             case "smash1": index = 6; break;
             case "smash2": index = 7; break;
             case "blackholl": index = 8; break;
+            case "PageFlip": index = 9; break;
+            case "ShopClick": index = 10; break;
+            case "BackpackOn": index = 11; break;
+            case "BackpackOff": index = 12; break;
+            case "PageFlipOff": index = 13; break;
+
+                
+
+
         }
 
         sfx.clip = audio_clips[index];

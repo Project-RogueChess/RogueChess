@@ -8,5 +8,6 @@ public class Map_Background : MonoBehaviour
     public void ClickedExitButton()
     {
         mapUI.SetActive(false);
+        SoundManager.instance.PlaySound("PageFlipOff");
     }
 }

@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
             //{
             //    mapObject.GetComponent<Main_Map>().UI_MapOnOff();
             //}
-
+            SoundManager.instance.PlaySound("PageFlip");
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -189,6 +189,7 @@ public class UIManager : MonoBehaviour
                     shopManager.ReRoll(DataManager.instance.reroolLock);
                 }
                 UIRefresh();
+                SoundManager.instance.PlaySound("ShopClick");
             }
         }
     }
@@ -214,10 +215,12 @@ public class UIManager : MonoBehaviour
         if (DataManager.instance.reroolLock == true)
         {
             rerollLockImg.SetActive(true);
+            SoundManager.instance.PlaySound("lock");
         }
         else
         {
             rerollLockImg.SetActive(false);
+            SoundManager.instance.PlaySound("lock");
         }
     }
 
@@ -231,6 +234,7 @@ public class UIManager : MonoBehaviour
             inventoryRightBtn.SetActive(false);
             inventorySwitchBool = false;
             inventoryNumTxt.enabled = false;
+            SoundManager.instance.PlaySound("BackpackOff");
         }
         else
         {
@@ -245,6 +249,8 @@ public class UIManager : MonoBehaviour
             inventoryNumTxt.enabled = true;
             inventoryNumTxt.text = "1/2";
             UIRefresh();
+            SoundManager.instance.PlaySound("BackpackOn");
+
         }
         inventoryOnOffBool = !inventoryOnOffBool;
     }

@@ -112,7 +112,9 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                 nameTxt.color = new Color(1f, 0.5f, 0f);
             }
             ShowShopPieces();
-        } 
+        }
+
+        
     }
 
     public void ShowShopPieces()
@@ -161,12 +163,13 @@ public class ShopManager : MonoBehaviour, IPointerClickHandler
                     InvSpawnManager.instance.SearchEveryTileForSynergyData();
                     InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
 
+                    
                     break;
                 }
             }
 
         }
-        
+        SoundManager.instance.PlaySound("ShopClick");
     }
 
     public void CreatePiece()

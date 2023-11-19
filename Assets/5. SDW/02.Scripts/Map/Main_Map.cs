@@ -424,6 +424,7 @@ public class Main_Map : MonoBehaviour
         gameObject.transform.position = basicTransform;
         motherMapObject.SetActive(true);
         isOnMap = true;
+        SoundManager.instance.PlaySound("PageFlip");
     }
 
     public void HideMap()
@@ -432,6 +433,7 @@ public class Main_Map : MonoBehaviour
         gameObject.transform.position = basicTransform;
         motherMapObject.SetActive(false);
         isOnMap = false;
+        SoundManager.instance.PlaySound("PageFlipOff");
     }
 
     public void AccentNode(GameObject panelNode)

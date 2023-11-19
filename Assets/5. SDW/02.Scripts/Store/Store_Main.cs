@@ -42,6 +42,7 @@ public class Store_Main : MonoBehaviour
         questUI.GetComponent<QuestUI>().SetObject(gameObject);
 
         gameObject.SetActive(false);
+        SoundManager.instance.PlaySound("PageFlipOff");
     }
 
     public void ClickedBuyButton1()
