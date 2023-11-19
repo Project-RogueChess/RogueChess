@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using static UnityEditor.Progress;
+
 
 public class PiecesDB : MonoBehaviour
 {
