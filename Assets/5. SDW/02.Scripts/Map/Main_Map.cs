@@ -481,7 +481,7 @@ public class Main_Map : MonoBehaviour
     {
         var currentNodeType = FindPanelToSearchDictionary(currentNodeXY).GetComponent<Map_Node>().myNodeType;
         GameManager.instance.currentNode = currentNodeType;
-        GameManager.instance.currentMapNodeY = currentNodeXY.y;
+        GameManager.instance.currentMapNodeY++;
 
         switch (currentNodeType)
         {

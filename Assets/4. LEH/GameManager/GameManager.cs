@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public Map_Node.currentNodeTypeEnum currentNode;
-    public int currentMapNodeY;
+    public int currentMapNodeY = 0;
     public ControlBlackHole blackHole;
     public AnimationCurve inhalationMotion;
     public AnimationCurve returnMotion;
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float _combatTime = 99;
     [SerializeField] private float _resultTIme = 99;
     [SerializeField] private float _recruitTime = 99;
+    [SerializeField] private float _bonusTime = 0;
 
     public UnityEvent OnSelectMapNode;
     public UnityEvent OnDeployment;
@@ -123,6 +124,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SetBounusTime(float time)
+    {
+        _bonusTime = time;
+        _time += time;
+    }
+
     public void ForceEndBattle()
     {
         if (_playBattleEvent)
@@ -177,19 +184,28 @@ public class GameManager : MonoBehaviour
 
     private float CurrentTime(Phase phase)
     {
+        var totalTime = 0f;
+
         switch (phase)
         {
             default:
-                return 1f;
+                totalTime = 1f;
+                break;
             case Phase.Deployment:
-                return _deployTime;
+                totalTime = _deployTime;
+                break;
             case Phase.Combat:
-                return _combatTime;
+                totalTime = _combatTime;
+                break;
             case Phase.Result:
-                return _resultTIme;
+                totalTime = _resultTIme;
+                break;
             case Phase.Recruitment:
-                return _recruitTime;
+                totalTime = _recruitTime;
+                break;
         }
+
+        return totalTime + _bonusTime;
     }
 
     public void ForceChangePhaseAndInvoke(Phase changePhase)
@@ -222,6 +238,8 @@ public class GameManager : MonoBehaviour
                 OnRecruitment.Invoke();
                 break;
         }
+
+        _bonusTime = 0f;
     }
 
     public void ChangePhaseAndInvoke(Phase changePhase)
@@ -257,6 +275,24 @@ public class GameManager : MonoBehaviour
                 OnRecruitment.Invoke();
                 break;
         }
+
+        _bonusTime = 0f;
+    }
+
+    public void BossBonusTime(float time)
+    {
+        if (currentNode != Map_Node.currentNodeTypeEnum.End)
+            return;
+
+        SetBounusTime(time);
+    }
+
+    public void BossBGM(string name)
+    {
+        if (currentNode != Map_Node.currentNodeTypeEnum.End)
+            return;
+
+        SoundManager.instance.PlayBGM(name);
     }
 
     IEnumerator Winning(int team)
@@ -274,7 +310,6 @@ public class GameManager : MonoBehaviour
                 DataManager.instance.PlayerHP -= HexaUnitManager.instance.teamCount[1];
             }
         }
-            
 
         _playBattleEvent = true;
         var timer = 0f;
