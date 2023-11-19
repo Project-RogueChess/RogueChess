@@ -39,6 +39,13 @@ public class BossUnit : HexaUnit
             Die();
         }
     }
+
+    public override void ForceStop()
+    {
+        base.ForceStop();
+        ((CreepComponent)article).rootTransform.gameObject.SetActive(true);
+    }
+
     public override void Damaged(int damage)
     {
         if (_playingDie || _invincibility)
