@@ -12712,16 +12712,16 @@ MonoBehaviour:
   lineThickness: 10
   startNodeSprite: {fileID: 21300000, guid: fa2077f29659ea042b6a6d4073a1e799, type: 3}
   endNodeSprite: {fileID: 21300000, guid: dba0c48d5a7e35f4bb87f2e8b57499d0, type: 3}
-  normalMonsterPer: 60
+  normalMonsterPer: 90
   normalMonsterSprite: {fileID: 21300000, guid: e5da668c6557abb47a17a303cf69943f,
     type: 3}
-  eliteMonsterPer: 10
+  eliteMonsterPer: 0
   eliteMonsterSprite: {fileID: 21300000, guid: ae7785f19cc193a4d9ab24c58d63be2e, type: 3}
   storePer: 20
   storeSprite: {fileID: 21300000, guid: d79919669fc5628449047c8be1528cb7, type: 3}
-  treasurePer: 20
+  treasurePer: 10
   treasureSprite: {fileID: 21300000, guid: c46486a1e2648f349bb3a6d554fc8140, type: 3}
-  randomEventPer: 20
+  randomEventPer: 10
   randomEventSprite: {fileID: 21300000, guid: 4800731ef4eae344c85a8e9b24fb7278, type: 3}
   shelterPer: 20
   shelterSprite: {fileID: 21300000, guid: 72ab64089a5d479418dd109d905e40de, type: 3}
@@ -20622,7 +20622,19 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: FinalBoss
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1080368692}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: BossBonusTime
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 30
+          m_StringArgument: FinalBoss
           m_BoolArgument: 0
         m_CallState: 2
   OnResult:
@@ -34312,7 +34324,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FinalTestScene 5
+          m_StringArgument: FinalBetaScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1888585689
@@ -37279,7 +37291,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FinalTestScene 5
+          m_StringArgument: FinalBetaScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2103900971

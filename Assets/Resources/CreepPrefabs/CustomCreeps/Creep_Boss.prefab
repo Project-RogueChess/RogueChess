@@ -158,13 +158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42451cfde163f6140917bee1dc722616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originMaxHp: 500
+  originMaxHp: 1000
   originMaxMp: 50
-  originAttackDamage: 20
+  originAttackDamage: 30
   originAttackSpeed: 1
   originAttackRange: 0
   originMoveSpeed: 1
-  hp: 500
+  hp: 1000
   mp: 0
   animator: {fileID: 8957142936785655855, guid: d6bda8bb0a1ef9e44b708601ad3ef45e,
     type: 3}

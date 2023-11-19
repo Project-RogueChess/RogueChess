@@ -212,6 +212,8 @@ public class GameManager : MonoBehaviour
     {
         currentPhase = changePhase;
 
+        _bonusTime = 0f;
+
         switch (changePhase)
         {
             case Phase.SelectMapNode:
@@ -239,7 +241,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        _bonusTime = 0f;
     }
 
     public void ChangePhaseAndInvoke(Phase changePhase)
@@ -340,6 +341,7 @@ public class GameManager : MonoBehaviour
             }
 
             blackHole.StartMotion();
+            SoundManager.instance.PlaySound("blackholl");
             while (timer < inhalationMotion.keys[inhalationMotion.keys.Length - 1].time)
             {
                 for (int i = 0; i < HexaUnitManager.instance.unitList.Count; i++)

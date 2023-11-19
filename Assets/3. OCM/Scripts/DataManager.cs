@@ -198,32 +198,32 @@ public class DataManager : MonoBehaviour
                 }
             case 3:
                 {
-                    wholePercentage = new int[] { 65, 30, 5, 0,0 };
+                    wholePercentage = new int[] { 45, 50, 5, 0,0 };
                     break;
                 }
             case 4:
                 {
-                    wholePercentage = new int[] { 55, 30, 15, 0 ,0};
+                    wholePercentage = new int[] { 30, 55, 15, 0 ,0};
                     break;
                 }
                 case 5:
                 {
-                    wholePercentage = new int[] { 40, 40, 19, 1 ,0};
+                    wholePercentage = new int[] { 20, 50, 29, 1 ,0};
                     break;
                 }
                 case 6:
                 {
-                    wholePercentage = new int[] { 25, 40, 30, 5 ,0};
+                    wholePercentage = new int[] { 15, 45, 35, 5 ,0};
                     break;
                 }
                 case 7:
                 {
-                    wholePercentage = new int[] { 19, 30,35, 15 ,1};
+                    wholePercentage = new int[] { 10, 30, 44, 15 ,1};
                     break;
                 }
                 case 8:
                 {
-                    wholePercentage = new int[] { 16, 20, 35, 25 ,4};
+                    wholePercentage = new int[] { 6, 25, 35, 30 ,4};
                     break;
                 }
                 case 9:
@@ -240,6 +240,7 @@ public class DataManager : MonoBehaviour
     }
     public void SwitchReRoolLock()
     {
+        SoundManager.instance.PlaySound("lock");
         reroolLock = !reroolLock;
         UIManager.instance.ImageOnOff();
     }

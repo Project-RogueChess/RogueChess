@@ -78,6 +78,7 @@ public class Main_Map : MonoBehaviour
 
     Vector2Int startNodeXY;
     Vector2Int endNodeXY;
+    private Vector2Int secondFloorXY;
     #endregion
 
     #region External Call
@@ -227,6 +228,7 @@ public class Main_Map : MonoBehaviour
         secoundFloorFirstNode.AddComponent<Map_Node>();
         secoundFloorFirstNode.GetComponent<Map_Node>().AddPrevNodeKey(new Vector2Int(startNodeX, 0));
         secoundFloorFirstNode.GetComponent<Map_Node>().mykey = new Vector2Int(secondFloorFirstNodeX, startNodeHeight);
+        secondFloorXY = new Vector2Int(secondFloorFirstNodeX, startNodeHeight);
         for (int i = 0; i < createTreeCount; i++)
             CreateRandomNode(new Vector2Int(secondFloorFirstNodeX, startNodeHeight), createCopyTreeCount);
 
@@ -359,6 +361,18 @@ public class Main_Map : MonoBehaviour
             {
                 nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.End;
                 nodeScript.ChangeImageSprite(endNodeSprite);
+            }
+
+            if (nodeScript.mykey == secondFloorXY)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.NormalMonster;
+                nodeScript.ChangeImageSprite(normalMonsterSprite);
+            }
+
+            if (nodeScript.mykey.y == 17)
+            {
+                nodeScript.myNodeType = Map_Node.currentNodeTypeEnum.EliteMonster;
+                nodeScript.ChangeImageSprite(eliteMonsterSprite);
             }
         }
     }

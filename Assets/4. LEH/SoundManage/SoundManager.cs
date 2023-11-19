@@ -13,10 +13,6 @@ public class SoundManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-<<<<<<< HEAD
-            
-=======
->>>>>>> 4feb559a40812d6052148a0d3defbba0420ec8ef
         }
         else
         {
@@ -43,6 +39,7 @@ public class SoundManager : MonoBehaviour
             case "playerHeat": index = 5; break;
             case "smash1": index = 6; break;
             case "smash2": index = 7; break;
+            case "blackholl": index = 8; break;
         }
 
         sfx.clip = audio_clips[index];
@@ -55,8 +52,8 @@ public class SoundManager : MonoBehaviour
 
         switch (type)
         {
-            default: index = 0; break;
-            //case "pieceUp": index = 0; break;
+            //default: index = 0; break;
+            case "FinalBoss": index = 0; break;
             //case "pieceDown": index = 1; break;
             //case "combatStart": index = 2; break;
             //case "boxBell": index = 3; break;
