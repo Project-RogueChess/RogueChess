@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -17,6 +18,7 @@ public class BossUnit : HexaUnit
     private bool _invincibility = false;
     private BossMeteor[] _bossMeteors;
     private HexaUnit _summon;
+    private bool _playingDie = false;
     
     
     public override bool needUpdate => !_moveDirty && !_atkDirty && !_skillDirty;
@@ -24,10 +26,15 @@ public class BossUnit : HexaUnit
     private void Update()
     {
         Act();
+        if(article.hp <= 0)
+        {
+            _invincibility = false;
+            Die();
+        }
     }
     public override void Damaged(int damage)
     {
-        if (article.hp <= 0 || _invincibility)
+        if (_playingDie || _invincibility)
             return;
 
         article.hp -= damage;
@@ -37,7 +44,9 @@ public class BossUnit : HexaUnit
 
     public override void Die()
     {
-        _summon.Die();
+        _playingDie = true;
+        if(_summon != null && _summon.gameObject.activeSelf)
+            _summon.Die();
         base.Die();
     }
 
