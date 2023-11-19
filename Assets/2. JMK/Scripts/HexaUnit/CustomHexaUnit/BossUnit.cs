@@ -19,9 +19,16 @@ public class BossUnit : HexaUnit
     private BossMeteor[] _bossMeteors;
     private HexaUnit _summon;
     private bool _playingDie = false;
-    
+
+    private ControlBlackHole _blackHole;
     
     public override bool needUpdate => !_moveDirty && !_atkDirty && !_skillDirty;
+
+    private void Start()
+    {
+        _blackHole = Instantiate((GameObject)Resources.Load("CreepPrefabs/CreepFX/BossBlackhole")).GetComponent<ControlBlackHole>();
+        _blackHole.blackHole.gameObject.SetActive(false);
+    }
 
     private void Update()
     {
@@ -32,6 +39,13 @@ public class BossUnit : HexaUnit
             Die();
         }
     }
+
+    public override void ForceStop()
+    {
+        base.ForceStop();
+        ((CreepComponent)article).rootTransform.gameObject.SetActive(true);
+    }
+
     public override void Damaged(int damage)
     {
         if (_playingDie || _invincibility)
@@ -60,6 +74,9 @@ public class BossUnit : HexaUnit
 
             //분기 행동(코루틴)
             var randomSkill = Random.Range(0, 3);
+
+
+
             switch (randomSkill)
             {
                 case 0:
@@ -72,8 +89,6 @@ public class BossUnit : HexaUnit
                     StartCoroutine("Skill_Summoning");
                     break;
             }
-
-            
             return;
         }
 
@@ -108,11 +123,11 @@ public class BossUnit : HexaUnit
         var timer = 0f;
         var lastTileIndex = _tileIndex;
 
-        var blackHole = Instantiate((GameObject)Resources.Load("CreepPrefabs/CreepFX/BossBlackhole")).GetComponent<ControlBlackHole>();
-        blackHole.transform.position = transform.position;
-        blackHole.transform.localScale = Vector3.one * 1.5f;
-        blackHole.StartMotion();
-        while (timer < blackHole.motion.keys[blackHole.motion.keys.Length - 1].time + 0.05f)
+        _blackHole.transform.position = transform.position;
+        _blackHole.transform.localScale = Vector3.one * 1.5f;
+        _blackHole.motionSpeed = 1f;
+        _blackHole.StartMotion();
+        while (timer < _blackHole.motion.keys[_blackHole.motion.keys.Length - 1].time + 0.05f)
         {
             timer += Time.deltaTime;
             if (timer > 1f && _tileIndex == lastTileIndex)
@@ -141,8 +156,8 @@ public class BossUnit : HexaUnit
         HexaUnitManager.instance.RequestSetColMapIndex(_tileIndex, true);
         transform.position = TilemapManager.instance.hexa_tilePosList[_tileIndex.y,_tileIndex.x];
 
-        blackHole.transform.position = transform.position;
-        blackHole.StartMotion();
+        _blackHole.transform.position = transform.position;
+        _blackHole.StartMotion();
         while (timer < 3f)
         {
             timer += Time.deltaTime;
@@ -153,8 +168,6 @@ public class BossUnit : HexaUnit
             }
             yield return null;
         }
-
-        Destroy(blackHole.gameObject);
         _skillDirty = false;
     }
 
@@ -278,11 +291,10 @@ public class BossUnit : HexaUnit
         timer = 0f;
 
 
-        var blackHole = Instantiate((GameObject)Resources.Load("CreepPrefabs/CreepFX/BossBlackhole")).GetComponent<ControlBlackHole>();
-        blackHole.transform.position = TilemapManager.instance.hexa_tilePosList[selectIndex.y,selectIndex.x];
-        blackHole.transform.localScale = Vector3.one * 0.2f;
-        blackHole.motionSpeed = 2.5f;
-        blackHole.StartMotion();
+        _blackHole.transform.position = TilemapManager.instance.hexa_tilePosList[selectIndex.y,selectIndex.x];
+        _blackHole.transform.localScale = Vector3.one * 0.2f;
+        _blackHole.motionSpeed = 2.5f;
+        _blackHole.StartMotion();
 
         var checkValidUnit = new KeyValuePair<bool,HexaUnit>(false, null);
         foreach (var u in HexaUnitManager.instance.unitList)
@@ -337,8 +349,6 @@ public class BossUnit : HexaUnit
         article.animator.Play("Idle");
 
         tileIndicator.gameObject.SetActive(false);
-        Destroy(blackHole.gameObject);
-
         _skillDirty = false;
     }
 }
