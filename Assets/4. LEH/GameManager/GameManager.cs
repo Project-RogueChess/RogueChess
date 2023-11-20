@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour
             }
 
             blackHole.StartMotion();
-            SoundManager.instance.PlaySound("blackholl");
+            SoundManager.instance.PlaySound("blackhole");
             while (timer < inhalationMotion.keys[inhalationMotion.keys.Length - 1].time)
             {
                 for (int i = 0; i < HexaUnitManager.instance.unitList.Count; i++)

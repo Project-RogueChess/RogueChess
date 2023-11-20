@@ -48,7 +48,6 @@ public class Tile : MonoBehaviour
     {
         if (TileManager.Instance.nextTile.tag == "Sell")
         {
-            Debug.Log("yer");
             tile.GetComponent<MeshRenderer>().material.color = blackholeColor;
         }
         else

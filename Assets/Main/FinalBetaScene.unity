@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.65727556, g: 0.71699923, b: 0.51720566, a: 1}
+  m_IndirectSpecularColor: {r: 0.65727556, g: 0.71699923, b: 0.5172056, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15047,7 +15047,7 @@ MonoBehaviour:
         m_CallState: 2
   maxHp: 15
   myHp: 15
-  myGold: 999
+  myGold: 5
   maxPieces: 3
   myPieces: 0
   myLevel: 1
@@ -39009,3 +39009,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 47de1d8406e2bb74785043163187627f, type: 3}
   - {fileID: 21300000, guid: 9d775e2c411dc674086c65e9dd9f895e, type: 3}
   - {fileID: 21300000, guid: 8b3414ed1c9768740b432332c9bcae10, type: 3}
+  evt04Title: {fileID: 0}
+  evt04Image: {fileID: 0}
+  evt04Text: {fileID: 0}
+  evt04Choices: []
+  evt05Title: {fileID: 0}
+  evt05Image: {fileID: 0}
+  evt05Text: {fileID: 0}
+  evt05Choices: []
