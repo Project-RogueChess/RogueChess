@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class TileManager : MonoBehaviour
@@ -89,19 +88,33 @@ public class TileManager : MonoBehaviour
     {
         if (isDrag)
         {
+            Debug.Log("드래그 통과");
             if (nextTile != null)
             {
+                Debug.Log("타일 존재");
+
                 if (nextTile.piece == null && DataManager.instance.WhatMyPieces() == DataManager.instance.WhatMyMAXPieces())
                 {
                     prevPiece.transform.position = prevTile.transform.position;
+                    InvSpawnManager.instance.CountArticle();
+                    UIManager.instance.CloseSellText();
+                    isDrag = false;
                     return;
                 }
                 if (nextTile.tag == "Sell")
                 {
                     if (prevTile.triggerInfo.type == TileType.Hexa)
                         HexaUnitManager.instance.UnRegisterHexaUnit(prevTile.piece.GetComponent<HexaUnit>());
+
+                    Pieces currentPieces = prevTile.piece.GetComponent<Pieces>();
+
+                    if (currentPieces.grade == 1)
+                        PiecesCountManager.instance.piecesIdCounts[currentPieces.id]--;
+
                     prevTile.piece.GetComponent<Pieces>().SellPiece();
                     prevTile.piece = null;
+                    InvSpawnManager.instance.SearchEveryTileForSynergyData();
+                    InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
                     UIManager.instance.CloseSellText();
                     InvSpawnManager.instance.CountArticle();
                     return;
