@@ -37,6 +37,18 @@ public class RdmEvt_Main : MonoBehaviour
     [SerializeField] private Sprite evt03Text;
     [SerializeField] private List<Sprite> evt03Choices;
 
+    [Header("Event_03")]
+    [SerializeField] private Sprite evt04Title;
+    [SerializeField] private Sprite evt04Image;
+    [SerializeField] private Sprite evt04Text;
+    [SerializeField] private List<Sprite> evt04Choices;
+
+    [Header("Event_04")]
+    [SerializeField] private Sprite evt05Title;
+    [SerializeField] private Sprite evt05Image;
+    [SerializeField] private Sprite evt05Text;
+    [SerializeField] private List<Sprite> evt05Choices;
+
     private int eventStage;
     private DataManager dataManagerScript;
 
@@ -96,6 +108,12 @@ public class RdmEvt_Main : MonoBehaviour
                 break;
             case 2:
                 SettingEvent(evt03Title, evt03Image, evt03Text, evt03Choices);
+                break;
+            case 3:
+                SettingEvent(evt04Title, evt04Image, evt04Text, evt04Choices);
+                break;
+            case 4:
+                SettingEvent(evt05Title, evt05Image, evt05Text, evt05Choices);
                 break;
         }
     }
@@ -180,7 +198,7 @@ public class RdmEvt_Main : MonoBehaviour
                         Debug.Log("AddPieces1");
                         LogUI.instance.SettingLogText("1코스트 기물을 획득했습니다");
                     }
-                    
+
                 }
 
                 else if (randomEventValue <= 100)
@@ -217,6 +235,61 @@ public class RdmEvt_Main : MonoBehaviour
                 LogUI.instance.SettingLogText("해당 부하가 떠났습니다");
                 break;
 
+            case 3:
+                //lost gold
+                if (DataManager.instance.TryLostGold(2) == false)
+                {
+                    DataManager.instance.LostHp(1);
+                    LogUI.instance.SettingLogText("골드가 없어서 굶어 체력이 1 감소했습니다");
+                }
+
+                else
+                {
+                    LogUI.instance.SettingLogText("야영지에서 하루 더 지내 2골드 감소했습니다");
+                }
+                break;
+
+            case 4:
+                if (randomEventValue > 20)
+                {
+                    if (DataManager.instance.TryLostGold(2) == false)
+                    {
+                        DataManager.instance.LostHp(2);
+                        LogUI.instance.SettingLogText("돈이 없어 두들겨 맞았습니다");
+                    }
+                    else
+                    {
+                        LogUI.instance.SettingLogText("게임에서 져서 2골드를 잃었습니다");
+                    }
+                }
+
+                else if (randomEventValue > 40)
+                {
+                    DataManager.instance.GetGold(2);
+                    LogUI.instance.SettingLogText("게임에서 이겨 2골드를 얻었습니다");
+                }
+
+                else if (randomEventValue > 70)
+                {
+                    if (DataManager.instance.TryLostGold(5) == false)
+                    {
+                        DataManager.instance.LostHp(4);
+                        LogUI.instance.SettingLogText("돈이 없어 두들겨 맞았습니다");
+                    }
+                    else
+                    {
+                        LogUI.instance.SettingLogText("게임에서 져서 5골드를 잃었습니다");
+                    }
+                }
+
+                else
+                {
+                    DataManager.instance.GetGold(5);
+                    LogUI.instance.SettingLogText("게임에서 이겨 5골드를 얻었습니다");
+                }
+                break;
+
+
             default:
                 Debug.Log(eventStage + "Button1");
                 break;
@@ -225,6 +298,8 @@ public class RdmEvt_Main : MonoBehaviour
     }
     public void ChoiceButtonClick2()
     {
+        float randomValue = Random.Range(0f, 100f);
+
         switch (eventStage)
         {
             case 0:
@@ -244,6 +319,29 @@ public class RdmEvt_Main : MonoBehaviour
                 dataManagerScript.LostGold(4);
                 Debug.Log("LostGold4");
                 LogUI.instance.SettingLogText("부하에게 4골드를 지불했습니다");
+                break;
+
+            case 3:
+                if (randomValue > 40)
+                {
+                    DataManager.instance.LostHp(1);
+                    LogUI.instance.SettingLogText("감기에 걸려 체력을 잃었습니다");
+                }
+                else if (randomValue > 48)
+                {
+                    UIManager.instance.DeleteRandomItem();
+                    LogUI.instance.SettingLogText("물에 젖은 아이템으 고장나버렸습니다");
+                }
+
+                else
+                {
+                    LogUI.instance.SettingLogText("비를 맞았지만 아무일도 일어나지 않았습니다");
+                }
+                break;
+
+            case 4:
+                // nothing
+                LogUI.instance.SettingLogText("그냥 지나갔습니다");
                 break;
 
             default:

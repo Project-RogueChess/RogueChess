@@ -281,6 +281,14 @@ public class GameManager : MonoBehaviour
         _bonusTime = 0f;
     }
 
+    public void GameOver()
+    {
+        if (currentNode == Map_Node.currentNodeTypeEnum.End)
+            return;
+
+        gameOverUI.SetActive(true);
+    }
+
     public void BossBonusTime(float time)
     {
         if (currentNode != Map_Node.currentNodeTypeEnum.End)
@@ -410,16 +418,16 @@ public class GameManager : MonoBehaviour
         {
             if (tile.piece != null)
             {
+                var piece = tile.piece.GetComponent<Pieces>();
+
+                piece.hp = piece.maxHp;
+                piece.mp = piece.maxMp;
+
                 var unit = tile.piece.GetComponent<HexaUnit>();
                 unit.ResetSavedValue();
                 unit.SetTileIndex(new Vector2Int(tile.triggerInfo.x, tile.triggerInfo.y));
 
                 HexaUnitManager.instance.RegisterHexaUnit(unit);
-
-                var piece = tile.piece.GetComponent<Pieces>();
-
-                piece.hp = piece.maxHp;
-                piece.mp = piece.maxMp;
             }
         }
 

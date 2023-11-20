@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fancy_Mat : MonoBehaviour
+public class Fancy_Emission : MonoBehaviour
 {
     private Material myMaterial;
 
@@ -15,12 +15,11 @@ public class Fancy_Mat : MonoBehaviour
         myMaterial = renderer.material;
 
         // 초기값 설정
-        myMaterial.color = new Color(1f, 0f, 0f); // 초기값: R = 1, G = 0, B = 0
+        myMaterial.SetColor("_EmissionColor", new Color(1f, 0f, 0f)); // 초기값: R = 1, G = 0, B = 0
     }
 
     void Update()
     {
-        // 시간에 따라 R, G, B 값을 순환하도록 설정
         timeCounter += Time.deltaTime * cycleSpeed;
 
         float r = Mathf.Sin(timeCounter);
@@ -31,8 +30,8 @@ public class Fancy_Mat : MonoBehaviour
         g = Mathf.Clamp01((g + 1f) / 2f);
         b = Mathf.Clamp01((b + 1f) / 2f);
 
-        // 새로운 색상을 머터리얼에 적용
-        myMaterial.color = new Color(r, g, b);
+        // Emission 값 설정
+        Color emissionColor = new Color(r, g, b);
+        myMaterial.SetColor("_EmissionColor", emissionColor);
     }
 }
-

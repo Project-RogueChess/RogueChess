@@ -36,6 +36,7 @@ public class HexaUnit : MonoBehaviour
     protected bool _startAtk = false;
     protected HexaUnitProjectile _projectile;
     protected bool _forceStop = false;
+    protected bool _playDieAnim = false;
 
     //내부 타이머
     protected float _actTimer = 0f;
@@ -57,6 +58,8 @@ public class HexaUnit : MonoBehaviour
     void Update()
     {
         Act();
+        if (article.hp <= 0 && !_playDieAnim)
+            Die();
     }
 
     private void OnEnable()
@@ -136,11 +139,8 @@ public class HexaUnit : MonoBehaviour
 
     public virtual void Damaged(int damage)
     {
-        if (article.hp <= 0)
-            return;
-
         article.hp -= damage;
-        if (article.hp <= 0)
+        if (article.hp <= 0 && !_playDieAnim)
             Die();
     }
     public virtual void Die()
@@ -148,6 +148,8 @@ public class HexaUnit : MonoBehaviour
         if (_forceStop)
             return;
         ForceStop();
+        _playDieAnim = true;
+        
         HexaUnitManager.instance.UnRegisterHexaUnit(this);
         
         //죽는 애니메이션
@@ -308,6 +310,7 @@ public class HexaUnit : MonoBehaviour
         _startAtk = false;
         _forceStop = false;
         _actTimer = 0f;
+        _playDieAnim = false;
         if (_projectile != null)
             _projectile.ForceStop();
     }
