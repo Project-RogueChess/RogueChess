@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.65727556, g: 0.71699923, b: 0.5172056, a: 1}
+  m_IndirectSpecularColor: {r: 0.65727556, g: 0.71699923, b: 0.51720566, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -38980,7 +38980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26715fff1a68afa479d99bdd2287b464, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCount: 3
+  eventCount: 5
   MAIN_TITLE: {fileID: 969102354}
   MAIN_IMAGE: {fileID: 673708183}
   MAIN_TEXT: {fileID: 193940480}
@@ -39009,11 +39009,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 47de1d8406e2bb74785043163187627f, type: 3}
   - {fileID: 21300000, guid: 9d775e2c411dc674086c65e9dd9f895e, type: 3}
   - {fileID: 21300000, guid: 8b3414ed1c9768740b432332c9bcae10, type: 3}
-  evt04Title: {fileID: 0}
-  evt04Image: {fileID: 0}
-  evt04Text: {fileID: 0}
-  evt04Choices: []
-  evt05Title: {fileID: 0}
-  evt05Image: {fileID: 0}
-  evt05Text: {fileID: 0}
-  evt05Choices: []
+  evt04Title: {fileID: 21300000, guid: af5061f7e9563ed449ebefb13113dcdf, type: 3}
+  evt04Image: {fileID: 21300000, guid: 993a5e17590684e47b4f0d14bc995b6d, type: 3}
+  evt04Text: {fileID: 21300000, guid: 637e951d18573f74f9416da33f030618, type: 3}
+  evt04Choices:
+  - {fileID: 21300000, guid: 36ad6601937542246b146c73f1080142, type: 3}
+  - {fileID: 21300000, guid: fb6ac09e7053c3646ae942c0b17d7f57, type: 3}
+  evt05Title: {fileID: 21300000, guid: d2532392fc006e24c9da8e24ecd91cac, type: 3}
+  evt05Image: {fileID: 21300000, guid: 0a9fd3c4b5e31124c8b01f2bb30cccba, type: 3}
+  evt05Text: {fileID: 21300000, guid: fbc7a685c2924c740b9e603ecb29a485, type: 3}
+  evt05Choices:
+  - {fileID: 21300000, guid: ff550761f10e8fd41b2fe19cd9d879a7, type: 3}
+  - {fileID: 21300000, guid: 04ee97a07ee8d794b92274b7934d6ec9, type: 3}

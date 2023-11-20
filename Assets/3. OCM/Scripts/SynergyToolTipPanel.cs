@@ -11,11 +11,11 @@ public class SynergyToolTipPanel : MonoBehaviour
     public TMP_Text desTxt;
     public TMP_Text des2Txt;
 
-    public void SetupSynergyToolTip(Sprite icon,string name,string des,string injectDataStr,int injectDataNum)
+    public void SetupSynergyToolTip(Sprite icon,string name,string des,string injectDataStr)
     {
         image.sprite = icon;
         nameTxt.text = name;
         desTxt.text = $"Term : {des}";
-        des2Txt.text = $"{injectDataStr} : {injectDataNum}" ;
+        des2Txt.text = injectDataStr;
     }
 }

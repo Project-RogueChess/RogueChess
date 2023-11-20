@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -57,13 +58,25 @@ public class SynergyToolTipReciever : MonoBehaviour, IPointerEnterHandler, IPoin
                 termsNum += "/" + terms[i].ToString();
             }
         }
-        if (synergySO.injectData.maxHp !=0)
+
+        var clampIdx = math.max(synergySO.currentTermIdx, 0);
+
+       
+        if (synergySO.injectData.attackDamage == 0)
         {
-            SynergyToolTip.SetupSynergyToolTip(synergySO.icon,whatisme, termsNum,synergySO.injectDataStr,synergySO.injectData.maxHp);
+            var synergyString = $"MaxHP :{synergySO.injectData.maxHp * clampIdx}";
+            SynergyToolTip.SetupSynergyToolTip(synergySO.icon,whatisme, termsNum, synergyString);
+        }
+        else if(synergySO.injectData.attackDamage != 0 && synergySO.injectData.maxHp != 0)
+        {
+            var synergyString = $"MaxHP :{synergySO.injectData.maxHp * clampIdx}";
+            synergyString += $"\nAtkDmg :{synergySO.injectData.attackDamage * clampIdx}";
+            SynergyToolTip.SetupSynergyToolTip(synergySO.icon, whatisme, termsNum, synergyString);
         }
         else
         {
-            SynergyToolTip.SetupSynergyToolTip(synergySO.icon, whatisme, termsNum,synergySO.injectDataStr, synergySO.injectData.attackDamage);
+            var synergyString = $"AtkDmg :{synergySO.injectData.attackDamage * clampIdx}";
+            SynergyToolTip.SetupSynergyToolTip(synergySO.icon, whatisme, termsNum, synergyString);
         }
         termsNum = "";
 

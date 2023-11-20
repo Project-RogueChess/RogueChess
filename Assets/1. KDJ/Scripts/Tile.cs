@@ -70,8 +70,15 @@ public class Tile : MonoBehaviour
                 {
                     if (TileManager.Instance.prevTile.triggerInfo.type == TileType.Hexa)
                         HexaUnitManager.instance.UnRegisterHexaUnit(TileManager.Instance.prevTile.piece.GetComponent<HexaUnit>());
+
+                    Pieces currentPieces = TileManager.Instance.prevTile.piece.GetComponent<Pieces>();
+
+                    if (currentPieces.grade == 1)
+                        PiecesCountManager.instance.piecesIdCounts[currentPieces.id]--;
                     TileManager.Instance.prevTile.piece.GetComponent<Pieces>().SellPiece();
                     TileManager.Instance.prevTile.piece = null;
+                    InvSpawnManager.instance.SearchEveryTileForSynergyData();
+                    InvSpawnManager.instance.SynergyEnhance(InvSpawnManager.instance.CompareSynergy());
                     UIManager.instance.CloseSellText();
                     InvSpawnManager.instance.CountArticle();
                     return;

@@ -251,6 +251,9 @@ public class GameManager : MonoBehaviour
 
         currentPhase = changePhase;
 
+
+        _bonusTime = 0f;
+
         switch (changePhase)
         {
             case Phase.SelectMapNode:
@@ -278,7 +281,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        _bonusTime = 0f;
     }
 
     public void GameOver()

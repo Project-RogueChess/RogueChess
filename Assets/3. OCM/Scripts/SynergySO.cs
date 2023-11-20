@@ -13,13 +13,17 @@ public class SynergySO : ScriptableObject
 
     public int[] terms;
 
-    public string injectDataStr;
+    private int _currentTermIdx = 0;
+
+    public int currentTermIdx => _currentTermIdx;
+
     public void Execute(List<Pieces> pieces, int term)
     {
         foreach (Pieces piece in pieces)
         {
             if (piece.spieces == spieces)
             {
+                _currentTermIdx = term + 1;
                 piece.buffData[2].maxHp = injectData.maxHp * (term + 1);
                 piece.hp = piece.maxHp;
                 piece.buffData[2].attackDamage = injectData.attackDamage * (term + 1);
